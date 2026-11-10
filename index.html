@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Ruibin Jin Yao — Beyond the Frame</title>
+  <meta name="description" content="Ruibin (Ray) Jin Yao — BBA in Finance & Business Analytics at Hult International Business School, Boston. Finance, analytics, energy storage and international business development, told as a walk through eight living paintings. English, Español, 中文.">
+  <meta name="author" content="Ruibin Jin Yao">
+  <meta name="theme-color" content="#050a2e">
+  <meta name="color-scheme" content="dark">
+  <link rel="canonical" href="https://ruibinray.github.io/Profile/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ruibin Jin Yao">
+  <meta property="og:title" content="Ruibin Jin Yao — Beyond the Frame">
+  <meta property="og:description" content="Every journey adds another brushstroke to who I am. Finance, analytics, energy and international business, as a walk through eight living paintings.">
+  <meta property="og:url" content="https://ruibinray.github.io/Profile/">
+  <meta property="og:image" content="https://ruibinray.github.io/Profile/assets/img/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A figure sits on driftwood under a swirling Van Gogh–style night sky above the ocean, with the name Ruibin Jin Yao.">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+
+  <link rel="preload" href="assets/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/instrument-sans-500.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/content.css?v=20261110">
+  <link rel="stylesheet" href="assets/css/cinema.css?v=20261110">
+  <script>document.documentElement.className = 'js is-loading';</script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Person","name":"Ruibin Jin Yao","alternateName":["Ray","Edwin Ruibin Jin Yao"],"url":"https://ruibinray.github.io/Profile/","alumniOf":[{"@type":"CollegeOrUniversity","name":"Hult International Business School"},{"@type":"School","name":"Lincoln School, Costa Rica"}],"knowsLanguage":["en","es","zh"],"email":"mailto:ruibinjinyao@gmail.com","sameAs":["https://www.linkedin.com/in/edwin-ruibin-jin-yao-a6b050239","https://github.com/RuibinRay","https://www.instagram.com/ruibin.jin/","https://x.com/RuibinJin","https://www.facebook.com/ruibin.jin.9"]}
+  </script>
+</head>
+<body class="cine">
+  <a class="skip" href="portfolio.html">Skip the film: open the plain portfolio</a>
+
+  <!-- The painted stage: fixed behind everything. A WebGL canvas, or the lighter layered images. -->
+  <div class="cine-stage" aria-hidden="true">
+    <div class="cine-stage__lite"></div>
+    <canvas class="cine-stage__canvas"></canvas>
+  </div>
+
+  <header class="topbar" id="topbar">
+    <a class="topbar__brand" href="#home" aria-label="Ruibin Jin Yao — back to the first painting">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1.5l1.6 7.3 7.4 1.6-7.4 1.6L12 19.5l-1.6-7.5L3 10.4l7.4-1.6z"/></svg>
+      <span>Ruibin Jin Yao</span>
+    </a>
+    <p class="topbar__chapter"><span id="chapter-name" aria-live="polite">Enter the Painting</span></p>
+    <div class="topbar__tools">
+      <a class="topbar__link" href="portfolio.html">View portfolio</a>
+      <button class="topbar__icon" id="motion-toggle" type="button" aria-label="Pause the moving paintings"></button>
+      <button class="topbar__menu" id="menu-toggle" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+    </div>
+  </header>
+
+  <nav class="menu" id="menu" aria-label="Chapters" inert>
+    <div class="menu__inner">
+      <ol class="menu__chapters" id="menu-chapters"></ol>
+      <div class="menu__side">
+        <p class="menu__lede">Eight paintings, one story. Go straight to the part you came for, or read everything on one plain page.</p>
+        <ul class="menu__quick" id="menu-quick"></ul>
+      </div>
+    </div>
+  </nav>
+
+  <main id="film">
+    <!-- 1 · Enter the Painting -->
+    <section class="chapter" id="home" aria-labelledby="home-title">
+      <div class="chapter__ui">
+        <div class="beat home-head" data-beat="title">
+          <h1 class="display" id="home-title">
+            <span class="visually-hidden">Ruibin Jin Yao — Building Beyond the Horizon</span>
+            <span class="display__line" aria-hidden="true">RUIBIN</span>
+            <span class="display__line" aria-hidden="true">JIN YAO</span>
+          </h1>
+          <p class="home-tagline" aria-hidden="true">Building Beyond the Horizon.</p>
+        </div>
+        <div class="beat home-foot scrim" data-beat="intro">
+          <p class="home-intro" data-fill="intro"></p>
+          <p class="home-facts" data-fill="facts"></p>
+          <div class="btn-set">
+            <a class="pill pill--gold" href="#about" data-travel="about">Begin the journey</a>
+            <a class="pill" href="portfolio.html">Skip experience</a>
+          </div>
+        </div>
+        <p class="beat statement home-line" data-beat="line">Every journey adds another brushstroke to who I am.</p>
+        <p class="beat home-cue" data-beat="cue" aria-hidden="true"><span>Scroll into the painting</span><i></i></p>
+      </div>
+    </section>
+
+    <!-- 2 · Where My Story Begins -->
+    <section class="chapter" id="about" aria-labelledby="about-title">
+      <div class="chapter__ui" data-chapter="about">
+        <h2 class="visually-hidden" id="about-title">Where My Story Begins</h2>
+      </div>
+    </section>
+
+    <!-- 3 · My Journey -->
+    <section class="chapter" id="experience" aria-labelledby="experience-title">
+      <div class="chapter__ui" data-chapter="experience">
+        <h2 class="visually-hidden" id="experience-title">My Journey</h2>
+      </div>
+    </section>
+
+    <!-- 4 · The World I've Explored -->
+    <section class="chapter" id="world" aria-labelledby="world-title">
+      <div class="chapter__ui" data-chapter="world">
+        <h2 class="visually-hidden" id="world-title">The World I’ve Explored</h2>
+      </div>
+    </section>
+
+    <!-- 5 · Gallery of Creations -->
+    <section class="chapter" id="projects" aria-labelledby="projects-title">
+      <div class="chapter__ui" data-chapter="projects">
+        <h2 class="visually-hidden" id="projects-title">Gallery of Creations</h2>
+      </div>
+    </section>
+
+    <!-- 6 · Energy and International Business -->
+    <section class="chapter" id="energy" aria-labelledby="energy-title">
+      <div class="chapter__ui" data-chapter="energy">
+        <h2 class="visually-hidden" id="energy-title">Energy and International Business</h2>
+      </div>
+    </section>
+
+    <!-- 7 · My Palette of Skills -->
+    <section class="chapter" id="skills" aria-labelledby="skills-title">
+      <div class="chapter__ui" data-chapter="skills">
+        <h2 class="visually-hidden" id="skills-title">My Palette of Skills</h2>
+      </div>
+    </section>
+
+    <!-- 8 · Beyond the Horizon -->
+    <section class="chapter" id="contact" aria-labelledby="contact-title">
+      <div class="chapter__ui" data-chapter="contact">
+        <h2 class="visually-hidden" id="contact-title">Beyond the Horizon</h2>
+      </div>
+    </section>
+  </main>
+
+  <!-- The wall label of the painting on stage -->
+  <aside class="placard" id="placard" aria-label="About this painting">
+    <p class="placard__title" id="placard-title"></p>
+    <p class="placard__label" id="placard-label"></p>
+    <button class="placard__photo" id="placard-photo" type="button" hidden>See the photograph</button>
+  </aside>
+
+  <!-- Progress: a golden brushstroke that grows with the scroll, with a mark for each chapter -->
+  <div class="progress" id="progress">
+    <button class="progress__step" id="prev-chapter" type="button" aria-label="Previous chapter">
+      <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="progress__track">
+      <div class="progress__ground"></div>
+      <div class="progress__stroke" id="progress-stroke"></div>
+      <ol class="progress__marks" id="progress-marks"></ol>
+    </div>
+    <button class="progress__step" id="next-chapter" type="button" aria-label="Next chapter">
+      <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+
+  <!-- Full views that open over the film: the biography, the whole timeline, the atlas, every project, credentials -->
+  <div class="panel" id="panel" inert>
+    <div class="panel__bar">
+      <p class="panel__title" id="panel-title"></p>
+      <button class="panel__close" id="panel-close" type="button">Back to the painting</button>
+    </div>
+    <div class="panel__body" id="panel-body" tabindex="-1"></div>
+  </div>
+
+  <!-- Shared overlays (the same ones the plain portfolio uses) -->
+  <div class="sheet" id="sheet" inert>
+    <div class="sheet__backdrop" data-close></div>
+    <div class="sheet__panel" role="dialog" aria-modal="true" aria-labelledby="sheet-title" tabindex="-1">
+      <button class="sheet__close" type="button" data-close aria-label="Close">
+        <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      </button>
+      <div class="sheet__body"></div>
+    </div>
+  </div>
+  <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Photo"></div>
+
+  <div class="curtain" aria-hidden="true"></div>
+  <div class="loader" id="loader" role="status"><span class="loader__star" aria-hidden="true"></span><span class="loader__text">Mixing the paint</span></div>
+
+  <noscript>
+    <div class="noscript">
+      <p><strong>Ruibin (Ray) Jin Yao</strong> — BBA in Finance &amp; Business Analytics, Hult International Business School, Boston (graduating December 2026).
+      Email <a href="mailto:ruibinjinyao@gmail.com">ruibinjinyao@gmail.com</a>, or find me on
+      <a href="https://www.linkedin.com/in/edwin-ruibin-jin-yao-a6b050239">LinkedIn</a> and <a href="https://github.com/RuibinRay">GitHub</a>.
+      <a href="assets/docs/Edwin_Ruibin_Jin_Yao_Resume.pdf">Download my résumé (PDF)</a>.
+      This site needs JavaScript for the paintings, the map and the timeline.</p>
+    </div>
+  </noscript>
+
+  <!-- Content (edit these files) -->
+  <script defer src="data/site.js?v=20261110"></script>
+  <script defer src="data/journey.js?v=20261110"></script>
+  <script defer src="data/work.js?v=20261110"></script>
+  <script defer src="data/palette.js?v=20261110"></script>
+  <script defer src="data/travel.js?v=20261110"></script>
+  <script defer src="data/gallery.js?v=20261110"></script>
+  <!-- Libraries -->
+  <script defer src="assets/vendor/gsap.min.js"></script>
+  <script defer src="assets/vendor/ScrollTrigger.min.js"></script>
+  <!-- Content components shared with the plain portfolio -->
+  <script defer src="assets/js/content/ui.js?v=20261110"></script>
+  <script defer src="assets/js/content/brush.js?v=20261110"></script>
+  <script defer src="assets/js/content/places.js?v=20261110"></script>
+  <script defer src="assets/js/content/sections.js?v=20261110"></script>
+  <script defer src="assets/js/content/journey.js?v=20261110"></script>
+  <script defer src="assets/js/content/work.js?v=20261110"></script>
+  <script defer src="assets/js/content/atlas.js?v=20261110"></script>
+  <!-- The film -->
+  <script type="module" src="assets/js/cinema/main.js?v=20261110"></script>
+</body>
+</html>

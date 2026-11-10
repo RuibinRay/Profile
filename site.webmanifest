@@ -1,0 +1,21 @@
+{
+  "name": "Ruibin Jin Yao",
+  "short_name": "Ray",
+  "description": "Finance, analytics, energy and international business, as a walk through eight living paintings — Ruibin (Ray) Jin Yao.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#050a2e",
+  "theme_color": "#050a2e",
+  "icons": [
+    {
+      "src": "assets/img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

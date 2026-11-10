@@ -1,0 +1,51 @@
+/* ==========================================================================
+   The plain portfolio (portfolio.html)
+   Loaded after content.css (the content components) and cinema.css (tokens,
+   pills, the project index). Everything on one ordinary, fast page: a still
+   painting behind each section, no film.
+   ========================================================================== */
+html { scroll-behavior: smooth !important; scroll-padding-top: 72px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto !important; } }
+body.plain { background: var(--ink); }
+
+/* the paintings, still: two layers that cross-fade as the sections change */
+.plain .stage { background: var(--ink); }
+.plain-backdrop { opacity: 0 !important; transition: opacity 1.4s var(--ease) !important; object-position: 50% 40%; }
+.plain-backdrop.is-on { opacity: 1 !important; }
+
+/* navigation: always there (the first site faded it in after its opening sequence), sentence case, one link back to the film */
+.plain .nav { opacity: 1; }
+.plain .nav__link { font-size: .9375rem; letter-spacing: 0; text-transform: none; }
+.plain .nav__link--film { padding: 9px 16px; border-radius: 999px; background: var(--sun); color: var(--ink) !important; }
+.plain .nav__link--film::before, .plain .nav__link--film::after { display: none; }
+.plain .nav__link--film:hover { background: #ffdc7a; }
+.plain .nav__list { align-items: center; }
+@media (max-width: 900px) {
+  .plain .nav__link { font-size: 1.25rem; }
+  .plain .nav__link--film { display: inline-block; margin-top: 10px; font-size: 1.0625rem; }
+}
+
+/* the opening: who, what, where to go — readable in seconds */
+.phero { position: relative; z-index: 1; min-height: min(100svh, 880px); display: flex; align-items: flex-end; padding: calc(var(--nav-h) + 6vh) var(--gutter) clamp(40px, 8vh, 88px); }
+.phero::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: rgba(5, 10, 46, .52); }
+.phero__inner { width: 100%; max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 0 clamp(28px, 5vw, 80px); align-items: end; }
+.phero__name { grid-column: 1 / -1; margin: 0; font: 500 clamp(3.25rem, 11vw, 10.5rem)/.86 var(--serif); letter-spacing: -.035em; color: var(--cream); font-variation-settings: 'opsz' 144; }
+.phero__tag { grid-column: 1 / -1; margin: .3em 0 clamp(24px, 5vh, 52px); font: italic 400 clamp(1.5rem, 3vw, 2.75rem)/1.1 var(--serif); letter-spacing: -.015em; color: var(--sun); }
+.phero__intro { margin: 0; font: 400 clamp(1.125rem, 1.5vw, 1.375rem)/1.45 var(--serif); color: var(--cream); max-width: 40ch; }
+.phero__ctas { grid-column: 1; margin-top: 26px; }
+.phero__facts { grid-column: 2; grid-row: 3 / span 2; margin: 0; display: grid; gap: 12px; }
+.phero__facts div { display: grid; grid-template-columns: 7.5rem 1fr; gap: 14px; align-items: baseline; }
+.phero__facts dt { font-size: .9375rem; color: var(--cream-3); }
+.phero__facts dd { margin: 0; font-size: 1.0625rem; line-height: 1.4; color: var(--cream); }
+@media (max-width: 860px) {
+  .phero { min-height: 0; padding-top: calc(var(--nav-h) + 12vh); }
+  .phero__inner { grid-template-columns: 1fr; }
+  .phero__ctas, .phero__facts { grid-column: 1; grid-row: auto; }
+  .phero__facts { margin-top: 34px; }
+  .phero__facts div { grid-template-columns: 6.5rem 1fr; }
+}
+
+/* sections sit on a steadier veil than the first site's: the paintings behind them do not move */
+.plain .sec { --veil: .86; --veil-edge: .7; }
+.plain .index { margin-bottom: clamp(48px, 9vh, 104px); }
+.plain .footer { position: relative; z-index: 1; }
