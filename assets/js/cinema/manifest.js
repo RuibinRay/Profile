@@ -5,77 +5,130 @@ export const PAINTINGS = {
   "title": "Starry Night Ocean",
   "label": "A Starry Night ocean scene, after Vincent van Gogh",
   "alt": "A figure sits on driftwood under a swirling Van Gogh-style night sky above the ocean.",
-  "w": 2048,
-  "h": 1530,
-  "aspect": 1.3389,
+  "w": 3840,
+  "h": 2160,
+  "aspect": 1.7778,
+  "supplied": [
+   1920,
+   1080
+  ],
   "base": "assets/paintings/ocean",
   "sizes": [
-   2048,
+   3840,
+   2560,
    1280,
    640
   ],
-  "aux": "assets/paintings/ocean-aux.png",
+  "formats": {
+   "3840": [
+    "avif"
+   ],
+   "2560": [
+    "avif",
+    "webp"
+   ],
+   "1280": [
+    "avif",
+    "webp"
+   ],
+   "640": [
+    "avif",
+    "webp"
+   ]
+  },
+  "aux": {
+   "a": "assets/paintings/ocean-auxa.png",
+   "b": "assets/paintings/ocean-auxb.png",
+   "c": "assets/paintings/ocean-auxc.png"
+  },
   "layers": {
-   "bg": "assets/paintings/ocean-bg-1280.webp",
+   "near": 0.45,
+   "mid": 0.08,
+   "ceil": 1.0,
+   "fill1": "assets/paintings/ocean-fill1",
+   "fill2": "assets/paintings/ocean-fill2",
+   "fills": [
+    1920,
+    960
+   ],
+   "bg": "assets/paintings/ocean-bg-1280",
    "fg": "assets/paintings/ocean-fg-1280.webp"
   },
-  "blur": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAeACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDENtcQwmCMZjNSLZyRFWVtpxzmnxah+7IIIOODTtKeK6umF1MVA6V3N2VznV2RNaCRg24k0yS3EzksQuzt61oXQ2yHyiNo6GmrFG6ZZgCetO60FdmtZJYixUHGcc0Vmvc2lkgARpWoridF3bTeprdtbGf9ttio2x5NVUt5nujNHGdvpWlBp8NsM43Y9abBMzzlU+UV06vqFyiVvHlwoOPSrzIVQb8571fj22ymRxvNVZb0+co2ja3amtBXKk93CkRyMkUU66a3fduh6elFL3h2R//Z",
+  "details": {
+   "star": {
+    "x": 0.261,
+    "y": 0.348,
+    "f": 0.22,
+    "src": "assets/paintings/ocean-detail-star",
+    "w": 2048,
+    "h": 1152
+   },
+   "spiral": {
+    "x": 0.31,
+    "y": 0.12,
+    "f": 0.36,
+    "src": "assets/paintings/ocean-detail-spiral",
+    "w": 2048,
+    "h": 1152
+   }
+  },
+  "blur": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAWACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDMW1kSExwuBG3UU9II02lX+dRyBUaxXEcTfPnimaRctE8hMYcjrmvSk7HMlJliSBZGG4HPvUdxGHOXB+XpippJ0mbI+8e1O8zYuCmapNaNCakX7Z7V7IJ5RJx6UVnzzzbAI3CD2orj9g0209/M05rrUpQ3LXD+WPlzT44hA7ZJOeuKKK2jFPcptlzT7eOV8gYqWVF80x859aKKrZ2ITKV5ZSCM4l4NFFFZWRabP//Z",
   "colours": [
-   "#9dacad",
-   "#58709e",
-   "#404a7a",
-   "#244287",
-   "#151d51"
+   "#c7c199",
+   "#809ec4",
+   "#5975b2",
+   "#394483",
+   "#0f2980"
   ],
-  "mean": "#506187",
+  "mean": "#526598",
   "anchors": {
    "star": [
-    0.376,
-    0.43
+    0.371,
+    0.458
    ],
    "moon": [
-    0.906,
-    0.14
+    0.908,
+    0.15
    ],
    "spiral": [
-    0.53,
-    0.29
+    0.49,
+    0.3
    ],
    "figure": [
-    0.275,
-    0.56
+    0.232,
+    0.55
    ],
    "horizon": [
     0.5,
-    0.49
+    0.529
    ],
    "star2": [
-    0.251,
-    0.14
+    0.256,
+    0.148
    ],
    "star3": [
-    0.635,
-    0.063
+    0.638,
+    0.066
    ],
    "star4": [
-    0.727,
-    0.184
+    0.721,
+    0.195
    ],
    "star5": [
-    0.114,
-    0.031
+    0.12,
+    0.04
    ],
    "star6": [
-    0.144,
-    0.393
+    0.15,
+    0.42
    ],
    "star7": [
-    0.347,
-    0.264
+    0.346,
+    0.282
    ],
    "star8": [
-    0.431,
-    0.046
+    0.437,
+    0.047
    ]
   }
  },
@@ -84,23 +137,67 @@ export const PAINTINGS = {
   "title": "The Flying House",
   "label": "Painted from my photograph in Lijiang, Yunnan",
   "alt": "A small patchwork house lifted by a bunch of bright balloons floats above a forest under a swirling blue sky.",
-  "w": 2048,
-  "h": 1143,
-  "aspect": 1.7921,
+  "w": 3840,
+  "h": 2142,
+  "aspect": 1.7927,
+  "supplied": [
+   2000,
+   1116
+  ],
   "base": "assets/paintings/house",
   "sizes": [
-   2048,
+   3840,
+   2560,
    1280,
    640
   ],
-  "aux": "assets/paintings/house-aux.png",
+  "formats": {
+   "3840": [
+    "avif"
+   ],
+   "2560": [
+    "avif",
+    "webp"
+   ],
+   "1280": [
+    "avif",
+    "webp"
+   ],
+   "640": [
+    "avif",
+    "webp"
+   ]
+  },
+  "aux": {
+   "a": "assets/paintings/house-auxa.png",
+   "b": "assets/paintings/house-auxb.png",
+   "c": "assets/paintings/house-auxc.png"
+  },
   "layers": {
-   "bg": "assets/paintings/house-bg-1280.webp",
+   "near": 0.62,
+   "mid": 0.3,
+   "fill1": "assets/paintings/house-fill1",
+   "fill2": "assets/paintings/house-fill2",
+   "fills": [
+    1920,
+    960
+   ],
+   "bg": "assets/paintings/house-bg-1280",
    "fg": "assets/paintings/house-fg-1280.webp"
   },
-  "blur": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAWACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCn9mUKBkEDoafPHv2A9ulKt/aucshUHtU6z2b4w+D713qrE8iUJD4AB8u2nSxIeCOKos5S7QhiUzVq41O3VCqjJrGnU1d2bVaSsuVFKeBTIdgwp60VDLqjD7kQordVokKlIyw/ApzOQQRRRXlnch/2llA6mozNubGKKKaV1cT0Yjt8hxRRRTiI/9k=",
+  "details": {
+   "star": {
+    "x": 0.555,
+    "y": 0.055,
+    "f": 0.36,
+    "src": "assets/paintings/house-detail-star",
+    "w": 2048,
+    "h": 1142
+   }
+  },
+  "blur": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAWACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCn9mUKBkEDoafPHv2Bu3SlW/tXOWQqD2qdZ7N8YfB9671VieRKEh8AA+XbTpYkbgjgVRZyl2hDEpmrVxqduqFVGTWVOpq7s2q0lZcqKU8AMh2DCnrRUUuqMPuRCitlWiQqUjKD8CnM5BBFFFeWdyH/AGllA6mozNubGKKKaV1cT0Yjt8hxRRRTiI//2Q==",
   "colours": [
-   "#8fc7cb",
+   "#8ec8cc",
    "#44b0ca",
    "#3588a0",
    "#3f533a",
@@ -145,21 +242,65 @@ export const PAINTINGS = {
   "title": "Blossom at Blue Moon Valley",
   "label": "Painted from my photograph at Blue Moon Valley, Lijiang",
   "alt": "A pink blossoming tree hung with prayer flags beside a waterfall, with snow mountains under a swirling sky.",
-  "w": 2048,
-  "h": 1153,
-  "aspect": 1.7768,
+  "w": 3840,
+  "h": 2160,
+  "aspect": 1.7778,
+  "supplied": [
+   1672,
+   941
+  ],
   "base": "assets/paintings/blossom",
   "sizes": [
-   2048,
+   3840,
+   2560,
    1280,
    640
   ],
-  "aux": "assets/paintings/blossom-aux.png",
+  "formats": {
+   "3840": [
+    "avif"
+   ],
+   "2560": [
+    "avif",
+    "webp"
+   ],
+   "1280": [
+    "avif",
+    "webp"
+   ],
+   "640": [
+    "avif",
+    "webp"
+   ]
+  },
+  "aux": {
+   "a": "assets/paintings/blossom-auxa.png",
+   "b": "assets/paintings/blossom-auxb.png",
+   "c": "assets/paintings/blossom-auxc.png"
+  },
   "layers": {
-   "bg": "assets/paintings/blossom-bg-1280.webp",
+   "near": 0.62,
+   "mid": 0.3,
+   "fill1": "assets/paintings/blossom-fill1",
+   "fill2": "assets/paintings/blossom-fill2",
+   "fills": [
+    1920,
+    960
+   ],
+   "bg": "assets/paintings/blossom-bg-1280",
    "fg": "assets/paintings/blossom-fg-1280.webp"
   },
-  "blur": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAXACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCKys3iJcsAauROisWMfzeorOiugqjeauCVVAfI210vEuT1Rr9QSWktS+3+l7Q4xt6Crf2WN4QoX5jWNc6nsjUxjn1pi607JjOGrX2UqkU4OyPPl+7k4z3NZ7dY1CTPwO1FZDXk0y7s/nRWUp04u0p6gn2iY8zKWAGatRDKYOcUUVwXZ6cqktxWKkYcfSrUFmjR7sUUU1VmlucrSk7sqXsjQrhO1FFFNU4vVoho/9k=",
+  "details": {
+   "sun": {
+    "x": 0.52,
+    "y": 0.0,
+    "f": 0.34,
+    "src": "assets/paintings/blossom-detail-sun",
+    "w": 2048,
+    "h": 1152
+   }
+  },
+  "blur": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAWACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCKys2iJYuAauROqtu8v5vUVmx3QRRvNWxOgUOG49K6XiW3qjb6hFLSWpotm62iQYx0q39ljaEJtwxrEutTZY1MYwajXWJWTBJz61r7J1IqUXZHnSvTk4z3NmSBI1CSvkDsKKxjdTSpktj60VjKrTi7Snr5Am+kTJmcMwGMVaiUFPaiiuG7selKcr3uKzDowzV23tkaLdiiinGcu5zNXd2Ub92iXCHGKKKKpQi9WiGf/9k=",
   "colours": [
    "#d3cfb3",
    "#bda395",
@@ -206,29 +347,73 @@ export const PAINTINGS = {
   "title": "Room of Lanterns",
   "label": "Painted from my photograph at the Van Gogh exhibition, Shanghai",
   "alt": "A figure sits on a mirrored floor looking up into a room of hundreds of glowing golden lanterns.",
-  "w": 2048,
-  "h": 1143,
-  "aspect": 1.7917,
+  "w": 3840,
+  "h": 2142,
+  "aspect": 1.7927,
+  "supplied": [
+   1376,
+   768
+  ],
   "base": "assets/paintings/lanterns",
   "sizes": [
-   2048,
+   3840,
+   2560,
    1280,
    640
   ],
-  "aux": "assets/paintings/lanterns-aux.png",
+  "formats": {
+   "3840": [
+    "avif"
+   ],
+   "2560": [
+    "avif",
+    "webp"
+   ],
+   "1280": [
+    "avif",
+    "webp"
+   ],
+   "640": [
+    "avif",
+    "webp"
+   ]
+  },
+  "aux": {
+   "a": "assets/paintings/lanterns-auxa.png",
+   "b": "assets/paintings/lanterns-auxb.png",
+   "c": "assets/paintings/lanterns-auxc.png"
+  },
   "layers": {
-   "bg": "assets/paintings/lanterns-bg-1280.webp",
+   "near": 0.8,
+   "mid": 0.4,
+   "fill1": "assets/paintings/lanterns-fill1",
+   "fill2": "assets/paintings/lanterns-fill2",
+   "fills": [
+    1920,
+    960
+   ],
+   "bg": "assets/paintings/lanterns-bg-1280",
    "fg": "assets/paintings/lanterns-fg-1280.webp"
   },
-  "blur": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAWACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDHt0RoiijJqwLcSqAeAOM1jW91KDkLg1fiu7gRMWAArglBpneppl1bbyfmQ/N61HJCHfLnJqOK9aaELGfnHWqb3NyrkYB5qFB31G5qxbmhUD5eD60Vl3N3PjkUVuoOxk5pEdpICQxFX5Zd9o7EUUUSWpS+Ep6ddFSwAq4XPmEnGMZooomlzCj8KM+4k3HI4ooorRbEy3P/2Q==",
+  "details": {
+   "gaze": {
+    "x": 0.45,
+    "y": 0.07,
+    "f": 0.3,
+    "src": "assets/paintings/lanterns-detail-gaze",
+    "w": 2048,
+    "h": 1142
+   }
+  },
+  "blur": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAWACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDHt0RoiijNWBAJVAOQBxmsa3upQchcGr8d3cCJiwAFcEoNM71NMurbeT8yH5vWo5IQ75dsmmRXrTQhYz8461Se5uVcjAPNQoNvUbmrFuaFQPlOD60Vl3N3PjkUVuoOxk5pEdpICQxGavyy77R2IoooktSl8JT026KlgB+NXC5LknGMZooomlzCj8KM+4k3HI4ooorRbEy3P//Z",
   "colours": [
-   "#d2983d",
-   "#ae6d28",
-   "#884c1f",
+   "#d3993e",
+   "#b06e29",
+   "#884d20",
    "#5d2b15",
-   "#21110c"
+   "#22110c"
   ],
-  "mean": "#72431c",
+  "mean": "#72431d",
   "anchors": {
    "figure": [
     0.45,
@@ -263,24 +448,68 @@ export const PAINTINGS = {
   "title": "The Yak Rider",
   "label": "Painted from my photograph at Blue Moon Valley, Lijiang",
   "alt": "A faceless rider with crossed arms sits on a white yak on a wooden deck before a green lake and snow mountains.",
-  "w": 2048,
-  "h": 1153,
-  "aspect": 1.7768,
+  "w": 3840,
+  "h": 2160,
+  "aspect": 1.7778,
+  "supplied": [
+   1672,
+   941
+  ],
   "base": "assets/paintings/yak",
   "sizes": [
-   2048,
+   3840,
+   2560,
    1280,
    640
   ],
-  "aux": "assets/paintings/yak-aux.png",
+  "formats": {
+   "3840": [
+    "avif"
+   ],
+   "2560": [
+    "avif",
+    "webp"
+   ],
+   "1280": [
+    "avif",
+    "webp"
+   ],
+   "640": [
+    "avif",
+    "webp"
+   ]
+  },
+  "aux": {
+   "a": "assets/paintings/yak-auxa.png",
+   "b": "assets/paintings/yak-auxb.png",
+   "c": "assets/paintings/yak-auxc.png"
+  },
   "layers": {
-   "bg": "assets/paintings/yak-bg-1280.webp",
+   "near": 0.5,
+   "mid": 0.12,
+   "fill1": "assets/paintings/yak-fill1",
+   "fill2": "assets/paintings/yak-fill2",
+   "fills": [
+    1920,
+    960
+   ],
+   "bg": "assets/paintings/yak-bg-1280",
    "fg": "assets/paintings/yak-fg-1280.webp"
   },
-  "blur": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAXACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCna6lJEoCgYq6b9bjBl6jtWWjxkjjFTojTOFj5NZwxM4vU5uWMtEzRS9gMRTovpS21+IgRFHUlxpsYsRJENrr973rPUjy/lODWksW7WSLdJRlqy6+ouDlyMUVmSgGMhmNFc/t6j6lcsO5dhsbfjK5q2Y47TDwoM0UVxTnK56MaMOxG2qhmMbJwetSZtwoIjooq5+6lYcYRk9UM2wPz5YxRRRWKky3Rh2P/2Q==",
+  "details": {
+   "sky": {
+    "x": 0.26,
+    "y": 0.0,
+    "f": 0.36,
+    "src": "assets/paintings/yak-detail-sky",
+    "w": 2048,
+    "h": 1152
+   }
+  },
+  "blur": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAWACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCnbajLEoCgYFXDfrccyg5HasxJUJBK1Yiia4cLH1rKGJqRepzcsZaJl9L6ExMmML6Uttf+UCIo6nudPj+whkGyROvvWavMZxkGtJYt2skXKkoy1ZcfUXBy5GBRWbKoMZBzRWHt6j6lcsO5ow20Ax+7BqzIogUPCoU0UVxSk7npxpx7FQ6o5kKMuQetWvNTYCIxRRVz0SsEYqT1QwMjjPliiiisE2W6cex//9k=",
   "colours": [
    "#e5d199",
-   "#d8a051",
+   "#d7a050",
    "#7a9e7f",
    "#5e7757",
    "#3a534c"
@@ -320,29 +549,73 @@ export const PAINTINGS = {
   "title": "The Spiral Library",
   "label": "Painted from my photograph in Shenzhen",
   "alt": "A tunnel of spiralling bookshelves glowing red and gold, with tables of books leading toward its centre.",
-  "w": 2048,
-  "h": 1153,
-  "aspect": 1.7768,
+  "w": 3840,
+  "h": 2160,
+  "aspect": 1.7778,
+  "supplied": [
+   1672,
+   941
+  ],
   "base": "assets/paintings/bookshop",
   "sizes": [
-   2048,
+   3840,
+   2560,
    1280,
    640
   ],
-  "aux": "assets/paintings/bookshop-aux.png",
+  "formats": {
+   "3840": [
+    "avif"
+   ],
+   "2560": [
+    "avif",
+    "webp"
+   ],
+   "1280": [
+    "avif",
+    "webp"
+   ],
+   "640": [
+    "avif",
+    "webp"
+   ]
+  },
+  "aux": {
+   "a": "assets/paintings/bookshop-auxa.png",
+   "b": "assets/paintings/bookshop-auxb.png",
+   "c": "assets/paintings/bookshop-auxc.png"
+  },
   "layers": {
-   "bg": "assets/paintings/bookshop-bg-1280.webp",
+   "near": 0.8,
+   "mid": 0.4,
+   "fill1": "assets/paintings/bookshop-fill1",
+   "fill2": "assets/paintings/bookshop-fill2",
+   "fills": [
+    1920,
+    960
+   ],
+   "bg": "assets/paintings/bookshop-bg-1280",
    "fg": "assets/paintings/bookshop-fg-1280.webp"
   },
-  "blur": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAXACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDKs0R4FYpg1oJbcBm5qGIYARR92risI0zJmvOW1z0qkru3QhES8g9KikgMS74+PUVJK/nFRFnrVxUXyzu5IFVzSiZOzMa5RGt9yjjuBRU8iFYJOOCeKK1TaukbR96KctyCKcLK3rjNWDqAZVVlyDRRUcqMLsVZUViVyOKEviSwIziiipTaKcUxkmpxPGRggjtiiiiuqOhzy3P/2Q==",
+  "details": {
+   "tunnel": {
+    "x": 0.327,
+    "y": 0.268,
+    "f": 0.4,
+    "src": "assets/paintings/bookshop-detail-tunnel",
+    "w": 2048,
+    "h": 1152
+   }
+  },
+  "blur": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAWACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDKtI1aBWKYPatBLbgM3NQxD+Bf4auBvKTLgmvOWmp6VSXM7dCERKODUckHlKXj49RT3b7QwEYIq6qqIyG5IFUnKJk7MxblVe33KPqKKsSxssEnHBPFFaq6ukaxalFOW5WjnKysMds1L9vYhVK5BooqLIxu7kgmAJIGOKbHeuWYEZAooqU2i2kyN9U3IQUORRRRXVHQ5pbn/9k=",
   "colours": [
    "#dfbc71",
-   "#c49858",
+   "#c59858",
    "#a77746",
    "#9a4321",
    "#473333"
   ],
-  "mean": "#96663f",
+  "mean": "#97663f",
   "anchors": {
    "tunnel": [
     0.527,
@@ -369,24 +642,59 @@ export const PAINTINGS = {
   "title": "Golden Field",
   "label": "Painted from my photograph in Dali, Yunnan",
   "alt": "A wide golden wheat field under a blue sky of swirling clouds, with a village and mountains on the horizon.",
-  "w": 2048,
-  "h": 1153,
-  "aspect": 1.7768,
+  "w": 3840,
+  "h": 2160,
+  "aspect": 1.7778,
+  "supplied": [
+   1672,
+   941
+  ],
   "base": "assets/paintings/field",
   "sizes": [
-   2048,
+   3840,
+   2560,
    1280,
    640
   ],
-  "aux": "assets/paintings/field-aux.png",
+  "formats": {
+   "3840": [
+    "avif"
+   ],
+   "2560": [
+    "avif",
+    "webp"
+   ],
+   "1280": [
+    "avif",
+    "webp"
+   ],
+   "640": [
+    "avif",
+    "webp"
+   ]
+  },
+  "aux": {
+   "a": "assets/paintings/field-auxa.png",
+   "b": "assets/paintings/field-auxb.png",
+   "c": "assets/paintings/field-auxc.png"
+  },
   "layers": {
-   "bg": "assets/paintings/field-bg-1280.webp",
+   "near": 0.7,
+   "mid": 0.25,
+   "fill1": "assets/paintings/field-fill1",
+   "fill2": "assets/paintings/field-fill2",
+   "fills": [
+    1920,
+    960
+   ],
+   "bg": "assets/paintings/field-bg-1280",
    "fg": "assets/paintings/field-fg-1280.webp"
   },
-  "blur": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAXACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCCPTEY5kcDFXYoLSJSjFWpBGg6ginCG36mpnnFOXRmccBNdRrw28gIQKuKihtFjYnhiehqykMOeFNS/Z4+2c0v7appW5WH9nzb3KqwKhLkDd60VZa2jYhCTz70VDzqH8o/7On3K0Vwrx7iM0b0Y/JkGiivDcUmeytRxdlI5pftWOgxRRUpJibsVReEOzZOaKKK19nFmSmz/9k=",
+  "details": {},
+  "blur": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAWACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCGPTo2OZJBx6VbiitIQUOGo2IBytPCQdSuTUSzmEujIjgJLqRvFbyAhAq4pkNqkbHGGJ71ZSKLPCVL5Ef8I5qf7ailblD+zpt7lQQKmXO3d60VaMETMEPPrRUvOo/yj/s6X8xThuN0e4rSiRXPAwaKK8RpJnsLYczFSOaDdOOBxRRUpJie5V+1sGZuc0UUVryLsZczP//Z",
   "colours": [
    "#f0bb2f",
-   "#e39d10",
+   "#e39c10",
    "#84a9ad",
    "#af770d",
    "#2d649e"
@@ -426,21 +734,65 @@ export const PAINTINGS = {
   "title": "White Terraces",
   "label": "Painted from my photograph in Lijiang, Yunnan",
   "alt": "White stone terraces holding turquoise pools step down a hillside toward a town, under a starry swirling sky.",
-  "w": 2048,
-  "h": 1153,
-  "aspect": 1.7768,
+  "w": 3840,
+  "h": 2160,
+  "aspect": 1.7778,
+  "supplied": [
+   1672,
+   941
+  ],
   "base": "assets/paintings/terraces",
   "sizes": [
-   2048,
+   3840,
+   2560,
    1280,
    640
   ],
-  "aux": "assets/paintings/terraces-aux.png",
+  "formats": {
+   "3840": [
+    "avif"
+   ],
+   "2560": [
+    "avif",
+    "webp"
+   ],
+   "1280": [
+    "avif",
+    "webp"
+   ],
+   "640": [
+    "avif",
+    "webp"
+   ]
+  },
+  "aux": {
+   "a": "assets/paintings/terraces-auxa.png",
+   "b": "assets/paintings/terraces-auxb.png",
+   "c": "assets/paintings/terraces-auxc.png"
+  },
   "layers": {
-   "bg": "assets/paintings/terraces-bg-1280.webp",
+   "near": 0.72,
+   "mid": 0.2,
+   "fill1": "assets/paintings/terraces-fill1",
+   "fill2": "assets/paintings/terraces-fill2",
+   "fills": [
+    1920,
+    960
+   ],
+   "bg": "assets/paintings/terraces-bg-1280",
    "fg": "assets/paintings/terraces-fg-1280.webp"
   },
-  "blur": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAXACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDDjCtF8y89qsKxkYArworW0q0jmbbIgPvVy40yCLJAxTjOUdIszcVuzDjVdpJAWgxREEE5rQFqvLAcUyS2DJiMgGtVXqJe8jPlg9mLHexW9r5YTNFZ97BcRxjKHHqBRWUHF3djRq2he0+6ZEOzqO9aUdyt2uyQHd60UV0uEbXM+Zt2ZUWYpeeRjrxTpj9mLN1x2oorJrVLuYvRXNW0kW6tVZkGPSiiiuWppJpHo09Yps//2Q==",
+  "details": {
+   "star": {
+    "x": 0.465,
+    "y": 0.0,
+    "f": 0.24,
+    "src": "assets/paintings/terraces-detail-star",
+    "w": 2048,
+    "h": 1152
+   }
+  },
+  "blur": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAWACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDDjAaL5lye1WFLOwBHCitjSbZJG2uoYetXLnT7eLJAAojOUfdizNxW7MGNV25IxQY4iCDzWktquCwHHpUb2yyLhDg1sq1RLVGfLTezES+jt7XywmaKqXtlcpGPkLD1FFZQcXdtGrj0LFhcOqHacYrSguftI8uVcn1oorplFcpldt2KolZL/wAkdDxT7g/ZtzL1FFFZPdGL0Rq2MxuLVWcCiiiuWppJ2PRp6xVz/9k=",
   "colours": [
    "#cfc19d",
    "#6999a1",

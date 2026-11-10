@@ -7,6 +7,7 @@ The portfolio of **Ruibin (Ray) Jin Yao**, told as a walk through eight living V
 - **The film:** `index.html` — a scroll-driven journey in eight chapters.
 - **The plain portfolio:** `portfolio.html` — the same content on one ordinary, fast page (the film's *View portfolio* and *Skip experience* go here).
 - **Storyboard:** [`docs/STORYBOARD.md`](docs/STORYBOARD.md) — every chapter, camera move and transition, in words.
+- **What the cinematic rebuild changed:** [`docs/CINEMATIC-REBUILD.md`](docs/CINEMATIC-REBUILD.md); the image-quality audit is [`docs/ASSET-AUDIT.md`](docs/ASSET-AUDIT.md).
 
 Plain HTML, CSS and JavaScript modules. No build step, no framework, no backend, no trackers. Three.js and GSAP are in `assets/vendor/`; everything you'll want to change lives in `data/`.
 
@@ -74,22 +75,36 @@ Exactly as before; the comments at the top of each data file have the fields. In
 
 ## The paintings
 
-Each painting is prepared once by `tools/prepare_paintings.py` into `assets/paintings/`:
+The paintings go through two steps, and the three folders are kept apart:
+
+| Folder | What it holds |
+|---|---|
+| `tools/source/paintings/` | the paintings exactly as supplied (1376–2000 px wide); never changed |
+| `tools/masters/` | 3840 px masters and 2048 px close-ups, made by `tools/upscale_paintings.py` with AI super-resolution (Real-ESRGAN), colour-locked to the supplied files |
+| `assets/paintings/` | the optimised versions the site loads, made by `tools/prepare_paintings.py` from the masters |
+
+What `assets/paintings/` contains for each painting:
 
 | File | Used for |
 |---|---|
-| `<id>-2048.webp`, `<id>-1280.webp`, `<id>-640.webp` | the painting for desktop, phones, and thumbnails |
-| `<id>-aux.png` | the motion map the shader reads: red and green are the direction the paint flows (along its own brushstrokes), blue is depth |
-| `<id>-bg-1280.webp`, `<id>-fg-1280.webp` | a far layer with the foreground painted out, and the foreground cut out, for the lighter two-layer parallax |
-| `manifest.json` (and `assets/js/cinema/manifest.js`) | sizes, colours, a tiny blurred preview, the wall label, the photograph it was painted from, and hand-placed anchor points (stars, the tunnel's end, the sun) that cameras and portals aim at |
+| `<id>-3840.avif`, `<id>-2560`, `<id>-1280`, `<id>-640` (`.avif` and `.webp`) | the painting, for large screens down to thumbnails; the film picks the size and format the screen needs |
+| `<id>-detail-<name>` (`.avif`, `.webp`) | a 2048 px close-up of a region the camera enters (a star, the tunnel) |
+| `<id>-fill1-…`, `<id>-fill2-…` | what is behind the near layer and behind the middle layer, painted in by an inpainting model (LaMa); transparent wherever the painting itself already shows it |
+| `<id>-auxa.png` | red and green: the direction the paint flows; blue: depth |
+| `<id>-auxb.png` | red: the near layer's matte; green: the middle layer's matte; blue: depth with the near layer removed |
+| `<id>-auxc.png` | red: where wind moves things; green: water; blue: sky |
+| `<id>-bg-1280`, `<id>-fg-1280.webp` | the two flat layers of the lighter, no-WebGL stage |
+| `manifest.json` (and `assets/js/cinema/manifest.js`) | sizes, formats, layer depths, close-up regions, colours, a tiny blurred preview, the wall label, the photograph it was painted from, and hand-placed anchor points (stars, the tunnel's end, the sun) that cameras and portals aim at |
 
-The sources are in `tools/source/paintings/`. Depth comes from the Depth Anything V2 (small) model run on your own computer; the model is not in the repository. The top of the script has the three commands to set it up.
+The ocean of chapters 1 and 8 is put together from two supplied pictures: the empty night ocean (`ocean-back.png`) and the figure on his log on a transparent ground (`ocean-element.png`), laid in at the position given in `PAINTINGS`. The element is that painting's near layer and the empty ocean is what is behind it. Other versions that were supplied are in `tools/source/paintings/ocean-alternates/`.
+
+Depth comes from Depth Anything V2 (small). None of the three models is in the repository; the top of each script has the commands to fetch them and set up Python. [`docs/ASSET-AUDIT.md`](docs/ASSET-AUDIT.md) records what the assets were, what was done and what the limits are.
 
 ### Adding or replacing a painting
 
-1. Put the image in `tools/source/paintings/` (16:9, as large as you have).
-2. Add an entry to `PAINTINGS` in `tools/prepare_paintings.py`: an `id`, the title and label for its wall card, `alt` text, the photograph it was painted from (optional), and a few `anchors`.
-3. Run the script. It writes the images and the manifest.
+1. Put the image in `tools/source/paintings/` (16:9, as large as you have: a larger original always beats the upscaler).
+2. Add an entry to `PAINTINGS` in `tools/prepare_paintings.py`: an `id`, the title and label for its wall card, `alt` text, the photograph it was painted from (optional), a few `anchors`, the depths where its near and middle layers begin, and any close-up regions.
+3. Run `tools/upscale_paintings.py`, then `tools/prepare_paintings.py`. They write the master, the images and the manifest.
 4. Give the painting a shot in `assets/js/cinema/storyboard.js`: which chapter, where the camera looks and how it gets there. `docs/STORYBOARD.md` explains the vocabulary.
 
 **Still to supply:** paintings of Costa Rica and Boston for chapter 2 (`AWAITING` in `storyboard.js`). Until then that chapter uses the flying house and the blossom tree, with your real photographs of the three places in its windows.
@@ -103,7 +118,9 @@ assets/js/cinema/
   storyboard.js     the film as data: chapters, cameras, transitions (one unit = one screen of scroll)
   engine.js         one GSAP ScrollTrigger scrubbing one master timeline; text "beats"; travel between chapters
   stage-gl.js       the WebGL stage (Three.js): the painting shader, motes in the air, quality tiers
-  shaders.js        GLSL: depth parallax, paint flow, impasto light, the four transitions
+  shaders.js        GLSL: three depth layers, focus, wind and water, close-ups, the seven transitions
+  formats.js        AVIF or WebP, and which file of a painting to fetch
+  clips.js          transition clips that are installed (generated)
   globe.js          the painted globe of chapter 4
   stage-lite.js     the lighter stage: layered images, CSS transforms and clip-paths, no WebGL
   view.js           camera maths shared by both stages
@@ -121,9 +138,13 @@ assets/css/         content.css (components) · cinema.css (the film) · portfol
 
 - **Everything is a function of the scroll position.** The timeline never plays by itself, so scrolling back reverses every camera move, transition and piece of text.
 - **Three stages, one film.** WebGL on capable screens. The lighter stage on phones, small touch screens, low-memory devices and when WebGL 2 is missing; it is also where the WebGL stage hands over if it cannot keep up after stepping its resolution down twice. The calm stage when *Reduce motion* is on: no push-ins, plain cross-fades, text that fades without travelling. All content is the same in all three.
-- **Memory.** Only the paintings on stage and their neighbours hold textures (at most four); the rest are released. Pixel ratio is capped at 1.75. The world map and globe data load only as chapter 4 approaches.
+- **Memory.** Only the paintings on stage and their neighbours hold textures (at most four; at the 3840 px size, only the one ahead in the direction of travel); the rest are released. Pixel ratio is capped at 1.75. The world map and globe data load only as chapter 4 approaches.
 - **Pause.** The round button in the top bar stops everything that moves by itself (remembered in that browser). Scrolling still works.
 - **Not trapped.** The menu, the chapter marks on the progress stroke, the previous / next arrows, *View portfolio* and *Skip experience* are always available; far jumps cut behind a short curtain rather than fast-forwarding the film.
+
+### Transition clips
+
+Any transition can be played from a short generated video instead of the shader: `tools/transition_frames.py` writes each transition's start and end frame, a video generator turns a pair into a clip, and `tools/prepare_transition.py` cuts the clip into frames the film scrubs with the scroll. [`tools/transitions/README.md`](tools/transitions/README.md) has the steps and prompts. None is installed yet.
 
 ### Address options, for testing
 
@@ -134,6 +155,7 @@ assets/css/         content.css (components) · cinema.css (the film) · portfol
 | `?calm` | the reduced-motion stage |
 | `?gl` | force the WebGL stage |
 | `?why` | shows which stage is running, at what quality, and why |
+| `?webp` | pretend the browser cannot show AVIF (tests the WebP files) |
 | `?step` | no scroll smoothing: the film is exactly where the scrollbar is |
 
 In the console, `RJY.film.engine.travel(12.5)` jumps to a moment and `RJY.film.stage.info()` reports the stage.
@@ -173,12 +195,12 @@ Never commit passwords, API keys or anything private: the repository is public.
 - *Reduce motion* gets the calm stage; the pause button stops all self-moving paint.
 - Text over the paintings sits on a pool of night and the stage dims behind it.
 - Project screenshots are shown as they are, never repainted.
-- First visit, desktop: the page, fonts, GSAP and Three.js, then one painting (about 0.8 MB) and its motion map; later paintings load a chapter ahead. Phones never load Three.js.
+- First visit, desktop: the page, fonts, GSAP and Three.js, then one painting (about 1 MB at 2560 px, 1.7 MB at 3840 px) and its motion map; later paintings load a chapter ahead. Phones never load Three.js.
 
 ## Credits
 
 - Paintings: Van Gogh-style scenes from my own photographs, and a Starry Night ocean scene after Vincent van Gogh.
 - [three.js](https://threejs.org) (MIT) and [GSAP](https://gsap.com) with ScrollTrigger (GreenSock standard licence); notices in `assets/vendor/LICENSES.txt`. `tools/build_vendor.sh` refreshes them.
-- Depth maps made with [Depth Anything V2](https://github.com/DepthAnything/Depth-Anything-V2) (small), run locally.
+- Masters enlarged with [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN) (BSD-3-Clause), depth maps made with [Depth Anything V2](https://github.com/DepthAnything/Depth-Anything-V2) (small), hidden areas painted in with [LaMa](https://github.com/advimman/lama) (Apache-2.0); all three run locally.
 - Fonts: [Fraunces](https://github.com/undercasetype/Fraunces), [Instrument Sans](https://github.com/Instrument/instrument-sans), and a subset of [Noto Serif SC](https://github.com/notofonts/noto-cjk), SIL Open Font License.
 - Country borders, provinces and cities: [Natural Earth](https://www.naturalearthdata.com/) (public domain). Map code: d3-geo, d3-zoom, topojson-client (ISC). Flags: [flag-icons](https://github.com/lipis/flag-icons) (MIT).

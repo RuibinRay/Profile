@@ -5,3 +5,5 @@ venv/
 *.onnx
 node_modules/
 .taste-skill/
+# start and end frames written by tools/transition_frames.py (made again in a second)
+tools/transitions/frames/

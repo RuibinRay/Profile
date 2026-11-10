@@ -13,6 +13,7 @@
 import { CHAPTERS, T, setPortrait } from './storyboard.js';
 import { createEngine } from './engine.js';
 import { createLiteStage } from './stage-lite.js';
+import { formatsReady } from './formats.js';
 import { createChrome } from './chrome.js';
 import { createPanels } from './panels.js';
 import * as home from './chapters/home.js';
@@ -142,6 +143,7 @@ function startTime() {
   return c && c.id !== 'home' ? c.start + c.land : 0;
 }
 async function boot() {
+  await formatsReady;      // AVIF or WebP: known before the first painting is asked for
   if (want === 'gl' && !(await useGL())) { want = 'lite'; why = 'WebGL 2 is not available'; }
   if (!stage) useLite(calm);
   const t0 = startTime();

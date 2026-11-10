@@ -6,7 +6,9 @@
  * every other project. A canvas opens its full case study (#projects/<id>); "Search all projects"
  * opens the index with search and filters (#view/projects).
  *
- * Each station's place in space is a pure function of the scroll, so the walk reverses exactly.
+ * Each canvas starts on a shelf down the tunnel, lifts off, turns to face the visitor, rests in the
+ * centre and passes the shoulder. Its place in space is a pure function of the scroll, so the walk
+ * reverses exactly.
  */
 import { ease } from '../view.js';
 
@@ -74,30 +76,51 @@ export function build({ ui, SITE, RJY, h, beat, at, panels, calm }) {
   // a station reached with the keyboard is brought to the front
   stations.forEach((s) => s.el.addEventListener('focusin', () => { if (!s.el.classList.contains('is-front')) window.scrollTo({ top: s.c * window.innerHeight, behavior: calm ? 'auto' : 'smooth' }); }));
 
+  // Each canvas hangs on a shelf of the library until its turn: far down the tunnel, to one side,
+  // turned along the wall and in shadow. Then it lifts off, swings round to face the visitor as it
+  // floats to the centre, rests there (sharp, lit, clickable) and finally passes the other shoulder.
+  const root = document.documentElement;
   let fetched = false;
-  function update(t) {
+  function update(t, sec) {
     if (!fetched) { fetched = true; gallery.querySelectorAll('img[loading="lazy"]').forEach((im) => { im.loading = 'eager'; }); }
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const still = calm || root.classList.contains('is-paused');
     for (let i = 0; i < stations.length; i++) {
       const s = stations[i];
       const u = (t - s.c) / s.w;                 // −0.5 … 0.5 while this station holds the floor
-      const far = u < -0.84 || u > 0.68;
+      const far = u < -0.86 || u > 0.68;
       if (far) { if (s.shown) { s.el.style.visibility = 'hidden'; s.shown = false; } continue; }
       if (!s.shown) { s.el.style.visibility = 'visible'; s.shown = true; }
-      // rest in front for the middle of the station, come from the tunnel before it, pass the shoulder after it
       const hold = 0.3;
       const k = u < -hold ? (u + hold) : u > hold ? (u - hold) : 0;
-      let z, x = 0, y = 0, o = 1, ry = 0;
-      if (calm) { o = 1 - ease.clamp(Math.abs(k) / 0.3); z = 0; }
+      let x = 0, y = 0, z = 0, o = 1, rx = 0, ry = 0, rz = 0, shade = 0, txt = 1;
+      if (calm) { o = 1 - ease.clamp(Math.abs(k) / 0.3); }
       else if (k <= 0) {
-        // arriving: it only shows once the canvas before it has all but left
-        const a = ease.clamp(-k / 0.5);
-        z = -2400 * a * a; o = 1 - ease.clamp((a - 0.04) / 0.36); y = -60 * a; x = s.side * 90 * a; ry = s.side * -8 * a;
+        // off the shelf and round to the front
+        const a = ease.clamp(-k / 0.56), ea = ease.smooth(a);
+        x = s.side * vw * 0.60 * ea;
+        y = -vh * 0.10 * a - vh * 0.05 * Math.sin(Math.PI * a);
+        z = -2100 * Math.pow(a, 1.5);
+        ry = s.side * -58 * ea; rz = s.side * 2.5 * a; rx = 5 * a;
+        o = 1 - ease.clamp((a - 0.70) / 0.30);
+        shade = 0.6 * a; txt = 1 - ease.clamp(a / 0.35);
       } else {
+        // past the visitor's shoulder
         const a = ease.clamp(k / 0.34);
-        z = 620 * a; o = 1 - ease.smooth(a); x = s.side * -520 * a * a; ry = s.side * 16 * a;
+        z = 760 * a; x = s.side * -vw * 0.40 * a * a; y = vh * 0.03 * a;
+        ry = s.side * 24 * a; rz = s.side * -2 * a;
+        o = 1 - ease.smooth(a); txt = 1 - ease.clamp(a / 0.5);
       }
-      s.el.style.opacity = o.toFixed(3);
-      s.el.style.transform = `translate3d(calc(-50% + ${x.toFixed(1)}px), calc(-50% + ${y.toFixed(1)}px), ${z.toFixed(1)}px) rotateY(${ry.toFixed(2)}deg)`;
+      // at rest a canvas is never quite still: it floats on the air of the room
+      if (!still && k === 0) { y += Math.sin(sec * 0.7 + i * 1.7) * 5; rz += Math.sin(sec * 0.5 + i) * 0.25; }
+      const st = s.el.style;
+      st.opacity = o.toFixed(3);
+      st.transform = `translate3d(calc(-50% + ${x.toFixed(1)}px), calc(-50% + ${y.toFixed(1)}px), ${z.toFixed(1)}px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) rotateZ(${rz.toFixed(2)}deg)`;
+      // light: in shadow on the shelf, and a glint crosses the glass as it turns
+      st.setProperty('--shade', shade.toFixed(3));
+      st.setProperty('--txt', txt.toFixed(3));
+      st.setProperty('--glint', Math.min(1, Math.abs(ry) / 26).toFixed(3));
+      st.setProperty('--sheen', (50 + ry * 1.9).toFixed(1) + '%');
       const front = Math.abs(u) < 0.5 && o > 0.6;
       if (front !== s.front) { s.front = front; s.el.classList.toggle('is-front', front); }
     }

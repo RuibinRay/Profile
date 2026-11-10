@@ -10,6 +10,7 @@
 import { PAINTINGS } from './manifest.js';
 import { SHOTS, sceneAt, cameraAt } from './storyboard.js';
 import { clampCam, toScreen, anchorOf, ease, lerp } from './view.js';
+import { best } from './formats.js';
 
 // one jagged edge, reused for every brush sweep: how far each "bristle" runs ahead (fractions of the screen)
 const BRISTLES = [0.00, 0.07, 0.02, 0.11, 0.05, 0.14, 0.03, 0.09, 0.01, 0.12, 0.06, 0.10, 0.04];
@@ -31,7 +32,7 @@ export function createLiteStage(root, opts = {}) {
     const p = PAINTINGS[id];
     const el = document.createElement('div'); el.className = 'lite__layer'; el.style.backgroundImage = `url(${p.blur})`;
     const mk = (src) => { const i = new Image(); i.decoding = 'async'; i.alt = ''; i.draggable = false; i.src = src; el.appendChild(i); return i; };
-    const bg = mk(calm ? `${p.base}-1280.webp` : p.layers.bg);
+    const bg = mk(best(calm ? `${p.base}-1280` : p.layers.bg));
     const fg = calm ? null : mk(p.layers.fg);
     root.insertBefore(el, ring);
     // ready once the file has arrived; decoding ahead of the first paint is a bonus, never something to wait long for
@@ -103,14 +104,14 @@ export function createLiteStage(root, opts = {}) {
       state.shotB = sc.b; state.camB = camB; state.mix = g;
       let clip = '', op = 1, ringOp = 0;
       if (calm) op = g;
-      else if (tr.type === 'portal') {
+      else if (tr.family === 'portal') {
         const o = toScreen(camA, PAINTINGS[sc.a.painting].aspect, W, H, anchorOf(sc.a.painting, tr.a));
         const ox = lerp(Math.min(W, Math.max(0, o.x)), W / 2, g * 0.6), oy = lerp(Math.min(H, Math.max(0, o.y)), H / 2, g * 0.6);
         const r = Math.pow(m, 1.7) * Math.hypot(W, H) * 1.05;
         clip = `circle(${r.toFixed(1)}px at ${ox.toFixed(1)}px ${oy.toFixed(1)}px)`;
         ringOp = Math.sin(Math.PI * m);
         ring.style.transform = `translate3d(${ox.toFixed(1)}px,${oy.toFixed(1)}px,0) scale(${(r / 100).toFixed(3)})`;
-      } else if (tr.type === 'swirl') {
+      } else if (tr.family === 'swirl') {
         op = g;
         A.el.style.transform = `rotate(${(g * g * 10).toFixed(2)}deg) scale(${(1 + g * 0.18).toFixed(3)})`;
         B.el.style.transform = `rotate(${(-(1 - g) * (1 - g) * 10).toFixed(2)}deg) scale(${(1.18 - g * 0.18).toFixed(3)})`;
@@ -119,7 +120,7 @@ export function createLiteStage(root, opts = {}) {
       B.el.style.opacity = op;
       ring.style.opacity = ringOp;
     } else ring.style.opacity = 0;
-    const swirling = !!(sc.b && !calm && sc.tr.type === 'swirl');
+    const swirling = !!(sc.b && !calm && sc.tr.family === 'swirl');
     if (!swirling && wasSwirling) Object.keys(pool).forEach((id) => { pool[id].el.style.transform = ''; });
     wasSwirling = swirling;
     // show only the layers on stage, the incoming one on top

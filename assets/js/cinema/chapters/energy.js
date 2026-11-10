@@ -3,7 +3,8 @@
  * The golden field becomes an energy landscape: solar panels rise from the wheat, a vanadium flow
  * battery (two tanks and a stack) stands in the middle, and a line runs on to the village on the
  * horizon. One current flows through it all, and the six pieces of work from the HJAT internship sit
- * on it as stops. Everything written here is from data/journey.js (hjat) and data/work.js
+ * on it as stops. The panels rise one by one and follow the sun, the battery's tanks fill and drain as
+ * the page is scrolled, and the whole landscape drifts with the camera. Everything written here is from data/journey.js (hjat) and data/work.js
  * (constellation "storage"): titles, results and the one documented insight. No figure is added.
  */
 import { span, ease } from '../view.js';
@@ -20,12 +21,13 @@ const STOPS = [
 const FLOW = 'M40 318 C110 250 120 250 150 250 S270 214 318 214 S420 258 468 258 S560 178 640 178 S760 232 842 232 S960 196 1010 196 S1120 150 1168 132';
 
 function drawing() {
-  const panel = (x, y) => `<g transform="translate(${x} ${y})"><path class="e-leg" d="M22 58v34M74 52v36"/><path class="e-panel" d="M0 62L16 4l84-10-12 58z"/><path class="e-grid" d="M10 42l84-10M13 23l84-10M30 2L16 60M58-1L44 57M86-4L72 54"/></g>`;
+  // a panel: two legs, the glass, its cells, and a band of sunlight that crosses the glass as the day moves on
+  const panel = (x, y, i) => `<g transform="translate(${x} ${y})"><g class="e-unit" style="--i:${i}"><path class="e-leg" d="M22 58v34M74 52v36"/><g class="e-tilt"><path class="e-panel" d="M0 62L16 4l84-10-12 58z"/><path class="e-grid" d="M10 42l84-10M13 23l84-10M30 2L16 60M58-1L44 57M86-4L72 54"/><path class="e-glint" d="M38 59L52 0l14-2-14 59z"/></g></g></g>`;
   return `<svg class="energy__svg" viewBox="0 0 1200 460" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
-    <g class="e-solar">${panel(44, 300)}${panel(150, 316)}${panel(258, 300)}${panel(364, 318)}</g>
+    <g class="e-solar">${panel(44, 300, 0)}${panel(150, 316, 1)}${panel(258, 300, 2)}${panel(364, 318, 3)}</g>
     <g class="e-battery" transform="translate(548 250)">
-      <path class="e-tank e-tank--a" d="M0 34c0-16 62-16 62 0v96c0 16-62 16-62 0z"/><path class="e-tank-top e-tank--a" d="M0 34c0 16 62 16 62 0s-62-16-62 0z"/>
-      <path class="e-tank e-tank--b" d="M124 34c0-16 62-16 62 0v96c0 16-62 16-62 0z"/><path class="e-tank-top e-tank--b" d="M124 34c0 16 62 16 62 0s-62-16-62 0z"/>
+      <path class="e-glass" d="M0 34c0-16 62-16 62 0v96c0 16-62 16-62 0z"/><path class="e-level e-tank--a" d="M0 34c0 16 62 16 62 0v96c0 16-62 16-62 0z"/><path class="e-tank e-tank--line" d="M0 34c0-16 62-16 62 0v96c0 16-62 16-62 0z"/><path class="e-tank-top e-tank--a" d="M0 34c0 16 62 16 62 0s-62-16-62 0z"/>
+      <path class="e-glass" d="M124 34c0-16 62-16 62 0v96c0 16-62 16-62 0z"/><path class="e-level e-level--b e-tank--b" d="M124 34c0 16 62 16 62 0v96c0 16-62 16-62 0z"/><path class="e-tank e-tank--line" d="M124 34c0-16 62-16 62 0v96c0 16-62 16-62 0z"/><path class="e-tank-top e-tank--b" d="M124 34c0 16 62 16 62 0s-62-16-62 0z"/>
       <path class="e-stack" d="M70 6h46v62H70z"/><path class="e-stack-line" d="M78 6v62M86 6v62M93 6v62M100 6v62M108 6v62"/>
       <path class="e-pipe e-pipe--a" d="M31 22V-8h48v14M79 68v84H31v-22"/><path class="e-pipe e-pipe--b" d="M155 22V-8h-48v14M107 68v84h48v-22"/>
     </g>
@@ -51,7 +53,7 @@ const CHART = `<svg class="cost" viewBox="0 0 320 170" role="img" aria-label="Il
   <text x="300" y="22" text-anchor="end" class="cost__lfp">Lithium (LFP)</text><text x="300" y="80" text-anchor="end" class="cost__vrfb">Flow battery (VRFB)</text>
 </svg>`;
 
-export function build({ ui, SITE, RJY, h, beat, at }) {
+export function build({ ui, SITE, RJY, h, beat, at, stage }) {
   const has = RJY.has;
   const job = RJY.findJourney('hjat') || {};
   const win = RJY.findJourney('vrfb-competition');
@@ -116,7 +118,20 @@ export function build({ ui, SITE, RJY, h, beat, at }) {
     // the two cost lines are brushed in while their card is on stage
     const c = ease.clamp(span(t, at(2.36), at(2.74)));
     chartLines.forEach((l) => { l.style.strokeDashoffset = (l._len * (1 - c)).toFixed(1); });
-    scene.style.setProperty('--rise', ease.out(ease.clamp(span(t, at(1.0), at(1.5)))).toFixed(3));
+    const st = scene.style;
+    st.setProperty('--rise', ease.clamp(span(t, at(1.0), at(1.7))).toFixed(3));
+    // the day moves on: the panels follow the sun, and the battery's two tanks trade places as it charges
+    st.setProperty('--day', (u * 2 - 1).toFixed(3));
+    st.setProperty('--lvl-a', (0.28 + 0.62 * u).toFixed(3));
+    st.setProperty('--lvl-b', (0.90 - 0.62 * u).toFixed(3));
+    // the objects stand in the field: they drift with the painting as the camera pans and arcs, the near ones most
+    const sg = stage(), cam = sg && sg.state && sg.state.cam;
+    if (cam && sg.state.shot && sg.state.shot.id === 'field') {
+      const w = sg.size().W, drift = -(cam.x - 0.5) * w * cam.z * 0.34 - (cam.ox || 0) * 16;
+      st.setProperty('--px-near', (drift * 1.12).toFixed(1) + 'px');
+      st.setProperty('--px-mid', drift.toFixed(1) + 'px');
+      st.setProperty('--px-far', (drift * 0.86).toFixed(1) + 'px');
+    }
   }
 
   beat(head, 0.62, 1.42);

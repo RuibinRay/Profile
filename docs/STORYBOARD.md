@@ -7,8 +7,14 @@ The site is one film, scrubbed by the scrollbar. This document describes it scen
 ## How to read it
 
 - **Time** is measured in screens of scrolling (1.0 = 100vh). The film is 31.6 screens long.
-- **Camera** is given as *centre* (which point of the painting is in the middle of the screen, 0–1 across and 0–1 down), *zoom* (1 = the painting just covers the screen) and *push* (how far the foreground, read from the painting's depth map, has moved toward the viewer).
-- **Background** is the painting itself: the sky and water stream along their own brushstrokes, a raking light lifts the impasto, bright paint breathes. **Foreground** is what the depth map separates from it (a figure, a tree, the yak) plus the page's own layer: text, lanterns, frames, the globe.
+- **Camera** is given as *centre* (which point of the painting is in the middle of the screen, 0–1 across and 0–1 down) and *zoom* (1 = the painting just covers the screen), plus three moves that use the painting's depth:
+  - *dolly*: the camera pushes in and the near layers spread apart from the far ones;
+  - *orbit*: the camera steps sideways, so a near figure slides across what is behind it;
+  - *focus*: one depth is sharp and the rest softens; changing it while the camera moves is a focus pull.
+- **Layers.** Every painting is three depth layers: near, middle and far. Where a near layer moves aside, the layer behind shows colour painted in for that purpose, so nothing stretches and no halo follows a figure.
+- **Motion in the paint.** The sky and water stream along their own brushstrokes, wheat and leaves lean in the wind, water ripples and glints, stars twinkle, lanterns and bright paint breathe, a raking light lifts the impasto. Petals, pollen, embers and motes hang in the air and drift with the scroll.
+- **Close-ups.** Where the camera goes in (a star, the tunnel, the sun), a higher-resolution picture of that region takes over as the zoom passes 1.25.
+- **Foreground** also means the page's own layer: text, lanterns, frames, the globe.
 - Every value is a function of the scroll position, so **scrolling back plays everything in reverse**.
 
 ## The paintings
@@ -28,16 +34,23 @@ All eight are yours. Seven were painted from your own travel photographs; the wa
 
 **Still to supply:** paintings of Costa Rica and of Boston for chapter 2. Until then that chapter is carried by the flying house and the blossom tree, and Costa Rica, China and Boston appear as three arched windows holding your real photographs. The slots are listed as `AWAITING` in `storyboard.js` and marked on the page in the draft view (`?draft`). Nothing was generated to stand in for them.
 
-## The four transitions
+## The transitions
+
+Each one grows out of something already in the picture.
 
 | Name | What happens | Where |
 |---|---|---|
-| **Portal** | A ragged ring of gold light opens from one point of the old painting (a star, a lantern, the end of the tunnel) while the paint around it winds like a spiral; the new painting is inside the ring. | 1→2, 3→4, 5→6, 7→8 |
-| **Brush** | A loaded brush sweeps across; every bristle runs a little ahead of or behind its neighbours, with wet gold on the leading edge. | 2a→2b |
-| **Swirl** | The old painting winds up around a point like a Van Gogh sky and unwinds as the new one. | 2→3, 4→5 |
-| **Pour** | The new painting runs down the canvas like wet paint. | 6→7 |
+| **Portal** | A ragged ring of light opens from one point of the old painting while the paint around it winds like a spiral; the new painting is inside the ring. | 1→2 (the brightest star), 5→6 (the end of the tunnel) |
+| **Star** | The same, as a five-pointed star that turns as it opens. | 7→8 (a star over the terraces) |
+| **Lantern** | One lantern's glow floods the frame and settles into the daylight of the next painting. | 3→4 |
+| **Brush** | A loaded brush sweeps across; every bristle runs a little ahead of or behind its neighbours, with wet paint dragging on the leading edge. | 2a→2b |
+| **Petals** | Blossom blows across in two sheets; every petal opens onto the new painting, and petals fill the air. | 2→3 |
+| **Swirl** | The old painting winds up around a point like a Van Gogh sky and unwinds as the new one. | 4→5 (the sky's swirl becomes the spiral library) |
+| **Pour** | The new painting runs down the canvas like wet paint, its edge turning from gold to water. | 6→7 |
 
-On the lighter stage (phones, low-power devices, no WebGL) the same four are a growing circle, a ragged-edged wipe, a turning cross-fade and a downward wipe. With *Reduce motion* on, all four are plain cross-fades and the camera stops pushing in.
+Any transition can instead be played from a short video of one painting becoming the next (made in a video generator from the start and end frames written by `tools/transition_frames.py`, then cut into frames by `tools/prepare_transition.py`). The frames are scrubbed by the scroll; until they have loaded, the transition above plays. None is installed yet.
+
+On the lighter stage (phones, low-power devices, no WebGL) these are a growing circle (portal, star, lantern), a ragged-edged wipe (brush, petals, pour) and a turning cross-fade (swirl). With *Reduce motion* on, all are plain cross-fades and the camera stops pushing in.
 
 ---
 
@@ -142,3 +155,14 @@ On the lighter stage (phones, low-power devices, no WebGL) the same four are a g
 - **View portfolio** / **Skip experience**: `portfolio.html`, the same content on one ordinary page.
 - **Full views** open over the film and close back to where you were: `#view/story`, `#view/timeline`, `#view/atlas`, `#view/projects` (search and filters), `#view/credentials`.
 - **Deep links** from the first site still work: `#projects/<id>`, `#world/<CODE>`, `#experience/<id>`, `#skills/<id>`.
+
+## What the cinematic rebuild changed, chapter by chapter
+
+- **1. Home.** The name and introduction moved to one column on the right, so the seated figure and the star he looks at are in the clear. The camera drifts in with a slight orbit, the focus pulls from the figure to the star, and the star's close-up carries the push into it.
+- **2. About.** Out of the star beside the flying house; a slow arc round the house with the sky softened behind it; the brush sweeps in the blossom tree; the focus pulls from the tree to the mountains; petals carry the picture into the lantern room.
+- **3. Experience.** A walk past the lanterns from left to right with the focus moving through the room; then up to one bright lantern, whose glow floods the frame.
+- **4. World.** The glow settles into daylight. The camera arcs round the rider, opening the lake and the mountains behind him, then climbs to the sky, whose swirl winds into the library.
+- **5. Projects.** One long dolly down the spiral. Each canvas hangs on a shelf in shadow, lifts off, turns to face the visitor with a glint across its glass, rests in the centre (sharp, lit, clickable, floating slightly) and passes the shoulder as the next one arrives.
+- **6. Energy.** Warm light and wind in the wheat. The solar panels rise one by one and follow the sun through the chapter, the flow battery's two tanks fill and drain as the current runs, and the whole landscape drifts with the camera, the near things most.
+- **7. Skills.** Down the terraces with the water (ripples and glints on the pools), then a tilt up to the stars with the focus pulled out to the sky.
+- **8. Contact.** Through a turning star back to the night ocean, and a pull-back to the first frame.

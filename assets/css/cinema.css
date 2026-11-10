@@ -162,9 +162,15 @@ body.cine ::selection { background: rgba(246, 196, 67, .4); }
 }
 
 /* 6. Home -------------------------------------------------------------------- */
-.home-head { left: var(--edge); bottom: calc(var(--foot) + 15vh); }
+/* The name and the introduction share one column on the right, so the seated figure and the star it
+   looks at (left of centre in the painting) are never behind the words. */
+.home-col { position: absolute; right: var(--edge); top: calc(var(--bar) + 2vh); bottom: calc(var(--foot) + 9vh); width: min(46rem, 52vw); display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end; gap: clamp(14px, 3.2vh, 34px); text-align: right; pointer-events: none; }
+.home-col .beat { position: relative; }
+.home-col .display { font-size: clamp(3rem, min(11.2vw, 18vh), 12.5rem); }
 .home-tagline { margin: .35em 0 0 .06em; font: 400 italic clamp(1.5rem, 3.1vw, 3rem)/1.1 var(--serif); letter-spacing: -.015em; color: var(--sun); text-shadow: 0 1px 24px rgba(5, 10, 46, .7); }
-.home-foot { right: var(--edge); bottom: calc(var(--foot) + 15vh); width: min(27rem, 38vw); }
+.home-foot { width: min(27rem, 38vw); }
+.home-foot .btn-set { justify-content: flex-end; }
+@media (max-height: 640px) and (min-width: 861px) { .home-facts { display: none; } }
 .home-intro { margin: 0 0 .6em; font: 400 clamp(1.1875rem, 1.6vw, 1.5rem)/1.35 var(--serif); color: var(--cream); text-shadow: 0 1px 18px rgba(5, 10, 46, .8); }
 .home-facts { margin: 0; font-size: 1rem; line-height: 1.5; color: var(--cream-2); text-shadow: 0 1px 14px rgba(5, 10, 46, .85); }
 .home-skip { right: var(--edge); top: calc(var(--bar) + 14px); font: 500 .9375rem/1 var(--sans); color: var(--cream-2); text-decoration: underline; text-underline-offset: 5px; text-decoration-color: rgba(246, 236, 212, .5); text-shadow: 0 1px 12px rgba(5, 10, 46, .8); pointer-events: auto; }
@@ -174,8 +180,9 @@ body.cine ::selection { background: rgba(246, 196, 67, .4); }
 .home-cue i { width: 2px; height: 34px; border-radius: 2px; background: var(--sun); transform-origin: 50% 0; animation: cue 2.2s var(--ease) infinite; }
 @keyframes cue { 0% { transform: scaleY(0); opacity: 0; } 35% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1) translateY(16px); opacity: 0; } }
 @media (max-width: 860px) {
-  .home-head { bottom: auto; top: calc(var(--bar) + 6vh); }
-  .home-foot { left: var(--edge); right: var(--edge); width: auto; bottom: calc(var(--foot) + 9vh); }
+  .home-col { left: var(--edge); width: auto; top: calc(var(--bar) + 6vh); justify-content: space-between; align-items: flex-start; text-align: left; }
+  .home-foot { width: auto; }
+  .home-foot .btn-set { justify-content: flex-start; }
   .home-skip { top: auto; bottom: calc(var(--foot) + 3vh); right: var(--edge); }
   .home-cue { display: none; }
   .home-line { left: var(--edge); right: var(--edge); width: auto; top: 22vh; text-align: left; }
@@ -306,6 +313,13 @@ body.cine ::selection { background: rgba(246, 196, 67, .4); }
 .frame__canvas { display: block; position: relative; background: #0b1238; pointer-events: auto;
   box-shadow: 0 0 0 7px #e9bd4f, 0 0 0 11px #9a6a16, 0 0 0 12px rgba(5, 10, 46, .6), 0 34px 70px rgba(2, 5, 24, .62); transition: transform .4s var(--ease-out), filter .4s; }
 .frame__canvas img { display: block; width: 100%; height: auto; aspect-ratio: 2048 / 1280; object-fit: cover; }
+/* light on the canvases: shadow while one hangs on its shelf, a glint across the glass as it turns, a warm glow at rest */
+.frame__canvas::before, .frame__canvas::after { content: ''; position: absolute; inset: 0; pointer-events: none; }
+.frame__canvas::before { z-index: 1; background: #050a2e; opacity: var(--shade, 0); }
+.frame__canvas::after { z-index: 2; background: linear-gradient(104deg, transparent 32%, rgba(255, 238, 180, .42) 49%, transparent 64%) var(--sheen, 50%) 0 / 280% 100% no-repeat; mix-blend-mode: screen; opacity: var(--glint, 0); }
+.frame.is-front .frame__canvas { box-shadow: 0 0 0 7px #e9bd4f, 0 0 0 11px #9a6a16, 0 0 0 12px rgba(5, 10, 46, .6), 0 34px 70px rgba(2, 5, 24, .62), 0 0 110px rgba(246, 196, 67, .22); }
+.frame__text, .wall__head { opacity: var(--txt, 1); }
+.frame--wall .wall__list { opacity: calc(1 - var(--shade, 0) * .55); }
 .frame__canvas:hover, .frame__canvas:focus-visible { transform: scale(1.018) rotate(-.4deg); }
 .frame__canvas.is-opening, .canvas.is-opening { transform: scale(1.07); filter: brightness(1.12); }
 .frame__blank { display: grid; place-content: center; gap: 8px; aspect-ratio: 16 / 10; padding: 24px; text-align: center; background: var(--ultra); color: var(--cream); }
@@ -342,8 +356,24 @@ body.cine ::selection { background: rgba(246, 196, 67, .4); }
 .en-head .statement { margin: 0 0 .5em; font-size: clamp(1.125rem, 1.5vw, 1.4375rem); color: var(--sun); }
 .energy { --rise: 0; left: 0; right: 0; margin: 0 auto; bottom: calc(var(--foot) + 1vh); width: min(100vw, 130vh); aspect-ratio: 1200 / 460; }
 .energy__svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.e-solar, .e-battery, .e-grid-out { opacity: var(--rise); translate: 0 calc((1 - var(--rise)) * 70px); }
-.e-battery { transition-delay: .1s; }
+/* each thing in the landscape rises in its turn (panels, then the battery, then the line to the village),
+   and each depth drifts with the camera by its own amount */
+.energy { --day: 0; --lvl-a: .5; --lvl-b: .5; --px-near: 0px; --px-mid: 0px; --px-far: 0px; }
+.e-solar { translate: var(--px-near) 0; }
+.e-battery, .e-flow { translate: var(--px-mid) 0; }
+.e-grid-out { translate: var(--px-far) 0; }
+.energy .stop { translate: var(--px-mid) 0; }
+.e-unit { --on: clamp(0, calc(var(--rise) * 2.6 - var(--i) * .3), 1); opacity: var(--on); translate: 0 calc((1 - var(--on)) * 80px); }
+.e-battery { --on: clamp(0, calc(var(--rise) * 2.6 - 1.1), 1); opacity: var(--on); }
+.e-battery > * { translate: 0 calc((1 - var(--on)) * 80px); }
+.e-grid-out { --on: clamp(0, calc(var(--rise) * 2.6 - 1.6), 1); opacity: var(--on); }
+.e-grid-out > * { translate: 0 calc((1 - var(--on)) * 80px); }
+.e-tilt { transform-box: fill-box; transform-origin: 50% 100%; transform: skewX(calc(var(--day) * -7deg)); }
+.e-glint { fill: #fff6d6; opacity: .42; translate: calc(var(--day) * 30px) 0; mix-blend-mode: screen; }
+.e-glass { fill: rgba(11, 18, 56, .72); }
+.e-level { transform-box: fill-box; transform-origin: 50% 100%; transform: scaleY(var(--lvl-a)); }
+.e-level--b { transform: scaleY(var(--lvl-b)); }
+.e-tank--line { fill: none; }
 .e-panel { fill: #1b3d9c; stroke: var(--cream); stroke-width: 3; stroke-linejoin: round; }
 .e-grid { fill: none; stroke: #7ea4ee; stroke-width: 1.8; }
 .e-leg { fill: none; stroke: #2a2110; stroke-width: 5; stroke-linecap: round; }
@@ -442,7 +472,8 @@ body.cine ::selection { background: rgba(246, 196, 67, .4); }
 .sky__star--hub b { font-size: 1.5rem; color: var(--sun); }
 a.sky__star:hover i, a.sky__star:focus-visible i { transform: scale(1.7); }
 a.sky__star:hover b, a.sky__star:focus-visible b { color: var(--sun); }
-.sky-head { left: var(--edge); bottom: calc(var(--foot) + 12vh); width: min(34rem, 44vw); }
+/* on the right, clear of the seated figure at the left of the painting */
+.sky-head { right: var(--edge); bottom: calc(var(--foot) + 12vh); width: min(34rem, 44vw); text-align: right; }
 .invite { right: var(--edge); top: calc(var(--bar) + 4vh); width: min(42rem, 52vw); }
 .invite .statement { margin: 0 0 1em; font-size: clamp(1.125rem, 1.5vw, 1.4375rem); }
 .invite__mail { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
@@ -457,7 +488,7 @@ a.sky__star:hover b, a.sky__star:focus-visible b { color: var(--sun); }
 @media (max-width: 860px) {
   .sky__star small { display: none; }
   .sky__star b { font-size: 1rem; }
-  .sky-head { width: auto; right: var(--edge); bottom: calc(var(--foot) + 9vh); }
+  .sky-head { width: auto; left: var(--edge); right: var(--edge); bottom: calc(var(--foot) + 9vh); text-align: left; }
   .invite { left: var(--edge); width: auto; top: calc(var(--bar) + 1vh); }
   .invite__close { display: none; }
   .endnote { left: var(--edge); bottom: calc(var(--foot) + 6vh); text-align: left; }
