@@ -6,7 +6,9 @@
   'use strict';
   var RJY = window.RJY, SITE = window.SITE, h = RJY.h, s = RJY.s, has = RJY.has;
   var HUES = { gold: '#f2c14e', ember: '#f0a04a', foam: '#cfdcef', periwinkle: '#a7b3e0', teal: '#7fd0d4' };
-  var STATUS = { live: 'Live', 'in-progress': 'In progress' };
+  var STATUS = { live: 'Live', 'in-progress': 'In progress', 'coming-soon': 'Coming soon' };
+  // not yet finished: still being built, or only announced
+  function unfinished(w) { return w.status === 'in-progress' || w.status === 'coming-soon'; }
   function consOf(w) { return SITE.constellations.filter(function (c) { return c.id === w.constellation; })[0] || {}; }
   function hueOf(w) { return HUES[consOf(w).hue] || HUES.gold; }
   // The projects drawn in a constellation: its own, plus any that belong elsewhere but are also shown
@@ -50,6 +52,14 @@
       // a flow battery's two electrolyte loops: dashes running round either side of the cell
       fx.appendChild(s('path', { class: 'loop loop-a', d: 'M-5 -15 C-44 -34 -44 34 -5 15', stroke: '#b9a3f0' }));
       fx.appendChild(s('path', { class: 'loop loop-b', d: 'M5 -15 C44 -34 44 34 5 15', stroke: color }));
+    } else if (g === 'goal') {
+      // a curling shot: the ball's path bends in from the left and ends inside a goal on the right
+      fx.appendChild(s('path', { class: 'arc', d: 'M-44 20 Q-20 -52 32 -6', stroke: color, pathLength: 100 }));
+      fx.appendChild(s('path', { class: 'hoop', d: 'M26 6 V-14 H46 V6', stroke: '#c8ff3d' }));
+    } else if (g === 'agents') {
+      // several agents at work: three small lights share one orbit
+      fx.appendChild(s('circle', { class: 'orbit', r: 30, stroke: color }));
+      fx.appendChild(s('g', { class: 'moon-arm' }, [0, 120, 240].map(function (a) { return s('circle', { class: 'moon', cx: 30, cy: 0, r: 2.8, fill: '#fff4d0', transform: 'rotate(' + a + ')' }); })));
     } else if (g === 'shot') {
       // a jump shot: the ball's arc is traced from the left and drops through a hoop on the right
       fx.appendChild(s('path', { class: 'arc', d: 'M-42 14 Q-4 -70 34 -3', stroke: color, pathLength: 100 }));
@@ -104,7 +114,7 @@
         h('h3', { text: 'Featured projects' }),
         h('p', { class: 'featured__lede', text: 'The websites: each one its own world. Point at a star to wake it; select it to step inside.' })));
     var row = h('ul', { class: 'feat-row', role: 'list' }, items.map(function (w) {
-      var cons = consOf(w), color = hueOf(w), live = w.status !== 'in-progress';
+      var cons = consOf(w), color = hueOf(w), live = !unfinished(w);
       var star = featuredStar(w, color);
       var card = h('a', { class: 'feat' + (live ? ' is-live' : ' is-wip'), href: '#projects/' + w.id, 'aria-label': w.title + (live ? '' : ' (in progress)') + ' — open the case study' },
         h('span', { class: 'feat__star' }, star),
@@ -199,7 +209,7 @@
     });
     pts.forEach(function (p) {
       var w = p.w, r = 4 + 3 * (w.magnitude || 0.8);
-      var wip = w.status === 'in-progress';
+      var wip = unfinished(w);
       var g = s('g', { class: 'wstar' + (wip ? ' is-wip' : ''), tabindex: '0', role: 'button', 'aria-label': w.title + (w.when ? ', ' + w.when : '') + (wip ? ' (in progress)' : '') + ' — open case study', 'data-id': w.id });
       g.appendChild(s('circle', { class: 'halo', cx: p.x, cy: p.y, r: r * 6, fill: 'url(#' + gid + ')' }));
       g.appendChild(s('circle', { class: 'ring', cx: p.x, cy: p.y, r: r + 7 }));
@@ -234,7 +244,7 @@
     if (!items.length) return;
     root.appendChild(h('span', { class: 'hero__featured-label', text: 'Things I’ve built' }));
     items.forEach(function (w) {
-      var live = w.status !== 'in-progress';
+      var live = !unfinished(w);
       var a = h('a', { class: 'hstar' + (live ? '' : ' is-wip'), href: '#projects/' + w.id, 'aria-label': w.title + (live ? '' : ' (in progress)') + ' — open the case study', html: RJY.starIcon() },
         h('span', { text: w.short || w.title }), live ? null : h('small', { text: 'soon' }));
       a.style.setProperty('--hue', hueOf(w));
@@ -300,7 +310,7 @@
           return h('li', null, h('button', { type: 'button', class: 'ix-row', onclick: function () { RJY.route.go('#projects/' + w.id); } },
             h('span', { class: 'ix-num', 'aria-hidden': 'true', text: (num < 10 ? '0' : '') + num }),
             h('span', { class: 'ix-title' }, paint, text),
-            h('span', { class: 'ix-when' }, w.status === 'in-progress' ? h('span', { class: 'wip', text: 'In progress' }) : null, w.when || ''),
+            h('span', { class: 'ix-when' }, unfinished(w) ? h('span', { class: 'wip', text: STATUS[w.status] }) : null, w.when || ''),
             h('span', { class: 'ix-go', 'aria-hidden': 'true', text: '→' })));
         })));
     }).filter(Boolean);
@@ -388,21 +398,21 @@
             h('span', { class: 'doc__text' }, h('b', { text: d.title }), has(d.note) ? h('small', { text: d.note }) : null),
             open ? h('a', { class: 'doc__go', href: d.url, target: '_blank', rel: 'noopener', 'aria-label': 'Open ' + d.title + ' (new tab)', text: 'Open' })
                  : (mail ? h('a', { class: 'doc__go', href: ask('Request: ' + d.title), 'aria-label': 'Ask Ray for ' + d.title + ' by email', text: 'Ask for it' }) : null));
-        })), mail ? h('p', { class: 'docs__ask' }, 'Want to see more of the work behind this? ', h('a', { class: 'link', href: ask('About ' + w.title), text: 'Ask me for the documents' }), '.') : null));
+        })), mail ? h('p', { class: 'docs__ask' }, w.status === 'coming-soon' ? 'Want to know more before it is ready? ' : 'Want to see more of the work behind this? ', h('a', { class: 'link', href: ask('About ' + w.title), text: w.status === 'coming-soon' ? 'Ask me about it' : 'Ask me for the documents' }), '.') : null));
         add('Links', w.featured ? [] : w.links, function (v) {
           return h('div', { class: 'btn-row' }, v.map(function (l) { return h('a', { class: 'btn', href: l.url, target: '_blank', rel: 'noopener', text: l.label }); }));
         }, 'a live demo, repository or deck — links');
         var prev = all[(i - 1 + all.length) % all.length], next = all[(i + 1) % all.length];
-        var wip = w.status === 'in-progress', tags = tagNames(w);
+        var wip = unfinished(w), tags = tagNames(w);
         body.appendChild(h('p', { class: 'chapter__eyebrow' },
-          wip ? h('span', { class: 'wip', text: 'In progress' }) : null,
+          wip ? h('span', { class: 'wip', text: STATUS[w.status] }) : null,
           [cons.name].concat(tags).join(' · ') + (has(w.when) ? ', ' + w.when : '')));
         body.appendChild(h('h2', { class: 'chapter__title', text: w.title }));
         body.appendChild(h('p', { class: 'chapter__meta' }, has(w.tagline) ? h('span', { class: 'chapter__tagline', text: w.tagline }) : null, [w.org].filter(has).join('')));
         if (w.featured) {
           var top = h('div', { class: 'chapter__actions' });
           if (has(w.links)) top.appendChild(h('div', { class: 'btn-row' }, w.links.map(function (l, k) { return h('a', { class: 'btn' + (k === 0 ? ' btn--primary' : ''), href: l.url, target: '_blank', rel: 'noopener', text: l.label }); })));
-          else if (wip) top.appendChild(h('p', { class: 'chapter__soon', text: 'Still in the making — the link will appear here when it is ready.' }));
+          else if (wip) top.appendChild(h('p', { class: 'chapter__soon', text: (w.status === 'coming-soon' ? 'Coming soon' : 'Still in the making') + ' — the link will appear here when it is ready.' }));
           if (w.cover) top.appendChild(h('figure', { class: 'chapter__cover' }, RJY.picture(w.cover, { sizes: '(max-width: 1100px) 92vw, 1040px', alt: w.title + ' — the homepage', full: true })));
           body.appendChild(top);
         }

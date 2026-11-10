@@ -21,7 +21,7 @@ Plain HTML, CSS and JavaScript modules. No build step, no framework, no backend,
 | 2. Where My Story Begins | `#about` | Three cultures, three languages, school, what drives me; the full biography opens from here. | `data/site.js` → `about`, `education`, `profile.languages` |
 | 3. My Journey | `#experience` | Every job, school and milestone as a lantern on one golden stroke. Something still ahead is an unlit lantern. | `data/journey.js` |
 | 4. The World I've Explored | `#world` | A painted globe and the countries I know; each opens its places and photographs. | `data/travel.js`, `data/gallery.js` |
-| 5. Gallery of Creations | `#projects` | Every project as a framed canvas: five featured websites, then a wall per field. | `data/work.js` |
+| 5. Gallery of Creations | `#projects` | Every project as a framed canvas: the featured websites, then a wall per field. | `data/work.js` |
 | 6. Energy and International Business | `#energy` | The HJAT internship as an energy landscape with six stops. | `data/journey.js` (`hjat`), `data/work.js` (`storage`) |
 | 7. My Palette of Skills | `#skills` | Skills as brushstrokes: tools and the work where each shows. Languages and certificates. | `data/palette.js`, `data/site.js` → `certifications`, `coursework`, `awards` |
 | 8. Beyond the Horizon | `#contact` | Every painted star is a button for one way to get in touch, then the invitation. | `data/site.js` → `links` |

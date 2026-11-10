@@ -1,8 +1,9 @@
 /*
  * Chapter 5 — Gallery of Creations.
  * The camera walks into the spiral library and the projects of data/work.js come toward it as
- * framed canvases: first the five featured websites, one at a time, each with its real screenshot
- * (kept sharp: an interface is shown as it is, never repainted); then a wall for each field with
+ * framed canvases: first the featured websites, one at a time, each with its real screenshot
+ * (kept sharp: an interface is shown as it is, never repainted; one still being made, or only
+ * announced, hangs as a plain canvas with its name); then a wall for each field with
  * every other project. A canvas opens its full case study (#projects/<id>); "Search all projects"
  * opens the index with search and filters (#view/projects).
  *
@@ -12,6 +13,7 @@
  */
 import { ease } from '../view.js';
 
+const STATUS = { live: 'Live', 'in-progress': 'In progress', 'coming-soon': 'Coming soon' };
 const HUE = { gold: '#f6c443', ember: '#f3a35c', foam: '#dfe8fa', periwinkle: '#b6c1ee', teal: '#7fd6cf' };
 
 export function build({ ui, SITE, RJY, h, beat, at, panels, calm }) {
@@ -30,10 +32,10 @@ export function build({ ui, SITE, RJY, h, beat, at, panels, calm }) {
   const stations = [];
   featured.forEach((w, i) => {
     const live = (w.links || [])[0];
-    const kind = [panels.FIELD_LABEL[w.constellation], w.status === 'in-progress' ? 'In progress' : (w.status === 'live' ? 'Live' : ''), w.when].filter(has).join(' · ');
-    const canvas = h('a', { class: 'frame__canvas' + (w.cover ? '' : ' frame__canvas--plain'), href: '#projects/' + w.id, 'aria-label': w.title + ': open the case study' },
+    const kind = [panels.FIELD_LABEL[w.constellation], STATUS[w.status] || '', w.when].filter(has).join(' · ');
+    const canvas = h('a', { class: 'frame__canvas' + (w.cover ? '' : ' frame__canvas--plain'), href: '#projects/' + w.id, 'aria-label': w.title + (w.status === 'coming-soon' ? ', coming soon: about the project' : ': open the case study') },
       w.cover ? RJY.picture(w.cover, { sizes: '(max-width: 860px) 86vw, 52vw', alt: 'The homepage of ' + w.title, full: true })
-        : h('span', { class: 'frame__blank' }, h('b', { text: w.title }), h('small', { text: 'Still in the making' })));
+        : h('span', { class: 'frame__blank' }, h('b', { text: w.title }), h('small', { text: w.status === 'coming-soon' ? 'Coming soon' : 'Still in the making' })));
     const el = h('article', { class: 'frame frame--feature' + (i % 2 ? ' is-flipped' : '') },
       canvas,
       h('div', { class: 'frame__text' },
@@ -41,9 +43,10 @@ export function build({ ui, SITE, RJY, h, beat, at, panels, calm }) {
         h('h3', { class: 'frame__title', text: w.title }),
         has(w.tagline) ? h('p', { class: 'frame__tag', text: w.tagline }) : null,
         h('div', { class: 'btn-set' },
-          h('a', { class: 'pill pill--gold', href: '#projects/' + w.id, text: 'Read the case study' }),
+          h('a', { class: 'pill pill--gold', href: '#projects/' + w.id, text: w.status === 'coming-soon' ? 'About the project' : 'Read the case study' }),
           live ? h('a', { class: 'pill', href: live.url, target: '_blank', rel: 'noopener', text: live.label }) : null)));
-    stations.push({ el, weight: 1, side: i % 2 ? -1 : 1 });
+    // a canvas with nothing to look at yet holds the floor for less of the walk
+    stations.push({ el, weight: w.cover ? 1 : 0.7, side: i % 2 ? -1 : 1 });
   });
   WALLS.forEach((field, i) => {
     const c = conOf(field), list = members(field);

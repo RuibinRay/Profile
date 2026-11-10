@@ -23,12 +23,14 @@
  *
  * Featured projects (the websites) carry a few more fields:
  *   featured    true — shown in "Featured projects" at the top of the section and on the homepage
- *   status      'live' or 'in-progress' (an "In progress" badge, no live link until it is ready)
+ *   status      'live', 'in-progress' (an "In progress" badge, no live link until it is ready) or
+ *               'coming-soon' (a "Coming soon" badge: announced, nothing to show yet)
  *   tagline     one line under the title on the card
  *   tags        other constellations the work belongs to as well, e.g. ['finance', 'analytics']
  *   cover       { src, w, h } — a screenshot of the site (assets/media/work/), used on the card and the case study
  *   glyph       how its star behaves when pointed at: 'sun' (rays), 'ripple' (rings), 'orbit' (a small moon),
- *               'flow' (two electrolyte loops), 'shot' (a ball's arc into a hoop)
+ *               'flow' (two electrolyte loops), 'shot' (a ball's arc into a hoop), 'goal' (a curling shot
+ *               into a goal), 'agents' (three small lights circling together)
  *   alsoIn      list of { constellation, star } — also draw the project in another constellation, at that
  *               position, and list it there too (it keeps one case study and one number)
  */
@@ -236,6 +238,52 @@ SITE.work = [
     related: ['s:analytics', 's:data-science', 's:ai', 'w:ml-cases', 'w:sunflower-intelligence']
   },
   {
+    id: 'goalvision-ai', short: 'Goalvision AI', constellation: 'digital', star: [0.70, 0.52], magnitude: 0.95,
+    alsoIn: [{ constellation: 'analytics', star: [0.26, 0.80] }],
+    featured: true, status: 'live', glyph: 'goal', tags: ['analytics'],
+    title: 'Goalvision AI — Beyond the Final Whistle',
+    tagline: 'A football intelligence platform: 96 club dashboards across five leagues, a tactics lab on real event data and six backtested prediction models',
+    when: 'Nov 2026', org: 'Personal project',
+    cover: { src: 'assets/media/work/goalvision-ai/hero.webp', w: 2048, h: 1280 },
+    context: 'An interactive football intelligence platform, built as an independent educational and data-science portfolio project: dashboards for 96 clubs in five leagues, a live match centre, a tactics lab built on real event data, a database of 1,500 player-tournaments, a prediction lab, a 25-lesson analytics course and a football time machine. The homepage is a scroll-driven 3D stadium where two players face off under the floodlights. Not affiliated with FIFA, UEFA, any league or any club, and not betting advice: forecasts are statistical estimates.',
+    objective: 'Go beyond the final whistle: show what the numbers say about how football is played and won, and keep every figure honest. Nothing is presented as live unless a live source answers, and anything a source does not provide is shown as “Not available” instead of being estimated.',
+    role: 'Designed and built the whole site: the data pipeline, the models and their validation, the dashboards, the 3D homepage and the lessons.',
+    approach: [
+      'Data: Python scripts build the site’s data from openfootball (league fixtures and results since 2010/11, every World Cup since 1930, the Champions League) and StatsBomb Open Data (event data for World Cup 2022, Euro 2024 and Copa América 2024); a registry gives each club one id, so a result or a crest cannot be attached to the wrong club',
+      'Demo and live: the static site runs on a dated snapshot and says so; a Cloudflare Worker keeps the provider key, caches, rate-limits and validates, and brings in the current season from football-data.org; the site reports “live” only once that backend answers',
+      'Prediction Lab: Poisson, Dixon-Coles, Elo with an ordered logit, multinomial logistic regression, gradient-boosted trees and an ensemble; a score-probability matrix, Monte Carlo, feature contributions and a what-if simulator',
+      'Validation: matches are replayed in date order with every rating and feature read before kick-off; each season is forecast only by models fitted on earlier seasons, and the settings were chosen on seasons before the reported window',
+      'Tactics Lab: nine pitch layers per match from real event data (passing network, team shape, shots, heat maps, pressing, ball progression, attacking zones) and a draggable formation board with shareable links',
+      'Clubs and players: for each club a season line, percentile radar, rolling form, home against away, 17 seasons of history and Elo; for players, totals or per 90, a position-aware radar against peers, shot maps, match logs and similar players',
+      'Data Lab and Learn: build-your-own charts with CSV export, a similarity engine (k-means and PCA) and transparent Elo rankings; 25 lessons, each with a plain explanation, the formula, a worked example, an interactive tool, its limits and a quiz',
+      'The homepage: five scroll chapters through a procedural Three.js stadium, from the floodlights to an aerial view with real passing networks, ending where the pitch becomes a map of 13 competitions'
+    ],
+    tools: ['JavaScript (ES modules)', 'Three.js', 'GSAP ScrollTrigger', 'Apache ECharts', 'SVG', 'Python', 'Node.js', 'Cloudflare Workers', 'GitHub Pages'],
+    insights: [],
+    results: [
+      'Live: 96 club dashboards across five leagues, a match centre, the Prediction Lab, the Tactics Lab, the Data Lab, a player database, 25 lessons and a season-by-season time machine',
+      'Tested walk-forward on 18,166 matches from 2016/17 to 2026/27 in five leagues, the ensemble picks the right result (home win, draw or away win) in 53.0% of matches with a log loss of 0.982, against 44.1% and 1.071 for the historical outcome rates (the project’s README, November 2026)',
+      'Every model’s validation is published on the site, with calibration and breakdowns by season and by league'
+    ],
+    images: [
+      { src: 'assets/media/work/goalvision-ai/above.webp', w: 2048, h: 1280, alt: 'An aerial view of the 3D stadium: the passing networks of both teams in the 2022 World Cup final drawn on the pitch, with the text “Every pass, mapped”', caption: 'The homepage rises above the pitch: both passing networks of the 2022 World Cup final, from real event data' },
+      { src: 'assets/media/work/goalvision-ai/forecast.webp', w: 2048, h: 1280, alt: 'A match forecast: win, draw and loss probabilities on a gauge, expected goals, the most likely score and a grid of the probability of every exact score', caption: 'The Prediction Lab: the ensemble’s forecast and the probability of every scoreline' },
+      { src: 'assets/media/work/goalvision-ai/pitch.webp', w: 2048, h: 1280, alt: 'The Tactics Lab: a passing network on a pitch, each player a numbered dot at their average position, with thicker lines between pairs who passed more', caption: 'The Tactics Lab: nine layers per match, here the passing network of Argentina v France' },
+      { src: 'assets/media/work/goalvision-ai/club.webp', w: 2048, h: 1280, alt: 'A club dashboard: the season record, goals, clean sheets and Elo rating in tiles, the club profile and squad, the last five results and the next five fixtures with forecast win probabilities', caption: 'One of 96 club dashboards: the season so far, the squad, and the next fixtures with their forecasts' },
+      { src: 'assets/media/work/goalvision-ai/learn.webp', w: 2048, h: 1280, alt: 'The lessons page, “How to read the data”, with interactive tools such as an expected-goals calculator and a Poisson scoreline simulator', caption: 'Learn: 25 short lessons, each with a formula, a worked example and a tool to play with' }
+    ],
+    links: [
+      { label: 'Open the site', url: 'https://ruibinray.github.io/Goalvision-AI/' },
+      { label: 'View the code', url: 'https://github.com/RuibinRay/Goalvision-AI' }
+    ],
+    documents: [
+      { title: 'Prediction models and validation', kind: 'Docs', url: 'https://github.com/RuibinRay/Goalvision-AI#prediction-models-and-validation', note: 'Walk-forward results for every model against two baselines' },
+      { title: 'Data sources', kind: 'Docs', url: 'https://github.com/RuibinRay/Goalvision-AI#data-sources', note: 'Where every number comes from, and under which licence' },
+      { title: 'The Prediction Lab', kind: 'Models', url: 'https://ruibinray.github.io/Goalvision-AI/#/predictions', note: 'Forecast, what-if simulator, validation and methods' }
+    ],
+    related: ['s:analytics', 's:data-science', 's:ai', 'w:courtvision-ai', 'w:ml-cases']
+  },
+  {
     id: '545-days', short: '545 Days', constellation: 'digital', star: [0.82, 0.30], magnitude: 0.9,
     featured: true, status: 'in-progress', glyph: 'orbit',
     title: '545 Days',
@@ -248,6 +296,19 @@ SITE.work = [
     tools: [], insights: [], results: [],
     images: [], links: [],
     related: ['s:ai', 's:strategy']
+  },
+  {
+    id: 'ai-kingdom', short: 'AI Kingdom', constellation: 'digital', star: [0.90, 0.70], magnitude: 0.85,
+    featured: true, status: 'coming-soon', glyph: 'agents',
+    title: 'AI Kingdom',
+    tagline: 'A multi-agent workspace',
+    when: '', org: 'Personal project',
+    cover: null,
+    context: 'A multi-agent workspace, now being built. More will be added here when it is ready to show.',
+    objective: '', role: '',
+    approach: [], tools: [], insights: [], results: [],
+    images: [], links: [],
+    related: ['s:ai']
   },
 
   // ── Long-duration storage (HJAT internship, Shenyang, Jun – Aug 2026) ──────────────────────

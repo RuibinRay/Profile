@@ -30,7 +30,7 @@ export function buildProjectIndex(el, { RJY, SITE, h }) {
         h('span', { class: 'index__line', text: w.tagline || w.context || '' })),
       h('span', { class: 'index__meta' },
         h('span', { text: f.map((x) => FIELD_LABEL[x]).join(' · ') }),
-        h('span', { text: [w.status === 'in-progress' ? 'In progress' : (w.status === 'live' ? 'Live' : ''), w.when].filter(has).join(' · ') }))));
+        h('span', { text: [({ live: 'Live', 'in-progress': 'In progress', 'coming-soon': 'Coming soon' })[w.status] || '', w.when].filter(has).join(' · ') }))));
     return { w, row, text: text(w), fields: f };
   });
   rows.forEach((r) => list.appendChild(r.row));
