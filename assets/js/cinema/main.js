@@ -35,16 +35,28 @@ RJY.cinema = { view: null };
 RJY.reveal = (scope) => (scope || document).querySelectorAll('.reveal:not(.is-in)').forEach((el) => el.classList.add('is-in'));
 
 /* ---------- 1. which stage ---------- */
-const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// A device can ask for less motion (macOS: Accessibility → Display → Reduce motion). The film then plays
+// in its gentle form: the same paintings, alive, but the camera stays put and pictures cross-fade. A
+// visitor's own choice on this site ("Play the full film" / "Calm version") outranks the device setting
+// and is remembered.
+const prefersLess = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let choice = null;
+try { choice = localStorage.getItem('rjy.motion'); } catch (e) {}
+if (params.has('gl')) choice = 'full';
+const reduced = params.has('calm') || (choice === 'full' ? false : choice === 'gentle' ? true : prefersLess);
 const small = window.matchMedia('(max-width: 820px), (pointer: coarse) and (max-width: 1100px)').matches;
 const lowPower = (navigator.deviceMemory && navigator.deviceMemory <= 3) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) || (navigator.connection && navigator.connection.saveData);
 let why = '';
 let want = 'gl';
 if (params.has('lite')) { want = 'lite'; why = '?lite'; }
-else if (params.has('calm') || (reduced && !params.has('gl'))) { want = 'calm'; why = reduced ? 'reduced motion is on' : '?calm'; }
-else if (!params.has('gl') && (small || lowPower)) { want = 'lite'; why = small ? 'a small or touch screen' : 'a low-power device'; }
-const calm = want === 'calm';
+else if (params.has('calm')) { want = 'calm'; why = '?calm'; }
+else if (!params.has('gl') && (small || lowPower)) { want = reduced ? 'calm' : 'lite'; why = small ? 'a small or touch screen' : 'a low-power device'; }
+const gentle = want === 'gl' && reduced;         // WebGL, with the camera held still
+const calm = want === 'calm' || gentle;          // words fade in place, nothing follows the pointer
+if (gentle) why = 'the device asks for less motion';
 root.classList.toggle('is-calm', calm);
+root.classList.toggle('is-gentle', gentle);
+root.classList.toggle('is-full', choice === 'full');
 if (!RJY.finePointer) root.classList.add('is-touch');
 if (RJY.draft) root.classList.add('is-draft');
 
@@ -63,9 +75,9 @@ async function useGL() {
   try {
     const { createGLStage } = await import('./stage-gl.js');
     const s = createGLStage(canvas, {
-      reduced, tier: (navigator.deviceMemory && navigator.deviceMemory <= 4) ? 'mid' : 'high',
-      onTooSlow() { useLite(false, 'WebGL could not keep up on this device'); },
-      onLost() { useLite(false, 'the graphics context was lost'); }
+      reduced: gentle, tier: (navigator.deviceMemory && navigator.deviceMemory <= 4) ? 'mid' : 'high',
+      onTooSlow() { useLite(calm, 'WebGL could not keep up on this device'); },
+      onLost() { useLite(calm, 'the graphics context was lost'); }
     });
     if (!s) return false;
     stage = s; root.classList.add('is-gl'); root.classList.remove('is-lite');
@@ -99,6 +111,42 @@ CHAPTERS.forEach((c) => {
   } catch (e) { console.error('Could not build chapter ' + c.id, e); }
 });
 chrome = createChrome({ engine, RJY, SITE, h, getStage: () => stage, panels });
+
+/* ---------- the motion switch ---------- */
+// Shown only where it means something: on a device that asks for less motion, or after a choice was made.
+if (prefersLess || choice) {
+  const set = (v) => {
+    try { localStorage.setItem('rjy.motion', v); } catch (e) {}
+    const here = engine.chapter && engine.chapter.id !== 'home' ? '#' + engine.chapter.id : '';
+    const url = new URL(location.href); url.searchParams.delete('gl'); url.searchParams.delete('calm'); url.hash = here;
+    // a change of chapter mark alone does not load the page again, so ask for that outright
+    if (url.pathname === location.pathname && url.search === location.search) { history.replaceState(null, '', url.toString()); location.reload(); }
+    else location.replace(url.toString());
+  };
+  const say = reduced ? 'Play the full film' : 'Calm version';
+  root.classList.add('has-switch');
+  const tools = document.querySelector('.topbar__tools');
+  const btn = h('button', { type: 'button', class: 'topbar__link topbar__motion', text: say,
+    title: reduced ? 'This device asks for less motion, so the camera is holding still. Play everything instead.' : 'Hold the camera still and cross-fade between paintings.' });
+  btn.addEventListener('click', () => set(reduced ? 'full' : 'gentle'));
+  if (tools) tools.insertBefore(btn, tools.firstChild);
+  // the same switch in the menu, where a phone (which has no room for it in the top bar) finds it
+  const quick = document.getElementById('menu-quick');
+  if (quick) {
+    const item = h('a', { href: location.pathname, role: 'button' }, say, h('span', { text: reduced ? 'every camera move' : 'the camera holds still' }));
+    item.addEventListener('click', (e) => { e.preventDefault(); set(reduced ? 'full' : 'gentle'); });
+    quick.appendChild(h('li', null, item));
+  }
+  if (reduced && prefersLess) {
+    // and once, in words, on the first screen: why nothing is flying
+    const foot = document.querySelector('.home-foot');
+    if (foot) {
+      const go = h('button', { type: 'button', class: 'textlink home-note__go', text: 'Play the full film' });
+      go.addEventListener('click', () => set('full'));
+      foot.appendChild(h('p', { class: 'home-note' }, 'Your device asks for less motion, so the camera is holding still. ', go));
+    }
+  }
+}
 
 RJY.route.on('skills', (id) => {
   if (RJY.sheet.isOpen()) RJY.sheet.close(true);

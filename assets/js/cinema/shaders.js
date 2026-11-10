@@ -214,7 +214,10 @@ void main() {
     vec2 sa = suv, sb = suv;
     float mask = 0.0, edge = 0.0, bloom = 0.0, flood = 0.0;
     vec3 ecol = mix(uEdgeA, uEdgeB, m);
-    if (uType < 0.5 || (uType > 2.5 && uType < 3.5) || uType > 4.5) {
+    if (uType > 5.5) {
+      // the gentle film: one painting simply fades into the next
+      mask = m;
+    } else if (uType < 0.5 || (uType > 2.5 && uType < 3.5) || uType > 4.5) {
       // the portals. 0: a ragged ring of light opens from a point and the old painting winds around it.
       // 3: the same as a five-pointed star that turns as it opens. 5: a lantern's glow floods the frame
       // and settles into the daylight of the next painting.

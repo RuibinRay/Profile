@@ -24,7 +24,7 @@ Plain HTML, CSS and JavaScript modules. No build step, no framework, no backend,
 | 5. Gallery of Creations | `#projects` | Every project as a framed canvas: five featured websites, then a wall per field. | `data/work.js` |
 | 6. Energy and International Business | `#energy` | The HJAT internship as an energy landscape with six stops. | `data/journey.js` (`hjat`), `data/work.js` (`storage`) |
 | 7. My Palette of Skills | `#skills` | Skills as brushstrokes: tools and the work where each shows. Languages and certificates. | `data/palette.js`, `data/site.js` → `certifications`, `coursework`, `awards` |
-| 8. Beyond the Horizon | `#contact` | The stars joined into one constellation, then the invitation to get in touch. | `data/site.js` → `links` |
+| 8. Beyond the Horizon | `#contact` | Every painted star is a button for one way to get in touch, then the invitation. | `data/site.js` → `links` |
 
 **Full views** open over the film and close back to where you were:
 
@@ -137,7 +137,8 @@ assets/css/         content.css (components) · cinema.css (the film) · portfol
 ```
 
 - **Everything is a function of the scroll position.** The timeline never plays by itself, so scrolling back reverses every camera move, transition and piece of text.
-- **Three stages, one film.** WebGL on capable screens. The lighter stage on phones, small touch screens, low-memory devices and when WebGL 2 is missing; it is also where the WebGL stage hands over if it cannot keep up after stepping its resolution down twice. The calm stage when *Reduce motion* is on: no push-ins, plain cross-fades, text that fades without travelling. All content is the same in all three.
+- **Three stages, one film.** WebGL on capable screens. The lighter stage on phones, small touch screens, low-memory devices and when WebGL 2 is missing; it is also where the WebGL stage hands over if it cannot keep up after stepping its resolution down twice. All content is the same in all three.
+- **Reduce motion.** A device that asks for less motion (on a Mac: System Settings → Accessibility → Display → Reduce motion) gets the **gentle film**: the same WebGL paintings, with the paint still flowing, but the camera never flies in or swings round and one painting fades into the next. On phones and low-power devices it gets the calm stage (still pictures, plain cross-fades). A gold **Play the full film** button in the top bar, in the menu and on the first screen switches everything on; the choice is remembered in that browser (`localStorage` key `rjy.motion`), and the button then reads **Calm version**.
 - **Memory.** Only the paintings on stage and their neighbours hold textures (at most four; at the 3840 px size, only the one ahead in the direction of travel); the rest are released. Pixel ratio is capped at 1.75. The world map and globe data load only as chapter 4 approaches.
 - **Pause.** The round button in the top bar stops everything that moves by itself (remembered in that browser). Scrolling still works.
 - **Not trapped.** The menu, the chapter marks on the progress stroke, the previous / next arrows, *View portfolio* and *Skip experience* are always available; far jumps cut behind a short curtain rather than fast-forwarding the film.
@@ -152,8 +153,8 @@ Any transition can be played from a short generated video instead of the shader:
 |---|---|
 | `?draft` | marks what is still to add |
 | `?lite` | the lighter stage |
-| `?calm` | the reduced-motion stage |
-| `?gl` | force the WebGL stage |
+| `?calm` | the calm (still) stage |
+| `?gl` | force the WebGL stage with every camera move, whatever the device asks for |
 | `?why` | shows which stage is running, at what quality, and why |
 | `?webp` | pretend the browser cannot show AVIF (tests the WebP files) |
 | `?step` | no scroll smoothing: the film is exactly where the scrollbar is |
@@ -192,7 +193,8 @@ Never commit passwords, API keys or anything private: the repository is public.
 
 - Real headings (`h1` on the name, an `h2` per chapter), a skip link to the plain portfolio, visible focus, links and buttons throughout. Gallery canvases, lanterns and country names are ordinary links; one reached with the keyboard is brought to the middle of the screen.
 - Dialogs trap focus and close with Esc. The chapter name is announced when it changes.
-- *Reduce motion* gets the calm stage; the pause button stops all self-moving paint.
+- *Reduce motion* gets the gentle film (or the calm stage on phones) with a visible switch to the full film; the pause button stops all self-moving paint.
+- The contact stars are real links with spoken names ("Instagram: @… (opens in a new tab)"), reached in order with the keyboard, each with a visible focus ring.
 - Text over the paintings sits on a pool of night and the stage dims behind it.
 - Project screenshots are shown as they are, never repainted.
 - First visit, desktop: the page, fonts, GSAP and Three.js, then one painting (about 1 MB at 2560 px, 1.7 MB at 3840 px) and its motion map; later paintings load a chapter ahead. Phones never load Three.js.

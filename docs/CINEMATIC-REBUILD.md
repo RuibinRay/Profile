@@ -57,7 +57,7 @@ New and changed tools:
 
 - `chapters/projects.js`: each canvas starts on a shelf down the tunnel (far, to one side, turned along the wall, in shadow), lifts off, swings round to face the visitor with a glint crossing its glass, rests in the centre (lit, floating slightly, clickable) and passes the shoulder. Screenshots are untouched and stay sharp.
 - `chapters/energy.js`: the solar panels rise one by one and follow the sun, the flow battery's tanks fill and drain as the current runs, and the landscape drifts with the camera, near things most.
-- `chapters/contact.js`: every painted star of the last chapter is one way to get in touch (email on the brightest star, LinkedIn on the moon, then Instagram, GitHub, X, Facebook, the résumé and the phone numbers), each a real link with its icon and a label on dark glass, joined to the email star by lines of light. The invitation moved over the sea at the lower right. Phones, and any star a screen crops, get the same ways as a list of cards. Before, the stars named parts of the site and the profiles were small text links.
+- `chapters/contact.js`: every painted star of the last chapter is one way to get in touch (email on the brightest star, LinkedIn on the moon, then Instagram, GitHub, X, Facebook, the résumé and the phone numbers), each a real link. **The painted star is itself the button** (the lines of light and the logos were removed, as asked): a clear circle the size of the star, a soft twinkle to show it can be pressed, a flare of light on hover or keyboard focus, and its name on dark glass beside it. Labels slide or flip to stay on screen. The invitation moved over the sea at the lower right. Phones, any star a screen crops and any star the invitation would stand on get the same ways as a list of cards, each marked with a small star of light. Before, the stars named parts of the site and the profiles were small text links.
 - `index.html`, `assets/css/cinema.css`: on the home screen the name and introduction share one column on the right, so the seated figure and his star are never behind the words.
 
 ### Other files
@@ -65,7 +65,8 @@ New and changed tools:
 - `assets/js/cinema/formats.js` (new): AVIF or WebP, and which file of a painting to fetch.
 - `assets/js/cinema/clips.js` (new, generated): the installed transition clips (none yet).
 - `assets/js/cinema/stage-lite.js`: uses the new near-layer cut-out and real backgrounds; maps the new transition types onto its three (growing circle, ragged wipe, turning cross-fade).
-- `assets/js/cinema/main.js`: waits for the format check before the first painting is asked for.
+- `assets/js/cinema/main.js`: waits for the format check before the first painting is asked for. Chooses the **gentle film** for a device that asks for less motion, and adds the **Play the full film / Calm version** switch (top bar, menu, first screen), remembered in `localStorage`.
+- `assets/js/cinema/stage-gl.js`, `shaders.js`: the gentle film. The camera's zoom is held at 1.4 or less with no dolly or orbit, transitions are a plain cross-fade (`uType` 6), self-moving paint runs at 0.6 and particles at half.
 
 ## 3. What was measured and checked
 
@@ -76,10 +77,14 @@ In the app's browser (Chromium), stepping the film by hand because the pane was 
 - Every transition at its midpoint; the widest camera arc (the yak rider) for torn or haloed edges; the gallery at rest and mid-handover; the energy landscape early and late.
 - A transition clip (a throwaway test clip, since removed) loads its frames around the scroll position and scrubs with it.
 
+- The contact stars at 1184 × 750, 1280 × 720, 1366 × 660, 1440 × 900, 1920 × 1080, 2560 × 1300 and 1024 × 768: no label over another label, a star or the invitation, none off screen. Hover flare on the email star and the moon. The phone list at 375 × 812.
+- The gentle film in a browser that reports *Reduce motion* (this Mac has it on): all eight chapters, no errors; the switch to the full film and back, at the same chapter.
+
 Not checked: real-time smoothness with the pane visible, Safari, Firefox, a 4K monitor, a real phone, a mid-range laptop's graphics.
 
 ## 4. Known limits
 
+- **Why a Mac showed no animation.** macOS *Reduce motion* was on, and the site answered it with the calm stage: still pictures. It now answers with the gentle film and a one-click switch to everything. The full film is never forced on a device that asks for less motion.
 - **No Higgsfield clip is installed.** The Higgsfield connector in this session can read the account (10 credits, free plan) but cannot start a generation, and the browser pane is not signed in. The frames and prompts are ready (`tools/transitions/`), and the film plays a clip as soon as one is prepared.
 - The larger drawing of the figure alone (`ocean-alternates/figure-alone.png`) is not used: it is a different drawing from the figure on the log.
 - The extra pixels in the masters are reconstructed, not recovered (see the audit).

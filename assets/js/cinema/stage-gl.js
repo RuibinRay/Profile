@@ -326,16 +326,19 @@ export function createGLStage(canvas, opts = {}) {
     uniforms['uLens' + w].value.set(c.ox * quiet, c.oy * quiet, c.f, tier.layers ? c.b : 0);
   }
 
+  /** The gentle film (a device that asks for less motion): the camera never goes in close, never dollies, never orbits. */
+  function tame(c) { if (opts.reduced) { c.z = Math.min(c.z, 1.4); c.d = 0; c.ox = 0; c.oy = 0; } return c; }
+
   function render(t, clock) {
     const raw = Math.max(0, clock - lastClock), dt = Math.min(0.1, raw); lastClock = clock;
     if (!paused) { clockT += dt; }
     pointer.x += (pointer.tx - pointer.x) * Math.min(1, dt * 4);
     pointer.y += (pointer.ty - pointer.y) * Math.min(1, dt * 4);
     // how far the film moved since the last frame: the air drifts with the scroll as well as with time
-    const moved = lastT == null ? 0 : Math.max(-0.5, Math.min(0.5, t - lastT)); lastT = t;
+    const moved = lastT == null || opts.reduced ? 0 : Math.max(-0.5, Math.min(0.5, t - lastT)); lastT = t;
 
     const sc = sceneAt(t);
-    cameraAt(sc.a, t, camA);
+    tame(cameraAt(sc.a, t, camA));
     setLayer('A', sc.a, camA);
     let dim = camA.dim, sat = camA.sat, flow = camA.flow, ex = camA.ex, warm = camA.warm, mix = 0;
     state.shot = sc.a; state.cam = camA; state.shotB = null; state.camB = null;
@@ -343,12 +346,13 @@ export function createGLStage(canvas, opts = {}) {
     colA.set(da[0]); colB.set(da[1]);
     let dAmt = da[2], dSize = da[3], dx = da[4], dy = da[5], dSw = da[6], dShape = da[7];
     if (sc.b) {
-      cameraAt(sc.b, t, camB);
+      tame(cameraAt(sc.b, t, camB));
       setLayer('B', sc.b, camB);
       const tr = sc.tr, kind = TYPE[tr.type] || 0;
       // the portals and the petals pace themselves; the sweeps ease in and out
       mix = (kind === 0 || kind >= 3) ? sc.mix : ease.smooth(sc.mix);
       uniforms.uType.value = kind;
+      if (opts.reduced) { mix = ease.smooth(sc.mix); uniforms.uType.value = 6; }      // the gentle film cross-fades
       if (tr.a) {
         const o = toScreen(camA, PAINTINGS[sc.a.painting].aspect, W, H, anchorOf(sc.a.painting, tr.a));
         // the light opens where the old painting's anchor is, and drifts to the centre as it grows
@@ -370,7 +374,7 @@ export function createGLStage(canvas, opts = {}) {
       state.shotB = sc.b; state.camB = camB;
     }
     state.mix = mix; state.dim = dim;
-    if (!paused) flowT += dt * 0.075 * flow;
+    if (!paused) flowT += dt * 0.075 * flow * (opts.reduced ? 0.6 : 1);
     uniforms.uMix.value = mix;
     // a transition with a clip: its frames play between 12% and 88% of the way, cross-fading with the paintings at the ends
     clipQuad.visible = false;
@@ -391,7 +395,7 @@ export function createGLStage(canvas, opts = {}) {
     uniforms.uTime.value = clockT; uniforms.uFlowT.value = flowT;
     uniforms.uGrade.value.set(dim, sat, 0.55, ex);
     uniforms.uWarm.value = warm;
-    uniforms.uMotion.value = paused || opts.reduced ? 0 : 1;
+    uniforms.uMotion.value = paused ? 0 : opts.reduced ? 0.6 : 1;
     const par = opts.reduced ? 0 : 0.014;
     uniforms.uPar.value.set(-pointer.x * par, pointer.y * par);
 
@@ -400,7 +404,7 @@ export function createGLStage(canvas, opts = {}) {
     dustOffset.set(dustOffset.x + dx / len * moved * 0.45, dustOffset.y + dy / len * moved * 0.45);
     dustU.uOffset.value.copy(dustOffset); dustU.uTime.value = clockT;
     dustU.uColA.value.copy(colA); dustU.uColB.value.copy(colB);
-    dustU.uAlpha.value = Math.min(1, dAmt * tier.dust * (opts.reduced ? 0.4 : 1) * (1 - dim * 0.5));
+    dustU.uAlpha.value = Math.min(1, dAmt * tier.dust * (opts.reduced ? 0.5 : 1) * (1 - dim * 0.5));
     dustU.uSize.value = dSize; dustU.uSwirl.value = dSw; dustU.uShape.value = dShape;
     dustU.uPar.value.set(-pointer.x * 0.01, pointer.y * 0.01);
     globe.update(dt, clockT, paused);
