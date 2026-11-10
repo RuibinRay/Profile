@@ -130,13 +130,14 @@ export const SHOTS = [
     k('skills', 3.3, { x: 0.60, y: 0.12, z: 1.6, d: 0.2, dim: 0.1, f: 0.0, b: 0.8 }),
     k('contact', 0.35, { x: 0.585, y: 0.045, z: 6.0, d: 0.2, glow: 1.8 })
   ] },
-  // 8. Contact. Back through a star to the night ocean; the camera pulls all the way out to the first frame.
+  // 8. Contact. Back through a star to the night ocean; the camera pulls out to the whole sky, where every
+  //    star is a way to get in touch, and on to the first frame.
   { id: 'return', painting: 'ocean', detail: 'spiral', keys: [
     k('skills', 3.3, { x: 0.49, y: 0.30, z: 3.2, d: 0.0, glow: 1.5 }),
-    k('contact', 0.35, { x: 0.50, y: 0.27, z: 1.34, d: 0.1, dim: 0.28, glow: 1.6, sat: 1.12 }),
-    k('contact', 1.3, { x: 0.50, y: 0.29, z: 1.2, d: 0.15, dim: 0.38, glow: 1.6, sat: 1.12 }),
-    k('contact', 2.0, { x: 0.50, y: 0.46, z: 1.06, d: 0.1, dim: 0.40, glow: 1.4, sat: 1.1, px: 0.30 }),
-    k('contact', 2.8, { x: 0.50, y: 0.50, z: 1.00, d: 0.0, dim: 0.46, glow: 1.4, sat: 1.1, px: 0.30 })
+    k('contact', 0.35, { x: 0.50, y: 0.30, z: 1.20, d: 0.1, dim: 0.22, glow: 1.6, sat: 1.12 }),
+    k('contact', 1.0, { x: 0.50, y: 0.40, z: 1.06, d: 0.12, dim: 0.30, glow: 1.6, sat: 1.12 }),
+    k('contact', 2.0, { x: 0.50, y: 0.48, z: 1.02, d: 0.08, dim: 0.34, glow: 1.5, sat: 1.1, px: 0.30 }),
+    k('contact', 2.8, { x: 0.50, y: 0.50, z: 1.00, d: 0.0, dim: 0.36, glow: 1.5, sat: 1.1, px: 0.30 })
   ] }
 ];
 

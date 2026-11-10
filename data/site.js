@@ -35,7 +35,8 @@ SITE.links = {
     { number: '+1 617 256 4136', label: 'United States' },
     { number: '+506 7297 1174', label: 'Costa Rica' }
   ],
-  // The five stars in the contact sky (on the painted stars on desktop, drawn under the text on phones)
+  // Every link below is one star in the contact sky of the film (and a card under the invitation on phones).
+  // Leave one empty ('') and its star is simply not there.
   instagram: 'https://www.instagram.com/ruibin.jin/',
   x: 'https://x.com/RuibinJin',
   facebook: 'https://www.facebook.com/ruibin.jin.9',

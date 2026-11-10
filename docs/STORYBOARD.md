@@ -143,8 +143,10 @@ On the lighter stage (phones, low-power devices, no WebGL) these are a growing c
 
 | Scroll | Camera | On the painting | Words and controls |
 |---|---|---|---|
-| 29.15 – 30.4 | the sky, (0.50, 0.28), zoom 1.2 | The stars glow harder than in chapter 1. | Gold lines are drawn from the star beside the figure to the other painted stars, and each star is named: the fields of work, the countries, the milestones, and graduation ahead on the moon. Every label is a way back into the site. |
-| 30.5 – 31.6 | pulls out to the whole painting, exactly the opening frame | — | **Let's talk**; the invitation; email (with copy), LinkedIn, GitHub, résumé, contact card, phones and the other profiles; the closing line. |
+| 29.15 – 30.2 | the sky, pulling out from zoom 1.2 to 1.06 | The stars glow harder than in chapter 1. | **Every star is a way to get in touch.** Gold lines are drawn from the brightest star, beside the figure, to the others, and each lights in turn with its icon and name: **Email** on the brightest star, **LinkedIn** on the moon, then **Instagram**, **GitHub**, **X**, **Facebook**, the **résumé** and the **phone** numbers. Each star is a real link, reachable with the keyboard. *Beyond the horizon* stands at the lower right. |
+| 30.4 – 31.6 | the whole painting, the opening frame | The stars stay lit to the end. | **Let's talk** over the sea at the lower right: the invitation, the email address (with copy), *Save my contact card*, where I am based, the closing line. |
+
+Which star carries which link is set in `assets/js/cinema/chapters/contact.js`; the addresses are `links` in `data/site.js`, and a link left empty there has no star. On a phone only a slice of the sky fits, so the same ways are listed as cards under the invitation; on a very wide or very short screen any star that falls outside the picture is listed there too.
 
 ---
 
@@ -165,4 +167,4 @@ On the lighter stage (phones, low-power devices, no WebGL) these are a growing c
 - **5. Projects.** One long dolly down the spiral. Each canvas hangs on a shelf in shadow, lifts off, turns to face the visitor with a glint across its glass, rests in the centre (sharp, lit, clickable, floating slightly) and passes the shoulder as the next one arrives.
 - **6. Energy.** Warm light and wind in the wheat. The solar panels rise one by one and follow the sun through the chapter, the flow battery's two tanks fill and drain as the current runs, and the whole landscape drifts with the camera, the near things most.
 - **7. Skills.** Down the terraces with the water (ripples and glints on the pools), then a tilt up to the stars with the focus pulled out to the sky.
-- **8. Contact.** Through a turning star back to the night ocean, and a pull-back to the first frame.
+- **8. Contact.** Through a turning star back to the night ocean. Every painted star is now one way to get in touch (email, LinkedIn, Instagram, GitHub, X, Facebook, résumé, phone), joined by lines of light to the email star, and the camera pulls back to the first frame with the invitation over the sea.

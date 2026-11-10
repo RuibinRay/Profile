@@ -57,6 +57,7 @@ New and changed tools:
 
 - `chapters/projects.js`: each canvas starts on a shelf down the tunnel (far, to one side, turned along the wall, in shadow), lifts off, swings round to face the visitor with a glint crossing its glass, rests in the centre (lit, floating slightly, clickable) and passes the shoulder. Screenshots are untouched and stay sharp.
 - `chapters/energy.js`: the solar panels rise one by one and follow the sun, the flow battery's tanks fill and drain as the current runs, and the landscape drifts with the camera, near things most.
+- `chapters/contact.js`: every painted star of the last chapter is one way to get in touch (email on the brightest star, LinkedIn on the moon, then Instagram, GitHub, X, Facebook, the résumé and the phone numbers), each a real link with its icon and a label on dark glass, joined to the email star by lines of light. The invitation moved over the sea at the lower right. Phones, and any star a screen crops, get the same ways as a list of cards. Before, the stars named parts of the site and the profiles were small text links.
 - `index.html`, `assets/css/cinema.css`: on the home screen the name and introduction share one column on the right, so the seated figure and his star are never behind the words.
 
 ### Other files
