@@ -110,7 +110,7 @@ On the lighter stage (phones, low-power devices, no WebGL) these are a growing c
 | Scroll | Camera | On the painting | Words and controls |
 |---|---|---|---|
 | 15.5 – 16.5 | the whole library, then (0.515, 0.48), zoom 1.2 | Bulbs glow; warm dust. | **Gallery of creations**; how many projects in how many rooms; **Search all projects**. |
-| 16.3 – 20.3 | one long push down the tunnel to its far end, zoom 1.2 → 2.4, push 0.95 | Shelves and the table of books slide past the camera at different speeds. | Framed canvases come out of the tunnel one at a time, rest in front of you, and pass your shoulder: first the five featured websites (Sunflower Intelligence, Costa Rica — Pura Vida, VRFB — The Science of Flow Energy, CourtVision AI, 545 Days), each with its real, unpainted screenshot, then a wall of canvases for each field: Finance, Analytics & AI, Energy Storage, Strategy & Consulting. A canvas steps forward and opens its case study. |
+| 16.3 – 20.3 | one long push down the tunnel to its far end, zoom 1.2 → 2.4, push 0.95 | Shelves and the table of books slide past the camera at different speeds. | Framed canvases come out of the tunnel one at a time, rest in front of you, and pass your shoulder: first the five featured websites (Sunflower Intelligence, Costa Rica — Pura Vida, VRFB — The Science of Flow Energy, CourtVision AI, Goalvision AI; AI Kingdom as a "Coming soon" canvas), each with its real, unpainted screenshot, then a wall of canvases for each field: Finance, Analytics & AI, Energy Storage, Strategy & Consulting. A canvas steps forward and opens its case study. |
 
 **Transition (20.4 – 21.15), portal:** the bright end of the tunnel opens onto the field.
 

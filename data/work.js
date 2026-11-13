@@ -284,20 +284,6 @@ SITE.work = [
     related: ['s:analytics', 's:data-science', 's:ai', 'w:courtvision-ai', 'w:ml-cases']
   },
   {
-    id: '545-days', short: '545 Days', constellation: 'digital', star: [0.82, 0.30], magnitude: 0.9,
-    featured: true, status: 'in-progress', glyph: 'orbit',
-    title: '545 Days',
-    tagline: 'A civilization sandbox: create a world, shape its societies, and see which of 30 endings it reaches',
-    when: '2026 — in progress', org: 'Personal project',
-    cover: null,
-    context: 'An AI-inspired civilization simulator in which players create worlds, influence societies and witness unpredictable events over a main run of 545 in-game days, leading to 30 possible endings.',
-    objective: '', role: '',
-    approach: ['Sandbox mode: a free world with no fixed goal', 'Story mode: the 545-day run with its 30 endings', 'Continuation mode: keep a world going after its ending'],
-    tools: [], insights: [], results: [],
-    images: [], links: [],
-    related: ['s:ai', 's:strategy']
-  },
-  {
     id: 'ai-kingdom', short: 'AI Kingdom', constellation: 'digital', star: [0.90, 0.70], magnitude: 0.85,
     featured: true, status: 'coming-soon', glyph: 'agents',
     title: 'AI Kingdom',

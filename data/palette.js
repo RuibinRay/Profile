@@ -67,7 +67,7 @@ SITE.palette = [
     id: 'web', name: 'Web & creative development', pigment: 'emerald',
     text: 'Designing and building interactive websites end to end: living WebGL paintings, scroll-driven 3D journeys, data dashboards and the pipelines behind them.',
     tools: ['JavaScript (ES modules)', 'HTML & CSS', 'Three.js', 'WebGL (GLSL)', 'GSAP ScrollTrigger', 'TypeScript', 'React', 'D3', 'GitHub Pages'],
-    seenIn: ['w:sunflower-intelligence', 'w:pura-vida', 'w:vrfb-info', 'w:courtvision-ai', 'w:goalvision-ai', 'w:545-days']
+    seenIn: ['w:sunflower-intelligence', 'w:pura-vida', 'w:vrfb-info', 'w:courtvision-ai', 'w:goalvision-ai']
   }
 ];
 
