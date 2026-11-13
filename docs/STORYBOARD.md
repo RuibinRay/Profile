@@ -160,36 +160,36 @@ Which star carries which link is set in `assets/js/cinema/chapters/contact.js`; 
 
 ## The painter's brush
 
-A paintbrush goes through the whole film (`brush.js`, `brush-motifs.js`). It is always on screen and always has a job: it paints Van Gogh's handwriting into the painting on stage, writes each chapter's title as it appears, rides the wet edge of the two brush transitions, and between jobs flies to where the next one starts and waits there, loaded with its next colour. Everything it does follows the scroll: scrolling back lifts the paint off stroke by stroke and takes the brush back along its path.
+A paintbrush goes through the whole film (`brush.js`). It is always on screen and always has a job, and everything it does follows the scroll: scrolling back lifts the paint and the words off again and takes the brush back along its path.
 
-| Scroll | Painting | What the brush paints |
+**It writes all the words.** Every heading and paragraph of the film appears under the brush, line by line, as if it wrote them: `engine.js` slides a brush-edged mask along each line of the text in turn (`paint-text.js` measures the lines as the browser laid them out), the brush rides that edge with the small up and down of handwriting, and under each title it draws a stroke of gold. Texts in a beat are written one after another (there is one brush), all within half the beat's life. Buttons, lists, pictures and charts still rise in. In the gallery it writes each featured canvas's title and line once the canvas has come to rest.
+
+**It opens the film.** When the page opens at the first painting, the brush writes the name, the line under it and the introduction by the clock (about three seconds; there is nothing to scroll yet), then the buttons appear. Scrolling during it finishes it at once. Not in the gentle film, and not when arriving at a later chapter (`?nointro` skips it).
+
+**It paints.** Between the words it paints Van Gogh's handwriting into the painting on stage (`brush-motifs.js`). A motif gives way to the writing: its moment is moved, or shortened, to the nearest free stretch.
+
+| About | Painting | What the brush paints |
 |---|---|---|
 | 0.04 – 0.9 | Starry Night Ocean | the great vortex of the sky, a band of five lanes of strokes wound round it |
-| 1.02 – 1.34 | | writes *Every journey adds another brushstroke to who I am.* |
 | 1.4 – 1.86 | | four rings of light round the brightest star, just before the camera flies into it |
 | 2.8 – 3.12 | The Flying House | three rings round the crescent moon |
-| 3.16 – 3.48 | | writes **Where my story begins** |
-| 3.55 – 4.18 | | a violet eddy in the sky left of the balloons |
+| 3.65 – 4.0 | | a violet eddy in the sky left of the balloons |
 | 4.4 – 5.05 | | rides the brush transition's edge into the blossom tree |
-| 5.12 – 5.78 | Blossom at Blue Moon Valley | petals blown off the crown on the wind |
-| 6.0 – 6.5 | | the sun's rings, as the camera reaches the peaks |
-| 7.64 – 7.96 | Room of Lanterns | writes **My journey** |
-| 8.08 – 8.6, 9.9 – 10.4 | | rings of light round two lanterns, the first the one the figure looks up at |
-| 12.26 – 12.58 | The Yak Rider | writes **The world I've explored** |
-| 12.62 – 13.3 | | a cloud wound into a spiral over the snow peaks |
+| 5.5 – 5.9 | Blossom at Blue Moon Valley | petals blown off the crown on the wind |
+| 6.3 – 6.8 | | the sun's rings, as the camera reaches the peaks |
+| 8.05 – 11.05 | Room of Lanterns | the golden stroke the lanterns hang on: it rides the stroke's head across the room (`chapters/experience.js`) |
+| 12.7 – 13.4 | The Yak Rider | a cloud wound into a spiral in the sky above the rider |
 | 15.5 – 15.82 | The Spiral Library | the tunnel's rings traced in gold |
-| 15.84 – 16.16 | | writes **Gallery of creations** |
-| 21.46 – 21.78 | Golden Field | writes **Energy and international business** |
-| 21.84 – 22.6 | | wheat flicked upward across the field |
+| 21.9 – 22.24 | Golden Field | wheat flicked upward across the field |
 | 22.66 – 23.1 | | a cloud wound up in the open sky |
 | 24.55 – 25.3 | | rides the pour of gold into the white terraces |
-| 25.66 – 25.98 | White Terraces | writes **My palette of skills** |
-| 26.04 – 26.7 | | a turquoise eddy in the water of a pool |
-| 29.34 – 29.66 | Starry Night Ocean | writes **Beyond the horizon** |
-| 29.7 – 30.44 | | a ring of light round each star that is a way to get in touch, in the order they wake (the vortex and the star from the first chapter are still there) |
-| 30.5 – 30.82 | | writes **Let's talk** |
+| 26.28 – 27.0 | White Terraces | the palette: it lays each of the ten colours, one stroke after another, in that colour (`chapters/skills.js`) |
+| 27.05 – 27.7 | | a turquoise eddy in the water of a pool |
+| 29.74 – 30.48 | Starry Night Ocean | a ring of light round each star that is a way to get in touch (the vortex and the star from the first chapter are still there) |
 
-On the WebGL stage the strokes are drawn every frame into a layer covering just the part of the painting in view (so they stay sharp at any zoom) and the painting shader mixes it in at the motif's depth, with the same low light on its ridges as the painting's own paint; transitions carry the new paint with the painting. On the lighter stage (phones) the same strokes are drawn on a canvas over the pictures. The gentle film (a device that asks for less motion) keeps the strokes and the brush, without the written titles or the rides; the still stage has neither. `?nobrush` turns it off.
+**Its manner.** The brush is drawn in two parts, the bristles (loaded with the colour it is working in) and the handle with its ferrule. It glides rather than jumps, its handle leans into the stroke while the bristles drag behind, it presses down to paint (the bristles spread) and lifts to travel, and its shadow on the canvas widens as it lifts. Between jobs it flies to where the next one starts and waits there. It passes in front of the top bar; the menu, the panels and the curtain of a jump put it away.
+
+On the WebGL stage the strokes are drawn every frame into a layer covering just the part of the painting in view (so they stay sharp at any zoom) and the painting shader mixes it in at the motif's depth, with the same low light on its ridges as the painting's own paint. On the lighter stage (phones) the same strokes are drawn on a canvas over the pictures. The gentle film (a device that asks for less motion) keeps the brush, the strokes and the written words, without the opening or the rides; the still stage has none of it. `?nobrush` turns it all off.
 
 ## What the cinematic rebuild changed, chapter by chapter
 

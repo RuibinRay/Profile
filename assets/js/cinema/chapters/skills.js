@@ -62,13 +62,23 @@ export function build({ ui, SITE, RJY, h, beat, at, engine }) {
   select(skills[0].id);
 
   const A = 1.26, B = 2.68;
+  // The painter's brush lays the palette: one stroke of colour after another, each in its own pigment.
+  // GAP is the scroll between two strokes starting, LAY how long one takes (screens).
+  const GAP = 0.07, LAY = 0.1, flowAt = (t, i) => ease.out(ease.clamp((t - at(A) - 0.02 - i * GAP) / LAY));
+  let boxes = null;
+  engine.onResize(() => { boxes = null; });
+  if (engine.jobs) engine.jobs.push({
+    t0: at(A) + 0.02, t1: at(A) + 0.02 + (n - 1) * GAP + LAY,
+    at(t) {
+      // where each stroke lies when it is fully laid (its layout box: it slides in from 46px to the left as it flows)
+      if (!boxes) { const L = list.getBoundingClientRect(); boxes = strokes.map((b) => ({ left: L.left + b.offsetLeft, top: L.top + b.offsetTop, width: b.offsetWidth, height: b.offsetHeight })); }
+      const i = Math.max(0, Math.min(n - 1, Math.floor((t - at(A) - 0.02) / GAP))), r = boxes[i], k = flowAt(t, i);
+      const hex = (RJY.PIGMENTS[skills[i].pigment] || RJY.PIGMENTS.gold)[0];
+      return { x: r.left - (1 - k) * 46 + 14 + (r.width - 18) * k, y: r.top + r.height * 0.5, ang: 0, col: [parseInt(hex.slice(1, 3), 16) / 255, parseInt(hex.slice(3, 5), 16) / 255, parseInt(hex.slice(5, 7), 16) / 255] };
+    }
+  });
   function update(t, s, dt, on) {
-    const u = ease.clamp(span(t, at(A), at(A + 0.5)));
-    // the paint flows in, one stroke after another
-    strokes.forEach((b, i) => {
-      const k = ease.out(ease.clamp((u - i * 0.055) / 0.4));
-      b.style.setProperty('--flow', k.toFixed(3));
-    });
+    strokes.forEach((b, i) => { b.style.setProperty('--flow', flowAt(t, i).toFixed(3)); });
     if (!on) { manual = false; return; }
     // left alone, the chapter walks through the colours as it is scrolled
     if (!manual) {

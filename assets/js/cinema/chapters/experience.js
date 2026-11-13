@@ -95,6 +95,18 @@ export function build({ ui, SITE, RJY, h, beat, at, engine, calm }) {
     });
     if (best !== near) { if (near >= 0) items[near].a.classList.remove('is-near'); near = best; if (near >= 0) items[near].a.classList.add('is-near'); }
   }
+  // The painter's brush paints the golden stroke: it rides the stroke's head across the room for the whole
+  // walk (brush.js takes the place from here; the same sums as update, as a function of the film's time).
+  if (engine.jobs) engine.jobs.push({
+    t0: at(A) + 0.1, t1: at(B),
+    at(t) {
+      const u = ease.clamp(span(t, at(A), at(B)));
+      const x = W * 0.62 - u * (trackW - W * 0.5 + S * 0.35 + W * 0.12);
+      const reach = ease.clamp((W * 0.5 - x + S * 0.4) / (trackW + S));
+      const p = len ? path.getPointAtLength(len * reach) : { x: 0, y: 0 }, q = len ? path.getPointAtLength(Math.max(0, len * reach - 6)) : p;
+      return { x: p.x + x, y: p.y + rail.offsetTop, ang: Math.atan2(p.y - q.y, p.x - q.x), col: [0.965, 0.769, 0.263] };
+    }
+  });
   // a lantern reached with the keyboard is brought to the middle of the screen
   items.forEach((it) => it.a.addEventListener('focus', () => {
     const sx = it.a.getBoundingClientRect().left;

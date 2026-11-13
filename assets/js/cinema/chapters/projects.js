@@ -16,7 +16,7 @@ import { ease } from '../view.js';
 const STATUS = { live: 'Live', 'in-progress': 'In progress', 'coming-soon': 'Coming soon' };
 const HUE = { gold: '#f6c443', ember: '#f3a35c', foam: '#dfe8fa', periwinkle: '#b6c1ee', teal: '#7fd6cf' };
 
-export function build({ ui, SITE, RJY, h, beat, at, panels, calm }) {
+export function build({ ui, SITE, RJY, h, beat, at, panels, calm, engine }) {
   const has = RJY.has, cons = SITE.constellations;
   const conOf = (id) => cons.find((c) => c.id === id) || {};
   const featured = SITE.work.filter((w) => w.featured);
@@ -46,7 +46,7 @@ export function build({ ui, SITE, RJY, h, beat, at, panels, calm }) {
           h('a', { class: 'pill pill--gold', href: '#projects/' + w.id, text: w.status === 'coming-soon' ? 'About the project' : 'Read the case study' }),
           live ? h('a', { class: 'pill', href: live.url, target: '_blank', rel: 'noopener', text: live.label }) : null)));
     // a canvas with nothing to look at yet holds the floor for less of the walk
-    stations.push({ el, weight: w.cover ? 1 : 0.7, side: i % 2 ? -1 : 1 });
+    stations.push({ el, weight: w.cover ? 1 : 0.7, side: i % 2 ? -1 : 1, feature: true });
   });
   WALLS.forEach((field, i) => {
     const c = conOf(field), list = members(field);
@@ -67,6 +67,13 @@ export function build({ ui, SITE, RJY, h, beat, at, panels, calm }) {
   const A = 1.12, B = 5.06, total = stations.reduce((n, s) => n + s.weight, 0);
   let acc = 0;
   stations.forEach((s) => { s.w = (B - A) * s.weight / total; s.c = at(A + acc + s.w / 2); acc += s.w; s.shown = false; });
+  // the brush writes each featured canvas's title and line once the canvas has come to rest in the centre
+  if (engine && engine.write) stations.forEach((s) => {
+    if (!s.feature) return;
+    const title = s.el.querySelector('.frame__title'), tag = s.el.querySelector('.frame__tag'), t0 = s.c - 0.31 * s.w;
+    engine.write(title, t0, 0.2 * s.w);
+    if (tag) engine.write(tag, t0 + 0.21 * s.w, 0.17 * s.w);
+  });
 
   // a canvas comes forward a little before its case study opens
   gallery.addEventListener('click', (e) => {

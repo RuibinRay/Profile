@@ -114,7 +114,22 @@ The main cause was the frosted glass: every label, card and button with a backgr
 
 Also checked: every motif and title at its moment on the WebGL stage (1440 × 900); the lighter stage at 390 × 844 (the strokes on the canvas, the titles, the brush kept in view at the edge when its strokes are off screen); the gentle film (brush and strokes, no written titles); the still stage (no brush). Not checked: Safari, Firefox, a real phone, a mid-range laptop, and real-time feel with a visible window (the measurements were in a headless browser).
 
-## 5. Known limits
+## 5. The brush writes the words (13 November, second pass)
+
+| What | Before | Now |
+|---|---|---|
+| Words | titles revealed by one brush-edged sweep; everything else faded and rose | every heading and paragraph is written line by line under the brush (`paint-text.js`: the lines are measured from the laid-out text, each gets its own strip of mask, one custom property `--paint` drives them); titles get a stroke of gold drawn under them, last |
+| The first screen | already there when the page opened | the brush writes the name, the line under it and the introduction when the page opens (by the clock, about three seconds) |
+| The look of the big words | the serif, flat cream | the same typeface with its soft and eccentric letterforms turned on (the `SOFT` and `WONK` axes), filled with streaked cream paint (`assets/img/paint-cream.webp`, made by `tools/make_paint_fill.py`) |
+| The brush | a small flat drawing | larger, drawn in two parts: the handle leans into the stroke while the bristles drag behind, the bristles spread when it presses down, it lifts off to travel, and it has a shadow on the canvas; it glides between jobs |
+| Its jobs | motifs, titles, two transitions | also: the golden stroke of the journey (it rides the stroke's head across the lantern room), the ten colours of the palette (it lays each one), and each gallery canvas's title |
+| Where it paints | fixed moments; some motifs under the top bar, behind the globe or a card | motifs move clear of the writing by themselves (`fit` in `brush-motifs.js`); the yak's cloud, the field's cloud and the terraces' eddy were moved into open sky and water; the brush passes in front of the top bar |
+
+Measured the same way as section 4 (whole film, 1440 × 900 at 2×): 36 of 1,093 frames over 20 ms (3.3%), worst 83 ms, 95% of frames within 16.8 ms in six chapters and 33 ms in two, no long scripts. A written text repaints each frame while its mask moves; the soft shadow behind the big letters is left off until a title is finished for that reason.
+
+Checked: the opening; every chapter's writing at 1440 × 900; the lighter stage at 390 × 844; the gentle film. Not checked: Safari and Firefox (the per-line mask uses `clamp()` inside `calc()` with a custom property, which needs Safari 15.4 or later; older browsers show the words without the writing), a real phone, a visible window.
+
+## 6. Known limits
 
 - **Why a Mac showed no animation.** macOS *Reduce motion* was on, and the site answered it with the calm stage: still pictures. It now answers with the gentle film and a one-click switch to everything. The full film is never forced on a device that asks for less motion.
 - **No Higgsfield clip is installed.** The Higgsfield connector in this session can read the account (10 credits, free plan) but cannot start a generation, and the browser pane is not signed in. The frames and prompts are ready (`tools/transitions/`), and the film plays a clip as soon as one is prepared.

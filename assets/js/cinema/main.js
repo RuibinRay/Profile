@@ -10,7 +10,7 @@
  *   ?gl  force WebGL ·  ?why  show which stage is running and why ·  ?draft  mark what is still to add ·
  *   ?step  no scroll smoothing (the film is exactly where the scrollbar is)
  */
-import { CHAPTERS, T, setPortrait } from './storyboard.js';
+import { CHAPTERS, T, TRANSITIONS, setPortrait } from './storyboard.js';
 import { createEngine } from './engine.js';
 import { createLiteStage } from './stage-lite.js';
 import { formatsReady } from './formats.js';
@@ -63,11 +63,14 @@ if (!RJY.finePointer) root.classList.add('is-touch');
 if (RJY.draft) root.classList.add('is-draft');
 
 const canvas = document.querySelector('.cine-stage__canvas'), liteRoot = document.querySelector('.cine-stage__lite');
-// every stroke the painter's brush will lay, worked out once (brush-motifs.js); the stage paints them,
-// the brush follows them (brush.js)
-let brushwork = null;
-try { brushwork = buildBrushwork(); } catch (e) { console.warn('No brushwork', e); }
-let brush = null;
+// every stroke the painter's brush will lay (brush-motifs.js) is worked out once the chapters are built,
+// so the motifs can keep clear of the words it writes; the stage paints them, the brush follows them
+let brushwork = null, brush = null;
+const painter = want !== 'calm' && !params.has('nobrush');      // not on the still stage
+// The film opens with the brush writing the name (not when arriving at a later chapter, nor in the gentle
+// film). The words wait hidden from the start, behind the loader, so nothing flashes before it is written.
+const opening = painter && !calm && !params.has('nointro') && !/^#(?!home$).+/.test(location.hash);
+if (opening) root.classList.add('is-opening');
 let stage = null, lastT = -1;
 function useLite(isCalm, reason) {
   if (stage && stage.kind === 'gl') stage.dispose();
@@ -96,7 +99,7 @@ async function useGL() {
 let engine = null, chrome = null;
 const setFraming = () => setPortrait(window.innerWidth / window.innerHeight < 0.82);
 setFraming();
-engine = createEngine({ main: document.getElementById('film'), calm, exact: params.has('step') });
+engine = createEngine({ main: document.getElementById('film'), calm, exact: params.has('step'), paints: painter });
 engine.onResize(() => { setFraming(); if (stage) stage.resize(); });
 engine.setPrepare((t) => (stage ? stage.ready(t, true) : Promise.resolve()));      // behind the curtain: everything at once
 
@@ -118,9 +121,14 @@ CHAPTERS.forEach((c) => {
   } catch (e) { console.error('Could not build chapter ' + c.id, e); }
 });
 chrome = createChrome({ engine, RJY, SITE, h, getStage: () => stage, panels });
-// the painter's brush: after the chapters, so it knows every title it has to write
-if (!params.has('nobrush')) {
-  try { brush = createBrush({ engine, getStage: () => stage, work: brushwork, reduced: gentle, writes: engine.writes }); } catch (e) { console.warn('No brush', e); }
+// the painter's brush: after the chapters, so it knows everything it has to write
+if (painter) {
+  try {
+    const busy = engine.writes.map((w) => [w.t0, w.t1]).concat(engine.jobs.map((j) => [j.t0, j.t1]));
+    if (!gentle) TRANSITIONS.forEach((tr) => { if (tr.type === 'brush' || tr.type === 'pour') busy.push([tr.span[0], tr.span[1]]); });
+    brushwork = buildBrushwork(busy);
+    brush = createBrush({ engine, getStage: () => stage, work: brushwork, reduced: gentle, writes: engine.writes });
+  } catch (e) { console.warn('No brush', e); }
 }
 
 /* ---------- the motion switch ---------- */
@@ -214,6 +222,11 @@ async function boot() {
   stage.setPaused(chrome.isPaused());
   stage.render(engine.t, performance.now() / 1000);
   chrome.update(engine.t);
+  if (opening && brush && t0 === 0) {
+    const q = (sel) => document.querySelector('#home ' + sel);
+    brush.intro([{ el: q('.display'), dur: 1.05 }, { el: q('.home-tagline'), dur: 0.5 }, { el: q('.home-intro'), dur: 0.6 }, { el: q('.home-facts'), dur: 0.5 }],
+      () => root.classList.remove('is-opening'));
+  } else root.classList.remove('is-opening');
   root.classList.remove('is-loading');
   if (RJY.route.parse(location.hash)) setTimeout(() => RJY.route.handle(), 80);
   if (params.has('why')) {
@@ -223,7 +236,7 @@ async function boot() {
   }
 }
 // for the console and for tests: RJY.film.engine.travel(12), RJY.film.stage.info()
-RJY.film = { get engine() { return engine; }, get stage() { return stage; }, panels, controllers };
+RJY.film = { get engine() { return engine; }, get stage() { return stage; }, get brushwork() { return brushwork; }, panels, controllers };
 window.addEventListener('hashchange', () => {
   if (RJY.route.parse(location.hash)) return;
   const c = CHAPTERS.find((x) => x.id === location.hash.slice(1));

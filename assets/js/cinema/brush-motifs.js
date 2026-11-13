@@ -52,19 +52,19 @@ export const MOTIFS = [
   // 3. The blossom tree: petals blown off the crown on the wind, then the sun's rings as the camera reaches the peaks
   { shot: 'blossom', t: [5.12, 5.78], kind: 'flurry', from: [0.06, 0.3], to: [0.3, 0.7], n: 46, spread: 0.07, pal: PAL.petal, w: 0.013, len: 0.02, seed: 31 },
   { shot: 'blossom', t: [6.0, 6.5], kind: 'halo', c: [0.69, 0.15], r0: 0.07, r1: 0.1, rings: 4, pal: PAL.sun, w: 0.0105, len: 0.034, seed: 32 },
-  // 4. The room of lanterns: light ringed round the lantern the figure looks up at, then round another
-  { shot: 'lanterns', t: [8.08, 8.6], kind: 'halo', c: [0.6, 0.22], r0: 0.05, r1: 0.075, rings: 3, pal: PAL.lamp, w: 0.0125, len: 0.028, seed: 41 },
-  { shot: 'lanterns', t: [9.9, 10.4], kind: 'halo', c: [0.84, 0.17], r0: 0.04, r1: 0.062, rings: 3, pal: PAL.lamp, w: 0.012, len: 0.026, seed: 42 },
-  // 5. The yak rider: a cloud wound into a spiral over the snow peaks
-  { shot: 'yak', t: [12.62, 13.3], kind: 'swirl', c: [0.68, 0.11], r0: 0.02, r1: 0.085, turns: 1.5, lanes: 4, dir: 1, pal: PAL.cloud, w: 0.0115, len: 0.045, seed: 51 },
+  // 4. The room of lanterns: no motif. There the brush paints the golden stroke the lanterns hang on
+  //    (chapters/experience.js gives it that job).
+  // 5. The yak rider: a cloud wound into a spiral in the sky above the rider (between the words and the globe)
+  { shot: 'yak', t: [12.62, 13.3], kind: 'swirl', c: [0.49, 0.125], r0: 0.018, r1: 0.064, turns: 1.5, lanes: 4, dir: 1, pal: PAL.cloud, w: 0.011, len: 0.04, seed: 51 },
   // 6. The spiral library: the tunnel's rings traced in gold before the first canvas comes off its shelf
   { shot: 'bookshop', t: [15.5, 15.82], kind: 'swirl', c: [0.527, 0.468], r0: 0.05, r1: 0.2, turns: 1.25, lanes: 3, dir: 1, pal: PAL.gold, w: 0.012, len: 0.06, seed: 61 },
   // 7. The golden field: wheat flicked up across the field, then a cloud wound up in the open sky (the
   //    sun is behind the first card of chapter 6 at that moment)
   { shot: 'field', t: [21.84, 22.6], kind: 'flicks', rect: [0.5, 0.56, 0.96, 0.8], n: 96, ang: -Math.PI / 2, pal: PAL.wheat, w: 0.0095, len: 0.042, seed: 71 },
-  { shot: 'field', t: [22.66, 23.1], kind: 'swirl', c: [0.3, 0.13], r0: 0.02, r1: 0.075, turns: 1.4, lanes: 4, dir: -1, pal: PAL.cloud, w: 0.0115, len: 0.042, seed: 72 },
-  // 8. The white terraces: an eddy turned in the turquoise water of a pool
-  { shot: 'terraces', t: [26.04, 26.7], kind: 'swirl', c: [0.47, 0.73], r0: 0.02, r1: 0.085, turns: 1.5, lanes: 4, dir: 1, pal: PAL.water, w: 0.0125, len: 0.045, seed: 81 },
+  { shot: 'field', t: [22.66, 23.1], kind: 'swirl', c: [0.447, 0.255], r0: 0.02, r1: 0.072, turns: 1.4, lanes: 4, dir: -1, pal: PAL.cloud, w: 0.0115, len: 0.042, seed: 72 },
+  // 8. The white terraces: once the brush has laid the palette's colours (chapters/skills.js), an eddy
+  //    turned in the turquoise water of a pool
+  { shot: 'terraces', t: [27.05, 27.7], kind: 'swirl', c: [0.7, 0.84], r0: 0.018, r1: 0.07, turns: 1.5, lanes: 4, dir: 1, pal: PAL.water, w: 0.012, len: 0.042, seed: 81 },
   // 9. Back under the first sky: each star that is a way to get in touch gets its ring of light, in the
   //    order the stars wake (chapters/contact.js)
   { shot: 'return', t: [29.7, 30.44], kind: 'halos', stars: [
@@ -195,12 +195,33 @@ function ripple(m, ia, rnd) {
 }
 
 /* ------------------------------------------------------------------ the whole of the brush's work */
+/** There is one brush: a motif's moment gives way to the words being written and the transitions being
+    ridden (`busy`: [from, to] in film time). It keeps its length where it can and moves as little as it can. */
+function fit(t, busy) {
+  const len = t[1] - t[0], lo = t[0] - 0.45, hi = t[1] + 0.45, pad = 0.02;
+  const cuts = busy.filter((b) => b[1] > lo && b[0] < hi).map((b) => [b[0] - pad, b[1] + pad]).sort((a, b) => a[0] - b[0]);
+  const free = [];
+  let p = lo;
+  cuts.forEach((c) => { if (c[0] > p) free.push([p, c[0]]); p = Math.max(p, c[1]); });
+  if (p < hi) free.push([p, hi]);
+  let best = null, score = -Infinity;
+  free.forEach((f) => {
+    const L = Math.min(len, f[1] - f[0]);
+    if (L < 0.14) return;
+    const start = Math.min(Math.max(t[0], f[0]), f[1] - L);
+    const sc = L / len - Math.abs(start - t[0]) * 1.6;          // rather shorter than far from its moment
+    if (sc > score) { score = sc; best = [start, start + L]; }
+  });
+  return best;                                                   // null: no room for it at all
+}
+
 /**
  * Builds every stroke once. Returns, per painting, the strokes in the order they are painted (for the
- * renderers) and, per motif, an "act" the brush follows: which strokes, and when.
+ * renderers) and, per motif, an "act" the brush follows: which strokes, and when. `busy` lists the
+ * moments the brush is taken (writing, riding a transition): motifs are moved clear of them.
  */
-export function buildBrushwork() {
-  const byPainting = {}, acts = [];
+export function buildBrushwork(busy = []) {
+  const byPainting = {}, acts = [], taken = busy.slice();
   const shotOf = (id) => SHOTS.find((s) => s.id === id);
   MOTIFS.forEach((m) => {
     const shot = shotOf(m.shot); if (!shot) return;
@@ -222,12 +243,15 @@ export function buildBrushwork() {
     if (!list.length) return;
     // the strokes share the motif's window; each takes a little longer than its turn, so the next one
     // starts while the last is still being finished
-    const n = list.length, slot = (m.t[1] - m.t[0]) / (n + 0.15);
-    list.forEach((d, i) => { d.b = m.t[0] + i * slot; d.d = slot * 1.15; });
+    const win = fit(m.t, taken);
+    if (!win) return;                                            // the brush is busy throughout: leave it out
+    taken.push(win);
+    const n = list.length, slot = (win[1] - win[0]) / (n + 0.15);
+    list.forEach((d, i) => { d.b = win[0] + i * slot; d.d = slot * 1.15; });
     const bucket = byPainting[shot.painting] || (byPainting[shot.painting] = { painting: shot.painting, ia, depth: PAINT_DEPTH[shot.painting] || 0.15, dashes: [], first: Infinity });
     bucket.dashes = bucket.dashes.concat(list);
-    bucket.first = Math.min(bucket.first, m.t[0]);
-    acts.push({ kind: 'paint', shot: m.shot, painting: shot.painting, ia, t0: m.t[0], t1: m.t[1], dashes: list, slot });
+    bucket.first = Math.min(bucket.first, win[0]);
+    acts.push({ kind: 'paint', shot: m.shot, painting: shot.painting, ia, t0: win[0], t1: win[1], dashes: list, slot });
   });
   Object.keys(byPainting).forEach((id) => byPainting[id].dashes.sort((a, b) => a.b - b.b));
   acts.sort((a, b) => a.t0 - b.t0);
