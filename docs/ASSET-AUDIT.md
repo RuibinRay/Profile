@@ -26,7 +26,7 @@ Two pictures go with this page:
 | Painting | Supplied file | Supplied size | What the site showed on desktop |
 |---|---|---|---|
 | Starry Night Ocean | `ocean-supplied.jpg` (JPEG, heavily compressed) | 1500 × 1120 | 2048 px, made from an older 2560 px enlargement of a *different* 1024 px rendition |
-| The Flying House | `house.webp` | 2000 × 1116 | 2048 px (1.02× resize) |
+| The Flying House | `house.webp` (replaced on 13 Nov by `house.jpg`, the night version: see below) | 2000 × 1116 | 2048 px (1.02× resize) |
 | Blossom at Blue Moon Valley | `blossom.webp` | 1672 × 941 | 2048 px (1.22× resize) |
 | Room of Lanterns | `lanterns.jpg` | 1376 × 768 | 2048 px (1.49× resize) |
 | The Yak Rider | `yak.webp` | 1672 × 941 | 2048 px (1.22× resize) |
@@ -51,9 +51,9 @@ Findings:
 | Painting | Master | Enlargement from the supplied file |
 |---|---|---|
 | Starry Night Ocean | 3840 × 2866 | 2.56× |
-| The Flying House | 3840 × 2142 | 1.92× |
+| The Flying House (the night version, `house.jpg`, 1500 × 837) | 3840 × 2160 | 2.58× |
 | Blossom, Yak Rider, Spiral Library, Golden Field, White Terraces | 3840 × 2160 | 2.30× |
-| Room of Lanterns | 3840 × 2142 | 2.79× |
+| Room of Lanterns | 3840 × 2160 | 2.81× |
 
 The ocean now comes from the file you supplied for this project (1500 px), not from the older enlargement, which was a slightly different rendition.
 
@@ -116,7 +116,7 @@ Checked in the app's browser: the film at 1440 × 900 loads the 3840 px files, a
 1. **The extra pixels are reconstructed, not recovered.** The masters are sharper and cleaner than any resize, but the detail between original pixels is the model's plausible paint, not information that was in your files. True 4K needs larger originals; if you have them, drop them into `tools/source/paintings/` and both scripts will use them.
 2. **Real-ESRGAN tidies paint.** Strokes come out crisper and slightly smoother inside than the originals' grain. Shapes, colours and composition are unchanged.
 3. **Two sources are weak.** Room of Lanterns is the smallest (1376 px) and the ocean is a heavily compressed JPEG; both gain the most and have the most invented detail.
-4. **Not every master is exactly 3840 × 2160.** Each keeps its own shape: the ocean is 4:3 (3840 × 2866), the house and the lanterns are 3840 × 2142. Cropping them to 16:9 would cut into the paintings.
+4. **Every master is now exactly 3840 × 2160 (16:9).** The ocean was rebuilt at 16:9 from the pictures supplied for it; the house and the lanterns were within 1% of 16:9, and `tools/upscale_paintings.py` now trims such a painting to exactly 16:9 before enlarging it (6 px off each side of the house, 5 off each side of the lanterns: nothing that matters is lost). The old daylight house is kept in `tools/source/paintings/house-alternates/`.
 5. **Very deep zooms are still soft.** The portals push to 6–9× for a moment; the close-ups carry 2.8–6.2× the supplied density, so the last instant inside a star or the tunnel is covered by the portal's light, not by pixels.
 6. **Painted-in backgrounds are invented.** They are only ever seen as slivers behind a near object when layers slide apart, and they are softer (1920 px) than the painting.
 7. **Depth is an estimate.** Thin things (balloon strings, prayer flags, the tips of the yak's horns) belong to the layer behind them.

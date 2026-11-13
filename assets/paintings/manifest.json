@@ -140,13 +140,13 @@
    "id": "house",
    "title": "The Flying House",
    "label": "Painted from my photograph in Lijiang, Yunnan",
-   "alt": "A small patchwork house lifted by a bunch of bright balloons floats above a forest under a swirling blue sky.",
+   "alt": "A small patchwork house lifted by a bunch of bright balloons floats above a forest at nightfall, one person at its window and one on its steps, under a swirling violet sky with stars, a crescent moon and a band of sunset.",
    "w": 3840,
-   "h": 2142,
-   "aspect": 1.7927,
+   "h": 2160,
+   "aspect": 1.7778,
    "supplied": [
-    2000,
-    1116
+    1500,
+    837
    ],
    "base": "assets/paintings/house",
    "sizes": [
@@ -180,6 +180,7 @@
    "layers": {
     "near": 0.62,
     "mid": 0.3,
+    "ceil": 0.62,
     "fill1": "assets/paintings/house-fill1",
     "fill2": "assets/paintings/house-fill2",
     "fills": [
@@ -196,42 +197,66 @@
      "f": 0.36,
      "src": "assets/paintings/house-detail-star",
      "w": 2048,
-     "h": 1142
+     "h": 1152
     }
    },
-   "blur": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAWACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCn9mUKBkEDoafPHv2Bu3SlW/tXOWQqD2qdZ7N8YfB9671VieRKEh8AA+XbTpYkbgjgVRZyl2hDEpmrVxqduqFVGTWVOpq7s2q0lZcqKU8AMh2DCnrRUUuqMPuRCitlWiQqUjKD8CnM5BBFFFeWdyH/AGllA6mozNubGKKKaV1cT0Yjt8hxRRRTiI//2Q==",
+   "blur": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAWACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDO+wCPLWh6jBoFqIQGZ8MByKWG4Q8RyYHvSPAC24yhifeuiNaMtyPZSuPiijILY61FNEGARjhRzSfPFIgJwpNW3ltYxh3yaKc73ux1bW0LsE1qdN8rZlvSisyTVRCmLWIEjuaKlU+Vu19TG99zDSTC5qSOdsgjPFFFczKJ2vXwCRmoXl3HJFFFOOqBqzInnKDjvRRRV3KSR//Z",
    "colours": [
-    "#8ec8cc",
-    "#44b0ca",
-    "#3588a0",
-    "#3f533a",
-    "#0c4565"
+    "#9ea893",
+    "#566774",
+    "#544258",
+    "#263d5c",
+    "#112c53"
    ],
-   "mean": "#3a7782",
+   "mean": "#515f6d",
    "anchors": {
     "house": [
-     0.51,
-     0.62
+     0.5,
+     0.6
     ],
     "balloons": [
-     0.51,
-     0.27
+     0.505,
+     0.26
     ],
     "star": [
      0.755,
      0.215
     ],
     "swirl": [
-     0.345,
-     0.38
+     0.34,
+     0.515
     ],
     "window": [
-     0.455,
-     0.58
+     0.46,
+     0.625
+    ],
+    "steps": [
+     0.535,
+     0.69
     ],
     "horizon": [
      0.5,
      0.62
+    ],
+    "moon": [
+     0.895,
+     0.14
+    ],
+    "star2": [
+     0.265,
+     0.155
+    ],
+    "star3": [
+     0.18,
+     0.47
+    ],
+    "swirl2": [
+     0.635,
+     0.5
+    ],
+    "sunset": [
+     0.18,
+     0.56
     ]
    },
    "photo": {
@@ -352,8 +377,8 @@
    "label": "Painted from my photograph at the Van Gogh exhibition, Shanghai",
    "alt": "A figure sits on a mirrored floor looking up into a room of hundreds of glowing golden lanterns.",
    "w": 3840,
-   "h": 2142,
-   "aspect": 1.7927,
+   "h": 2160,
+   "aspect": 1.7778,
    "supplied": [
     1376,
     768
@@ -390,6 +415,7 @@
    "layers": {
     "near": 0.8,
     "mid": 0.4,
+    "ceil": 0.8,
     "fill1": "assets/paintings/lanterns-fill1",
     "fill2": "assets/paintings/lanterns-fill2",
     "fills": [
@@ -406,18 +432,18 @@
      "f": 0.3,
      "src": "assets/paintings/lanterns-detail-gaze",
      "w": 2048,
-     "h": 1142
+     "h": 1152
     }
    },
-   "blur": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAWACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDHt0RoiijNWBAJVAOQBxmsa3upQchcGr8d3cCJiwAFcEoNM71NMurbeT8yH5vWo5IQ75dsmmRXrTQhYz8461Se5uVcjAPNQoNvUbmrFuaFQPlOD60Vl3N3PjkUVuoOxk5pEdpICQxGavyy77R2IoooktSl8JT026KlgB+NXC5LknGMZooomlzCj8KM+4k3HI4ooorRbEy3P//Z",
+   "blur": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAWACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDHgRWh2LzVgW4lUA5AHGaxre6lByq4NX47u4ETFgAK4JQaZ3qaZdS28kbkPzetRyQh3zI2TTIr0zwhYz8461SkublXIABqFBt6j51YuSwrjjg+tFZVxd3GORRW6psyc0hlpIM7iKvSy77R2I6UUUSWpS+Ep6bdFSwA/GrhcmQk4xjNFFE0uYUfhRQuJNxyOKKKK0WxMtz/2Q==",
    "colours": [
-    "#d3993e",
-    "#b06e29",
-    "#884d20",
-    "#5d2b15",
+    "#d49a3e",
+    "#b16f29",
+    "#894d20",
+    "#5e2c15",
     "#22110c"
    ],
-   "mean": "#72431d",
+   "mean": "#73431d",
    "anchors": {
     "figure": [
      0.45,

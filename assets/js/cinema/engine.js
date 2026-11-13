@@ -10,6 +10,7 @@
  *   engine.beat(el, a, b)       show an element between times a and b
  *   engine.travel(t)            cut to another moment behind a short curtain (menu, deep links)
  *   engine.onFrame(fn)          called every animation frame with (t, seconds, dt)
+ *   engine.writes               the titles the painter's brush writes (brush.js): element and moment
  */
 import { CHAPTERS, TOTAL, chapterAt } from './storyboard.js';
 
@@ -38,6 +39,19 @@ export function createEngine({ main, calm, exact }) {
   const tl = gsap.timeline({ paused: true, defaults: { ease: 'none' } });
   tl.to(clock, { t: TOTAL, duration: TOTAL }, 0);
 
+  // A chapter's title is painted on: a brush-edged mask (.is-painted in cinema.css) is scrubbed open
+  // across it by the scroll, and the painter's brush rides the edge. On the calm stages it simply appears.
+  const writes = [];
+  function write(el, at) {
+    if (calm) return;
+    const d = 0.32;
+    tl.fromTo(el, { '--paint': 0 }, {
+      '--paint': 1, duration: d, ease: 'none',
+      onUpdate() { el.classList.toggle('is-painted', this.progress() < 1); }     // no mask once it is all there
+    }, at);
+    writes.push({ el, t0: at, t1: at + d });
+  }
+
   /** Show `el` from time a to time b (screens). o.first: already there when the page opens. o.y: travel in px. */
   function beat(el, a, b, o = {}) {
     if (!el) return;
@@ -48,7 +62,9 @@ export function createEngine({ main, calm, exact }) {
     // the parts of a beat arrive one after another: heading, then text, then the rest
     if (!o.first) el.querySelectorAll('[data-rise]').forEach((child, i) => {
       tl.fromTo(child, { autoAlpha: 0, y: calm ? 0 : 20 }, { autoAlpha: 1, y: 0, duration: 0.24, ease: 'power2.out' }, a + 0.04 + i * 0.05);
+      if (child.classList.contains('headline')) write(child, a + 0.04 + i * 0.05);
     });
+    if (!o.first && el.classList.contains('home-line')) write(el, a + 0.02);
   }
 
   const st = ScrollTrigger.create({ trigger: main, start: 'top top', end: 'bottom bottom', scrub: calm || exact ? true : 0.7, animation: tl });
@@ -115,7 +131,7 @@ export function createEngine({ main, calm, exact }) {
   const resizeListeners = [];
 
   return {
-    tl, st, calm, beat,
+    tl, st, calm, beat, writes,
     /** Run one frame by hand (tests, and tools that step the film without a display). */
     step(now) { const s = (now || performance.now()) / 1000; for (let i = 0; i < frames.length; i++) frames[i](clock.t, s, 0.016); },
     get t() { return clock.t; },

@@ -118,7 +118,9 @@ assets/js/cinema/
   storyboard.js     the film as data: chapters, cameras, transitions (one unit = one screen of scroll)
   engine.js         one GSAP ScrollTrigger scrubbing one master timeline; text "beats"; travel between chapters
   stage-gl.js       the WebGL stage (Three.js): the painting shader, motes in the air, quality tiers
-  shaders.js        GLSL: three depth layers, focus, wind and water, close-ups, the seven transitions
+  shaders.js        GLSL: three depth layers, focus, wind and water, close-ups, the seven transitions, the brush's strokes
+  brush.js          the painter's brush: always on screen, painting, writing the titles, riding the brush transitions
+  brush-motifs.js   what the brush paints, where and when: Van Gogh's swirls, halos, wheat, petals, eddies, stroke by stroke
   formats.js        AVIF or WebP, and which file of a painting to fetch
   clips.js          transition clips that are installed (generated)
   globe.js          the painted globe of chapter 4
@@ -137,9 +139,11 @@ assets/css/         content.css (components) · cinema.css (the film) · portfol
 ```
 
 - **Everything is a function of the scroll position.** The timeline never plays by itself, so scrolling back reverses every camera move, transition and piece of text.
+- **The painter's brush.** A paintbrush goes through the whole film: it paints Van Gogh-style strokes (the vortex of the sky, rings of light round the stars, the moon and the lanterns, wheat, petals, eddies) into each painting, writes each chapter's title as it appears, and rides the brush and pour transitions. Scrolling back lifts the paint off again. What it paints and when is in `brush-motifs.js`; the table is in `docs/STORYBOARD.md`.
 - **Three stages, one film.** WebGL on capable screens. The lighter stage on phones, small touch screens, low-memory devices and when WebGL 2 is missing; it is also where the WebGL stage hands over if it cannot keep up after stepping its resolution down twice. All content is the same in all three.
 - **Reduce motion.** A device that asks for less motion (on a Mac: System Settings → Accessibility → Display → Reduce motion) gets the **gentle film**: the same WebGL paintings, with the paint still flowing, but the camera never flies in or swings round and one painting fades into the next. On phones and low-power devices it gets the calm stage (still pictures, plain cross-fades). A gold **Play the full film** button in the top bar, in the menu and on the first screen switches everything on; the choice is remembered in that browser (`localStorage` key `rjy.motion`), and the button then reads **Calm version**.
-- **Memory.** Only the paintings on stage and their neighbours hold textures (at most four; at the 3840 px size, only the one ahead in the direction of travel); the rest are released. Pixel ratio is capped at 1.75. The world map and globe data load only as chapter 4 approaches.
+- **Memory.** Only the paintings on stage and their neighbours hold textures (at most four; at the 3840 px size, only the one ahead in the direction of travel); the rest are released. Pixel ratio is capped at 1.75. Decoded pictures go to the graphics card one per frame, never a whole painting's bundle at once (all at once only behind the curtain of a jump). The world map and globe are built at the visitor's first pause, or as chapter 4 approaches.
+- **No blur behind the words.** Text over the paintings stands on dark glass without a frosted blur: a blur over a painting that moves every frame has to be redone every frame, and it was the main cause of stutter (see `docs/CINEMATIC-REBUILD.md`).
 - **Pause.** The round button in the top bar stops everything that moves by itself (remembered in that browser). Scrolling still works.
 - **Not trapped.** The menu, the chapter marks on the progress stroke, the previous / next arrows, *View portfolio* and *Skip experience* are always available; far jumps cut behind a short curtain rather than fast-forwarding the film.
 
@@ -158,6 +162,7 @@ Any transition can be played from a short generated video instead of the shader:
 | `?why` | shows which stage is running, at what quality, and why |
 | `?webp` | pretend the browser cannot show AVIF (tests the WebP files) |
 | `?step` | no scroll smoothing: the film is exactly where the scrollbar is |
+| `?nobrush` | the film without the painter's brush |
 
 In the console, `RJY.film.engine.travel(12.5)` jumps to a moment and `RJY.film.stage.info()` reports the stage.
 

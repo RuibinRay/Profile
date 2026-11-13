@@ -16,6 +16,8 @@ import { createLiteStage } from './stage-lite.js';
 import { formatsReady } from './formats.js';
 import { createChrome } from './chrome.js';
 import { createPanels } from './panels.js';
+import { buildBrushwork } from './brush-motifs.js';
+import { createBrush } from './brush.js';
 import * as home from './chapters/home.js';
 import * as about from './chapters/about.js';
 import * as experience from './chapters/experience.js';
@@ -61,6 +63,11 @@ if (!RJY.finePointer) root.classList.add('is-touch');
 if (RJY.draft) root.classList.add('is-draft');
 
 const canvas = document.querySelector('.cine-stage__canvas'), liteRoot = document.querySelector('.cine-stage__lite');
+// every stroke the painter's brush will lay, worked out once (brush-motifs.js); the stage paints them,
+// the brush follows them (brush.js)
+let brushwork = null;
+try { brushwork = buildBrushwork(); } catch (e) { console.warn('No brushwork', e); }
+let brush = null;
 let stage = null, lastT = -1;
 function useLite(isCalm, reason) {
   if (stage && stage.kind === 'gl') stage.dispose();
@@ -75,7 +82,7 @@ async function useGL() {
   try {
     const { createGLStage } = await import('./stage-gl.js');
     const s = createGLStage(canvas, {
-      reduced: gentle, tier: (navigator.deviceMemory && navigator.deviceMemory <= 4) ? 'mid' : 'high',
+      reduced: gentle, brushwork, tier: (navigator.deviceMemory && navigator.deviceMemory <= 4) ? 'mid' : 'high',
       onTooSlow() { useLite(calm, 'WebGL could not keep up on this device'); },
       onLost() { useLite(calm, 'the graphics context was lost'); }
     });
@@ -91,7 +98,7 @@ const setFraming = () => setPortrait(window.innerWidth / window.innerHeight < 0.
 setFraming();
 engine = createEngine({ main: document.getElementById('film'), calm, exact: params.has('step') });
 engine.onResize(() => { setFraming(); if (stage) stage.resize(); });
-engine.setPrepare((t) => (stage ? stage.ready(t) : Promise.resolve()));
+engine.setPrepare((t) => (stage ? stage.ready(t, true) : Promise.resolve()));      // behind the curtain: everything at once
 
 const panels = createPanels({ RJY, SITE, h, engine });
 const controllers = [];
@@ -111,6 +118,10 @@ CHAPTERS.forEach((c) => {
   } catch (e) { console.error('Could not build chapter ' + c.id, e); }
 });
 chrome = createChrome({ engine, RJY, SITE, h, getStage: () => stage, panels });
+// the painter's brush: after the chapters, so it knows every title it has to write
+if (!params.has('nobrush')) {
+  try { brush = createBrush({ engine, getStage: () => stage, work: brushwork, reduced: gentle, writes: engine.writes }); } catch (e) { console.warn('No brush', e); }
+}
 
 /* ---------- the motion switch ---------- */
 // Shown only where it means something: on a device that asks for less motion, or after a choice was made.
@@ -168,7 +179,8 @@ let lastPrep = 0, hidden = false;
 document.addEventListener('visibilitychange', () => { hidden = document.hidden; });
 engine.onFrame((t, s, dt) => {
   if (!stage || hidden) return;
-  if (panels.isOpen() || chrome.isMenuOpen()) return;      // the film is covered: nothing to draw
+  if (panels.isOpen() || chrome.isMenuOpen()) { if (brush) brush.cover(true); return; }      // the film is covered: nothing to draw
+  if (brush) brush.cover(false);
   const moving = Math.abs(t - lastT) > 1e-5;
   // the WebGL paintings move by themselves; the lighter stage only changes when the page is scrolled
   if (stage.kind === 'gl' || moving) stage.render(t, s);
@@ -180,6 +192,7 @@ engine.onFrame((t, s, dt) => {
     if (on || c.awake) { c.update(t, s, dt, on); c.awake = on; }
   }
   if (moving) chrome.update(t);
+  if (brush) brush.update(t, s, dt);
   lastT = t;
 });
 
@@ -195,7 +208,7 @@ async function boot() {
   if (want === 'gl' && !(await useGL())) { want = 'lite'; why = 'WebGL 2 is not available'; }
   if (!stage) useLite(calm);
   const t0 = startTime();
-  try { await Promise.race([stage.ready(t0), new Promise((r) => setTimeout(r, 6000))]); } catch (e) {}
+  try { await Promise.race([stage.ready(t0, true), new Promise((r) => setTimeout(r, 6000))]); } catch (e) {}
   engine.start();
   if (t0 > 0) await engine.travel(t0, { cut: true, silent: true });
   stage.setPaused(chrome.isPaused());

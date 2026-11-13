@@ -37,6 +37,13 @@ uniform float uAspect, uTime, uFlowT, uMix, uType, uRelief, uMotion, uWarm;
 uniform vec2 uOrigin, uDir;    // where the transition opens (screen uv, y up) and which way it sweeps
 uniform vec4 uGrade;           // dim, saturation, vignette, exposure
 uniform vec3 uGold, uEdgeA, uEdgeB;
+// the paint the brush has laid into each painting (brush.js): one texture holding two layers side by side
+// (painting A's and painting B's; one texture, because the shader already uses 15 of the 16 a GPU must
+// offer), each covering the part of its painting in view. uPw: where the layer lies in the painting
+// (left, bottom, width, height in uv). uPs: its depth, whether it is on, where its half of the texture starts and how wide it is.
+uniform sampler2D tP;
+uniform vec2 uPSize;
+uniform vec4 uPwA, uPwB, uPsA, uPsB;
 
 float lum(vec3 c) { return dot(c, vec3(0.299, 0.587, 0.114)); }
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
@@ -91,7 +98,7 @@ vec3 layerCol(sampler2D tex, sampler2D a1, sampler2D a3, sampler2D det, vec4 dr,
 float soft(float e, vec4 lens) { return clamp(abs(e - lens.z) * lens.w * 2.2, 0.0, 4.5); }
 
 vec3 paint(sampler2D tex, sampler2D a1, sampler2D a2, sampler2D a3, sampler2D f1, sampler2D f2, sampler2D det,
-           vec4 cam, vec4 fx, vec4 lay, vec4 dr, vec4 lens, vec2 suv) {
+           vec4 cam, vec4 fx, vec4 lay, vec4 dr, vec4 lens, vec4 pw, vec4 ps, vec2 suv) {
   float ia = fx.w;
   vec2 p = suv - 0.5; p.x *= uAspect;
   p = rot(p, cam.w);
@@ -158,6 +165,24 @@ vec3 paint(sampler2D tex, sampler2D a1, sampler2D a2, sampler2D a3, sampler2D f1
     float ridge = dot(vec2(l0 - lx, l0 - ly), light);
     col += col * clamp(ridge * 3.2, -0.22, 0.3) * uRelief * (1.0 - min(1.0, soft(eTop, lens) * 0.5));
   }
+  // the brush's fresh paint, at its own depth so it stays on what it was painted on; its ridges catch
+  // the same low light as the painting's
+  if (ps.y > 0.5) {
+    vec2 r = (uv0 + (ps.x - 0.3) * k - pw.xy) / pw.zw;
+    if (r.x > 0.002 && r.x < 0.998 && r.y > 0.002 && r.y < 0.998) {
+      vec2 q = vec2(ps.z + r.x * ps.w, r.y);
+      vec4 st = texture2D(tP, q);
+      if (st.a > 0.003) {
+        vec2 e = 1.5 / uPSize;
+        vec4 sx = texture2D(tP, q + vec2(e.x, 0.0)), sy = texture2D(tP, q + vec2(0.0, e.y));
+        float h0 = st.a + lum(st.rgb) * 0.7, hx = sx.a + lum(sx.rgb) * 0.7, hy = sy.a + lum(sy.rgb) * 0.7;
+        vec2 light = normalize(vec2(-0.7 + uPar.x * 14.0, 0.7 + uPar.y * 14.0));
+        vec3 sc = st.rgb / st.a;
+        sc += sc * clamp(dot(vec2(h0 - hx, h0 - hy), light) * 2.4, -0.28, 0.4) * max(uRelief, 0.5);
+        col = mix(col, sc, st.a);
+      }
+    }
+  }
   // lights breathe: the brightest paint pulses a little, each patch out of step with its neighbours;
   // in the sky the stars twinkle faster, and water throws back glints
   vec3 nz = texture2D(tNoise, uvTop * 5.0).rgb;
@@ -171,8 +196,8 @@ vec3 paint(sampler2D tex, sampler2D a1, sampler2D a2, sampler2D a3, sampler2D f1
   return col;
 }
 
-vec3 paintA(vec2 s) { return paint(tA, tA1, tA2, tA3, tAf1, tAf2, tAd, uCamA, uFxA, uLayA, uDetA, uLensA, s); }
-vec3 paintB(vec2 s) { return paint(tB, tB1, tB2, tB3, tBf1, tBf2, tBd, uCamB, uFxB, uLayB, uDetB, uLensB, s); }
+vec3 paintA(vec2 s) { return paint(tA, tA1, tA2, tA3, tAf1, tAf2, tAd, uCamA, uFxA, uLayA, uDetA, uLensA, uPwA, uPsA, s); }
+vec3 paintB(vec2 s) { return paint(tB, tB1, tB2, tB3, tBf1, tBf2, tBd, uCamB, uFxB, uLayB, uDetB, uLensB, uPwB, uPsB, s); }
 
 // one sheet of blown petals: each cell of a grid holds a turning petal that opens onto the new painting.
 // A petal may reach over its neighbours, so the eight cells around are looked at too.
@@ -287,6 +312,65 @@ void main() {
   col *= 1.0 - uGrade.z * dot(v, v) * 1.5;
   col += (texture2D(tNoise, gl_FragCoord.xy / 64.0).b - 0.5) * 0.03;
   gl_FragColor = vec4(col, 1.0);
+}
+`;
+
+/* The brush's strokes (brush-motifs.js), drawn into a layer that covers the part of the painting in
+   view. Each stroke is one instance: a strip bent along a circular arc, as long as the brush has got
+   with it. Its bristles leave streaks along it, its edges are ragged, its end runs dry, and while it is
+   being painted its head is wet. */
+export const STROKE_VERT = /* glsl */`
+precision highp float;
+attribute vec3 position;     // x: along the stroke (0–1), y: across it (−1 or 1)
+attribute vec4 aA;           // start x, start y (painting heights, y down), direction, length
+attribute vec4 aB;           // width, the moment it is painted, how long that takes, seed
+attribute vec4 aC;           // colour, curvature
+uniform vec4 uWin;           // the part of the painting the layer covers: left, bottom (uv, y up), width, height
+uniform float uIa, uT;
+varying vec2 vS;
+varying float vG, vSeed, vRatio;
+varying vec3 vCol;
+void main() {
+  float g = clamp((uT - aB.y) / aB.z, 0.0, 1.0);
+  vG = g; vSeed = aB.w; vCol = aC.rgb; vRatio = aA.w / aB.x;
+  if (g <= 0.0) { vS = vec2(0.0); gl_Position = vec4(2.0, 2.0, 2.0, 1.0); return; }
+  float s = position.x * g, l = s * aA.w, k = aC.w;
+  float a0 = aA.z, a1 = a0 + k * l;
+  vec2 P = abs(k) < 1e-4 ? aA.xy + vec2(cos(a0), sin(a0)) * l : aA.xy + vec2(sin(a1) - sin(a0), cos(a0) - cos(a1)) / k;
+  // the tail narrows as the brush lifts; a little room either side for the ragged edge
+  float hw = aB.x * 0.5 * (1.0 - 0.35 * pow(s, 4.0)) * 1.15;    // ('half' is a reserved word in GLSL)
+  P += vec2(-sin(a1), cos(a1)) * position.y * hw;
+  vS = vec2(s, position.y * 1.15);
+  vec2 uv = vec2(P.x / uIa, 1.0 - P.y);
+  gl_Position = vec4((uv - uWin.xy) / uWin.zw * 2.0 - 1.0, 0.0, 1.0);
+}
+`;
+
+export const STROKE_FRAG = /* glsl */`
+precision highp float;
+uniform sampler2D tNoise;
+varying vec2 vS;
+varying float vG, vSeed, vRatio;
+varying vec3 vCol;
+void main() {
+  float s = vS.x, y = vS.y, ay = abs(y);
+  float along = s * vRatio;                                       // from the start, in stroke widths
+  float b1 = texture2D(tNoise, vec2(y * 0.21 + vSeed, along * 0.009 + vSeed * 0.37)).r;
+  float b2 = texture2D(tNoise, vec2(y * 0.57 + vSeed * 1.7, along * 0.021)).g;
+  float b3 = texture2D(tNoise, vec2(y * 1.7 + vSeed * 2.3, along * 0.006)).b;
+  float bristle = b1 * 0.5 + b2 * 0.3 + b3 * 0.2;                 // streaks running along the stroke
+  float edge = 1.0 - smoothstep(0.76, 1.02, ay + (bristle - 0.5) * 0.5);
+  float start = smoothstep(0.0, 0.45, along + 0.45 * (1.0 - ay * ay));
+  float headD = (vG - s) * vRatio;
+  float head = vG < 0.999 ? smoothstep(0.0, 0.35, headD + 0.35 * (1.0 - ay * ay)) : 1.0;
+  // the brush runs out of paint along a finished stroke: towards its end the bristles break into streaks
+  float dry = 0.06 + smoothstep(0.6, 1.0, s) * 0.64 + smoothstep(0.5, 1.0, ay) * 0.26;
+  float a = edge * start * head * smoothstep(dry - 0.07, dry + 0.07, bristle + 0.1);
+  // the bristles leave light and dark streaks; the ridges of the thickest paint catch the light
+  vec3 col = vCol * (0.64 + 0.66 * bristle);
+  col += smoothstep(0.58, 0.95, bristle) * (1.0 - ay) * 0.13;
+  col += (vG < 0.999 ? exp(-max(headD, 0.0) * 1.2) : 0.0) * 0.12; // wet at the head
+  gl_FragColor = vec4(col * a, a);
 }
 `;
 

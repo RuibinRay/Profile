@@ -24,7 +24,7 @@ All eight are yours. Seven were painted from your own travel photographs; the wa
 | File (in `assets/paintings/`) | Title on its label | Painted from | Used in |
 |---|---|---|---|
 | `ocean-*` | Starry Night Ocean | a Starry Night ocean scene, after Van Gogh | 1 and 8 |
-| `house-*` | The Flying House | Lijiang (`lijiang-01`) | 2 |
+| `house-*` | The Flying House (the night version, since 13 Nov: a crescent moon, stars, a band of sunset, one person at the window and one on the steps) | Lijiang (`lijiang-01`) | 2 |
 | `blossom-*` | Blossom at Blue Moon Valley | Blue Moon Valley, Lijiang (`lijiang-24`) | 2 |
 | `lanterns-*` | Room of Lanterns | the Van Gogh exhibition, Shanghai (`shanghai-02`) | 3 |
 | `yak-*` | The Yak Rider | Blue Moon Valley, Lijiang (`lijiang-19`) | 4 |
@@ -72,9 +72,9 @@ On the lighter stage (phones, low-power devices, no WebGL) these are a growing c
 
 | Scroll | Camera | On the painting | Words and controls |
 |---|---|---|---|
-| 2.75 – 3.3 | pulls back from the star (0.72, 0.24, zoom 3.2) to the whole painting | The house and its balloons hang above the forest; pale wisps drift. | — |
+| 2.75 – 3.3 | pulls back from the star (0.74, 0.22, zoom 3.2) past the crescent moon to the whole painting | The house and its balloons hang above the forest at nightfall; the brush rings the moon with light. | — |
 | 3.1 – 4.0 | (0.50, 0.50), zoom 1.04 → 1.22 | — | **Where my story begins**; *Three cultures. Three languages. One global perspective.*; the first paragraph of the biography. Three arched windows rise: **Costa Rica**, **China**, **Boston**, each a real photograph with its flag, each a link to that country. |
-| 4.0 – 4.55 | pushes toward the house, (0.50, 0.56), zoom 1.6, push 0.4 | The house separates from the sky. | Growing up between two cultures; what living across them taught me. |
+| 4.0 – 4.55 | pushes toward the house, (0.50, 0.55), zoom 1.6, push 0.4, focus on the house | The house separates from the sky; the brush winds a violet eddy into the sky left of the balloons, then rides the sweep into the blossom tree. | Growing up between two cultures; what living across them taught me. |
 | **4.4 – 5.05, brush** | — | A brush sweeps the blossom tree across, left to right. | — |
 | 5.1 – 5.9 | the tree and its prayer flags, (0.30, 0.58), zoom 1.3 → 1.42 | Pink petals drift; the waterfall runs. | **Three languages, one global mindset**; Mandarin, Spanish and English as three pennants, with their levels. |
 | 5.85 – 6.65 | pans to the mountains and the sun, (0.62, 0.40) | — | Education (Hult, Lincoln School), what drives me, off the clock, **Read the full story**, **Download my résumé**. |
@@ -157,6 +157,39 @@ Which star carries which link is set in `assets/js/cinema/chapters/contact.js`; 
 - **View portfolio** / **Skip experience**: `portfolio.html`, the same content on one ordinary page.
 - **Full views** open over the film and close back to where you were: `#view/story`, `#view/timeline`, `#view/atlas`, `#view/projects` (search and filters), `#view/credentials`.
 - **Deep links** from the first site still work: `#projects/<id>`, `#world/<CODE>`, `#experience/<id>`, `#skills/<id>`.
+
+## The painter's brush
+
+A paintbrush goes through the whole film (`brush.js`, `brush-motifs.js`). It is always on screen and always has a job: it paints Van Gogh's handwriting into the painting on stage, writes each chapter's title as it appears, rides the wet edge of the two brush transitions, and between jobs flies to where the next one starts and waits there, loaded with its next colour. Everything it does follows the scroll: scrolling back lifts the paint off stroke by stroke and takes the brush back along its path.
+
+| Scroll | Painting | What the brush paints |
+|---|---|---|
+| 0.04 – 0.9 | Starry Night Ocean | the great vortex of the sky, a band of five lanes of strokes wound round it |
+| 1.02 – 1.34 | | writes *Every journey adds another brushstroke to who I am.* |
+| 1.4 – 1.86 | | four rings of light round the brightest star, just before the camera flies into it |
+| 2.8 – 3.12 | The Flying House | three rings round the crescent moon |
+| 3.16 – 3.48 | | writes **Where my story begins** |
+| 3.55 – 4.18 | | a violet eddy in the sky left of the balloons |
+| 4.4 – 5.05 | | rides the brush transition's edge into the blossom tree |
+| 5.12 – 5.78 | Blossom at Blue Moon Valley | petals blown off the crown on the wind |
+| 6.0 – 6.5 | | the sun's rings, as the camera reaches the peaks |
+| 7.64 – 7.96 | Room of Lanterns | writes **My journey** |
+| 8.08 – 8.6, 9.9 – 10.4 | | rings of light round two lanterns, the first the one the figure looks up at |
+| 12.26 – 12.58 | The Yak Rider | writes **The world I've explored** |
+| 12.62 – 13.3 | | a cloud wound into a spiral over the snow peaks |
+| 15.5 – 15.82 | The Spiral Library | the tunnel's rings traced in gold |
+| 15.84 – 16.16 | | writes **Gallery of creations** |
+| 21.46 – 21.78 | Golden Field | writes **Energy and international business** |
+| 21.84 – 22.6 | | wheat flicked upward across the field |
+| 22.66 – 23.1 | | a cloud wound up in the open sky |
+| 24.55 – 25.3 | | rides the pour of gold into the white terraces |
+| 25.66 – 25.98 | White Terraces | writes **My palette of skills** |
+| 26.04 – 26.7 | | a turquoise eddy in the water of a pool |
+| 29.34 – 29.66 | Starry Night Ocean | writes **Beyond the horizon** |
+| 29.7 – 30.44 | | a ring of light round each star that is a way to get in touch, in the order they wake (the vortex and the star from the first chapter are still there) |
+| 30.5 – 30.82 | | writes **Let's talk** |
+
+On the WebGL stage the strokes are drawn every frame into a layer covering just the part of the painting in view (so they stay sharp at any zoom) and the painting shader mixes it in at the motif's depth, with the same low light on its ridges as the painting's own paint; transitions carry the new paint with the painting. On the lighter stage (phones) the same strokes are drawn on a canvas over the pictures. The gentle film (a device that asks for less motion) keeps the strokes and the brush, without the written titles or the rides; the still stage has neither. `?nobrush` turns it off.
 
 ## What the cinematic rebuild changed, chapter by chapter
 

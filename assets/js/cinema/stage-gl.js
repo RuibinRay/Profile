@@ -7,6 +7,10 @@
  * and, for the shot on stage, a close-up of the region its camera enters. A second, orthographic scene
  * carries what floats in front: motes and petals in the air, and the globe of chapter four.
  *
+ * The painter's brush (brush.js) lays fresh strokes into the paintings. They are drawn each frame into
+ * a "paint layer" that covers just the part of the painting in view (so they stay sharp at any zoom),
+ * and the painting shader mixes that layer in at its own depth, with the same light on its ridges.
+ *
  * Memory is kept low on purpose: only the paintings on stage and their neighbours hold textures, the
  * rest are released; big pictures are decoded off the main thread; the pixel ratio is capped and steps
  * down by itself when frames are slow. If even the lowest setting cannot keep up, `onTooSlow` hands
@@ -16,7 +20,7 @@ import * as THREE from '../../vendor/three.module.min.js';
 import { PAINTINGS } from './manifest.js';
 import { SHOTS, TRANSITIONS, sceneAt, cameraAt } from './storyboard.js';
 import { clampCam, toScreen, anchorOf, ease, lerp, span } from './view.js';
-import { PAINT_VERT, PAINT_FRAG, DUST_VERT, DUST_FRAG, CLIP_FRAG } from './shaders.js';
+import { PAINT_VERT, PAINT_FRAG, DUST_VERT, DUST_FRAG, CLIP_FRAG, STROKE_VERT, STROKE_FRAG } from './shaders.js';
 import { CLIPS } from './clips.js';
 import { createGlobe } from './globe.js';
 import { paintingURL, fillURL, best } from './formats.js';
@@ -125,6 +129,19 @@ export function createGLStage(canvas, opts = {}) {
 
   const cache = {};   // painting id → the bundle of textures (see load)
   const KEYS = ['tex', 'a', 'b', 'c', 'f1', 'f2'];
+  // Pictures arrive decoded; sending one to the graphics card takes a few milliseconds (a 4K painting with
+  // its mipmaps, more). They queue here and go up one per frame, so no frame carries a whole bundle.
+  // A texture joins its bundle only once it is up. Behind the curtain (a jump) they all go at once.
+  const uploads = [];
+  function upload(all) {
+    while (uploads.length) {
+      const u = uploads.shift();
+      if (cache[u.id] !== u.e) { drop(u.t); continue; }
+      renderer.initTexture(u.t);
+      if (u.det) u.e.det[u.det] = u.t; else u.e[u.key] = u.t;
+      if (!all) break;
+    }
+  }
   function load(id) {
     if (cache[id]) { cache[id].used = performance.now(); return cache[id].promise; }
     const p = PAINTINGS[id];
@@ -133,8 +150,7 @@ export function createGLStage(canvas, opts = {}) {
     const keep = (key, mip) => (t) => {
       if (!t) return;
       if (cache[id] !== e) { drop(t); return; }
-      e[key] = dress(t, mip);
-      renderer.initTexture(t);          // upload now, not in the middle of a transition
+      uploads.push({ id, e, key, t: dress(t, mip) });
     };
     // the picture and its flow-and-depth map are what a first frame needs; the layers follow
     e.promise = Promise.all([fetchTexture(paintingURL(p, e.size).url).then(keep('tex', true)), fetchTexture(p.aux.a).then(keep('a', false))]);
@@ -146,22 +162,24 @@ export function createGLStage(canvas, opts = {}) {
         fetchTexture(p.aux.c).then(keep('c', false));
         fetchTexture(fillURL(p, 1, fw)).then(keep('f1', true));
         fetchTexture(fillURL(p, 2, fw)).then(keep('f2', true));
+        // and the close-ups its shots go into, so none has to arrive in the middle of a transition
+        Object.keys(p.details || {}).forEach((name) => fetchDetail(id, e, name));
       });
     }
     return e.promise;
   }
-  /** The close-up a shot zooms into: fetched once its painting is on stage. */
-  function wantDetail(shot) {
-    const e = cache[shot.painting], p = PAINTINGS[shot.painting], name = shot.detail;
+  /** A close-up of painting `id` (fetched with its layers; wantDetail asks again in case it was missed). */
+  function fetchDetail(id, e, name) {
+    const p = PAINTINGS[id];
     if (!e || !e.layers || !name || !p.details || !p.details[name] || e.det[name] !== undefined) return;
     e.det[name] = null;
     fetchTexture(best(p.details[name].src)).then((t) => {
       if (!t) return;
-      if (cache[shot.painting] !== e) { drop(t); return; }
-      e.det[name] = dress(t, true, true);
-      renderer.initTexture(t);
+      if (cache[id] !== e) { drop(t); return; }
+      uploads.push({ id, e, det: name, t: dress(t, true, true) });
     });
   }
+  function wantDetail(shot) { fetchDetail(shot.painting, cache[shot.painting], shot.detail); }
   function release(keepIds) {
     Object.keys(cache).forEach((id) => {
       if (keepIds.indexOf(id) !== -1) return;
@@ -184,7 +202,7 @@ export function createGLStage(canvas, opts = {}) {
     else add(heading >= 0 ? next : prev);
     return ids;
   }
-  function ready(t) {
+  function ready(t, urgent) {
     if (Math.abs(t - lastReady) > 0.02) { heading = t > lastReady ? 1 : -1; lastReady = t; }
     const sc = sceneAt(t);
     const now = [sc.a.painting].concat(sc.b ? [sc.b.painting] : []);
@@ -201,7 +219,7 @@ export function createGLStage(canvas, opts = {}) {
       clipWindow(name, Math.round(span(m, 0.12, 0.88) * (CLIPS[name].frames - 1)));
     }
     dropClips(near);
-    return Promise.all(now.map(load)).then(() => { wantDetail(sc.a); if (sc.b) wantDetail(sc.b); });
+    return Promise.all(now.map(load)).then(() => { if (urgent) upload(true); wantDetail(sc.a); if (sc.b) wantDetail(sc.b); });
   }
 
   /* ---------- the painting ---------- */
@@ -220,12 +238,79 @@ export function createGLStage(canvas, opts = {}) {
     uniforms['t' + w + 'f1'] = { value: clear }; uniforms['t' + w + 'f2'] = { value: clear }; uniforms['t' + w + 'd'] = { value: blank };
     uniforms['uCam' + w] = v4(0.5, 0.5, 1, 0); uniforms['uFx' + w] = v4(0, 1, 1, 1.78);
     uniforms['uLay' + w] = v4(0.6, 0.3, 0, 0); uniforms['uDet' + w] = v4(0, 0, 1, 0); uniforms['uLens' + w] = v4(0, 0, 0.5, 0);
+    uniforms['uPw' + w] = v4(0, 0, 1, 1); uniforms['uPs' + w] = v4(0.15, 0, 0, 0.5);
   });
   const bgScene = new THREE.Scene(), bgCam = new THREE.Camera();
   const paintMat = new THREE.ShaderMaterial({ uniforms, vertexShader: PAINT_VERT, fragmentShader: PAINT_FRAG, depthTest: false, depthWrite: false });
   const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), paintMat);
   quad.frustumCulled = false;
   bgScene.add(quad);
+
+  /* ---------- the brush's paint ---------- */
+  // One strip of 10 segments, bent along each stroke's arc in the vertex shader; one instance per stroke.
+  const work = opts.brushwork || null;
+  const strokeGeo = (() => {
+    const n = 10, pos = [], idx = [];
+    for (let i = 0; i <= n; i++) pos.push(i / n, -1, 0, i / n, 1, 0);
+    for (let i = 0; i < n; i++) { const a = i * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx);
+    return g;
+  })();
+  const strokeScene = new THREE.Scene(), strokeCam = new THREE.Camera(), strokes = {};
+  if (work) Object.keys(work.byPainting).forEach((id) => {
+    const bk = work.byPainting[id], n = bk.dashes.length;
+    const A = new Float32Array(n * 4), B = new Float32Array(n * 4), C = new Float32Array(n * 4);
+    bk.dashes.forEach((d, i) => {
+      A.set([d.X, d.Y, d.a, d.L], i * 4); B.set([d.w, d.b, d.d, (i * 0.6180339) % 1], i * 4); C.set([d.col[0], d.col[1], d.col[2], d.k], i * 4);
+    });
+    const g = new THREE.InstancedBufferGeometry();
+    g.index = strokeGeo.index; g.setAttribute('position', strokeGeo.getAttribute('position'));
+    g.setAttribute('aA', new THREE.InstancedBufferAttribute(A, 4)); g.setAttribute('aB', new THREE.InstancedBufferAttribute(B, 4)); g.setAttribute('aC', new THREE.InstancedBufferAttribute(C, 4));
+    g.instanceCount = n;
+    const mat = new THREE.RawShaderMaterial({
+      uniforms: { uWin: { value: new THREE.Vector4(0, 0, 1, 1) }, uIa: { value: bk.ia }, uT: { value: 0 }, tNoise: { value: noise } },
+      vertexShader: STROKE_VERT, fragmentShader: STROKE_FRAG, transparent: true, depthTest: false, depthWrite: false,
+      blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor, blendEquation: THREE.AddEquation
+    });
+    const mesh = new THREE.Mesh(g, mat);
+    mesh.frustumCulled = false; mesh.visible = false;
+    strokeScene.add(mesh);
+    strokes[id] = { mesh, mat, first: bk.first, depth: bk.depth };
+  });
+  // compile the stroke shader now (it would otherwise compile on the first stroke, mid-scroll)
+  Object.keys(strokes).forEach((id) => { strokes[id].mesh.visible = true; });
+  try { renderer.compile(strokeScene, strokeCam); } catch (e) {}
+  Object.keys(strokes).forEach((id) => { strokes[id].mesh.visible = false; });
+  // one texture, two layers side by side: painting A's on the left, painting B's on the right, a gutter between
+  const paintRT = new THREE.WebGLRenderTarget(4, 4, { depthBuffer: false, stencilBuffer: false, generateMipmaps: false, minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter });
+  const GUT = 8;
+  let layerW = 1, layerH = 1, paintCleared = false;
+  uniforms.tP = { value: paintRT.texture }; uniforms.uPSize = { value: new THREE.Vector2(1, 1) };
+  const clearCol = new THREE.Color(0x050a2e);
+  /** Paint the brush's strokes for the painting of `shot`, as far as time t, over the part in view. */
+  function paintLayer(w, shot, c, t) {
+    const s = strokes[shot.painting], ps = uniforms['uPs' + w].value;
+    if (!s || t < s.first) { ps.y = 0; return; }
+    const ia = PAINTINGS[shot.painting].aspect, asp = W / H, fit = asp > ia ? ia / asp : 1;
+    // the painting's part on screen, as a box in the painting (rolled cameras need a bigger box), with a margin for parallax
+    let hx = 0.5 * asp / ia * fit / c.z * ia, hy = 0.5 * fit / c.z;
+    if (c.r) { const cs = Math.abs(Math.cos(c.r)), sn = Math.abs(Math.sin(c.r)); const X = hx * cs + hy * sn; hy = hx * sn + hy * cs; hx = X; }
+    hx = hx / ia * 1.12 + 0.012; hy = hy * 1.12 + 0.012;
+    s.mat.uniforms.uWin.value.set(c.x - hx, 1 - c.y - hy, 2 * hx, 2 * hy);
+    s.mat.uniforms.uT.value = t;
+    Object.keys(strokes).forEach((id) => { strokes[id].mesh.visible = id === shot.painting; });
+    const x0 = w === 'A' ? 0 : layerW + GUT;
+    renderer.setRenderTarget(paintRT);
+    if (!paintCleared) { renderer.setClearColor(0x000000, 0); renderer.clear(true, false, false); paintCleared = true; }
+    paintRT.viewport.set(x0, 0, layerW, layerH);
+    renderer.setRenderTarget(paintRT);
+    renderer.render(strokeScene, strokeCam);
+    renderer.setRenderTarget(null);
+    renderer.setClearColor(clearCol, 1);
+    uniforms['uPw' + w].value.set(c.x - hx, 1 - c.y - hy, 2 * hx, 2 * hy);
+    ps.set(s.depth, 1, x0 / paintRT.width, layerW / paintRT.width);
+  }
 
   /* ---------- film clips: a transition played from pre-rendered frames ---------- */
   // A transition that has a clip (clips.js, made by tools/prepare_transition.py from a video) is not
@@ -300,6 +385,11 @@ export function createGLStage(canvas, opts = {}) {
     renderer.setPixelRatio(dpr);
     renderer.setSize(w, h, false);
     uniforms.uAspect.value = w / h;
+    // the paint layers: a little under the screen's own sharpness is plenty for strokes this soft
+    const ls = tierName === 'low' ? 0.55 : 0.8, lw = Math.min(2400, Math.round(w * dpr * ls)), lh = Math.min(1500, Math.round(h * dpr * ls));
+    layerW = lw; layerH = lh;
+    paintRT.setSize(lw * 2 + GUT, lh);
+    uniforms.uPSize.value.set(lw * 2 + GUT, lh);
     cam.left = -w / 2; cam.right = w / 2; cam.top = h / 2; cam.bottom = -h / 2; cam.updateProjectionMatrix();
     dustU.uPx.value = dpr;
     reloadIfChanged();
@@ -331,6 +421,7 @@ export function createGLStage(canvas, opts = {}) {
 
   function render(t, clock) {
     const raw = Math.max(0, clock - lastClock), dt = Math.min(0.1, raw); lastClock = clock;
+    upload(false);
     if (!paused) { clockT += dt; }
     pointer.x += (pointer.tx - pointer.x) * Math.min(1, dt * 4);
     pointer.y += (pointer.ty - pointer.y) * Math.min(1, dt * 4);
@@ -340,6 +431,8 @@ export function createGLStage(canvas, opts = {}) {
     const sc = sceneAt(t);
     tame(cameraAt(sc.a, t, camA));
     setLayer('A', sc.a, camA);
+    paintCleared = false; uniforms.uPsB.value.y = 0;
+    paintLayer('A', sc.a, camA, t);
     let dim = camA.dim, sat = camA.sat, flow = camA.flow, ex = camA.ex, warm = camA.warm, mix = 0;
     state.shot = sc.a; state.cam = camA; state.shotB = null; state.camB = null;
     const da = DUST[sc.a.id];
@@ -348,6 +441,7 @@ export function createGLStage(canvas, opts = {}) {
     if (sc.b) {
       tame(cameraAt(sc.b, t, camB));
       setLayer('B', sc.b, camB);
+      paintLayer('B', sc.b, camB, t);
       const tr = sc.tr, kind = TYPE[tr.type] || 0;
       // the portals and the petals pace themselves; the sweeps ease in and out
       mix = (kind === 0 || kind >= 3) ? sc.mix : ease.smooth(sc.mix);
@@ -465,6 +559,6 @@ export function createGLStage(canvas, opts = {}) {
     setPointer(x, y) { pointer.tx = x; pointer.ty = y; },
     setPaused(p) { paused = p; },
     size() { return { W, H }; },
-    dispose() { release([]); dropClips(null); globe.dispose(); renderer.dispose(); }
+    dispose() { release([]); dropClips(null); globe.dispose(); paintRT.dispose(); Object.keys(strokes).forEach((id) => { strokes[id].mesh.geometry.dispose(); strokes[id].mat.dispose(); }); renderer.dispose(); }
   };
 }

@@ -82,7 +82,39 @@ In the app's browser (Chromium), stepping the film by hand because the pane was 
 
 Not checked: real-time smoothness with the pane visible, Safari, Firefox, a 4K monitor, a real phone, a mid-range laptop's graphics.
 
-## 4. Known limits
+## 4. The painter's brush, the night house and smoother scrolling (13 November)
+
+### What changed
+
+| What | Before | Now |
+|---|---|---|
+| Painting 2 | the daylight Flying House, 2000 × 1116 | the night version supplied on 13 November (crescent moon, stars, a band of sunset, a person at the window and one on the steps), enlarged to a 3840 × 2160 master with its layers and close-up rebuilt; the old one is kept in `tools/source/paintings/house-alternates/` |
+| Masters | ocean, house and lanterns not exactly 16:9 | all eight exactly 3840 × 2160 (`tools/upscale_paintings.py` trims a painting within 1% of 16:9 to exactly 16:9 before enlarging it) |
+| Chapter 2's camera | aimed at the daylight composition | passes the moon, then goes in toward the two people at the window and on the steps (`storyboard.js`) |
+| The painter's brush | none | a paintbrush through the whole film: it paints 14 Van Gogh motifs (1,400 strokes) into the paintings, writes the nine titles, rides the brush and pour transitions, and waits between jobs where the next starts. See "The painter's brush" in `STORYBOARD.md` |
+| Titles | rose and faded in | painted on: a brush-edged mask scrubbed open by the scroll (`.is-painted`, `assets/img/paint-reveal.svg`), with the brush riding its edge |
+| Gallery frames | a flat gold outline | a gilt frame painted in thick strokes with a moulded light (`assets/img/frame-painted.webp`, made by `tools/make_frame.py`) |
+| Glass behind words | frosted (a blur of what is behind) | dark glass without the blur, slightly more opaque |
+| Uploads to the graphics card | a painting's whole bundle as it arrived | one picture per frame; close-ups fetched with their painting, not at the transition into it |
+| The globe | built as chapter 4 approaches (a tenth of a second mid-scroll) | built at the visitor's first pause after the opening chapter (or as before, if they never pause) |
+
+New files: `assets/js/cinema/brush.js`, `assets/js/cinema/brush-motifs.js`, `assets/img/paint-reveal.svg`, `assets/img/frame-painted.webp`, `tools/make_frame.py`. Changed: `shaders.js` (the stroke shaders; the painting shader mixes in the brush's paint layer), `stage-gl.js` (the paint layer, the upload queue), `engine.js` (titles painted on), `main.js` (the brush), `chapters/world.js` (the globe at a pause), `cinema.css` (sections 10, 16 and the glass).
+
+### Why the film stuttered, and what was measured
+
+Measured by scrolling the whole film with the mouse wheel in Chromium (Apple M2, GPU on), 1440 × 900 at 2× pixels, the 3840 px paintings, every frame recorded:
+
+| | Frames over 20 ms | Worst frame | 95% of frames within |
+|---|---|---|---|
+| Before | 226 of 977 (23%) | 300 ms | 33–217 ms, depending on the chapter |
+| After | 15 of 1,035 (1.4%) | 67 ms | 16.8 ms in every chapter (60 frames a second) |
+| After, at 2560 × 1440 (1× pixels) | 23 of 1,613 (1.4%) | 67 ms (100 ms in one of two runs) | 16.8 ms in every chapter |
+
+The main cause was the frosted glass: every label, card and button with a background blur had to re-blur the painting behind it on every frame, because the painting moves every frame. In the last chapter (eight labels and the invitation) that alone made frames of 150–270 ms; without the blur the same stretch ran at 16.7 ms. The rest were uploads of whole 4K bundles at once, close-ups fetched at the moment of a transition, the globe being built mid-scroll, and the stroke shader compiling on its first stroke.
+
+Also checked: every motif and title at its moment on the WebGL stage (1440 × 900); the lighter stage at 390 × 844 (the strokes on the canvas, the titles, the brush kept in view at the edge when its strokes are off screen); the gentle film (brush and strokes, no written titles); the still stage (no brush). Not checked: Safari, Firefox, a real phone, a mid-range laptop, and real-time feel with a visible window (the measurements were in a headless browser).
+
+## 5. Known limits
 
 - **Why a Mac showed no animation.** macOS *Reduce motion* was on, and the site answered it with the calm stage: still pictures. It now answers with the gentle film and a one-click switch to everything. The full film is never forced on a device that asks for less motion.
 - **No Higgsfield clip is installed.** The Higgsfield connector in this session can read the account (10 credits, free plan) but cannot start a generation, and the browser pane is not signed in. The frames and prompts are ready (`tools/transitions/`), and the film plays a clip as soon as one is prepared.

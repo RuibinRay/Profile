@@ -62,14 +62,15 @@ export const SHOTS = [
     k('home', 1.9, { x: 0.378, y: 0.46, z: 2.7, d: 0.45, glow: 1.5, ox: 0.1, f: 0.0, b: 2.6 }),
     k('about', 0.35, { x: 0.371, y: 0.458, z: 9.0, d: 0.7, glow: 2.0, f: 0.0, b: 2.6 })
   ] },
-  // 2a. About. Out of the star into the sky beside the flying house; a slow arc round the house, then in toward it.
+  // 2a. About. Out of the star into the night sky beside the flying house, under the crescent moon; a slow
+  // arc round the house, then in toward the two people at its window and on its steps.
   { id: 'house', painting: 'house', detail: 'star', keys: [
-    k('home', 1.9, { x: 0.72, y: 0.24, z: 3.2, d: 0.0, ex: 1.25 }),
-    k('about', 0.35, { x: 0.56, y: 0.44, z: 1.22, d: 0.0, dim: 0.05, ox: -0.45 }),
-    k('about', 0.9, { x: 0.50, y: 0.50, z: 1.04, d: 0.1, dim: 0.26, ox: -0.1, f: 0.45, b: 1.0 }),
-    k('about', 1.55, { x: 0.50, y: 0.52, z: 1.22, d: 0.25, dim: 0.30, ox: 0.3, f: 0.45, b: 1.4 }),
-    k('about', 2.0, { x: 0.50, y: 0.56, z: 1.6, d: 0.4, dim: 0.16, ox: 0.5, f: 0.45, b: 1.0 }),
-    k('about', 2.65, { x: 0.52, y: 0.60, z: 2.0, d: 0.5, ox: 0.6 })
+    k('home', 1.9, { x: 0.74, y: 0.22, z: 3.2, d: 0.0, ex: 1.25 }),
+    k('about', 0.35, { x: 0.60, y: 0.40, z: 1.22, d: 0.0, dim: 0.05, ox: -0.45 }),
+    k('about', 0.9, { x: 0.50, y: 0.48, z: 1.04, d: 0.1, dim: 0.26, ox: -0.1, f: 0.45, b: 1.0 }),
+    k('about', 1.55, { x: 0.50, y: 0.50, z: 1.22, d: 0.25, dim: 0.30, ox: 0.3, f: 0.45, b: 1.4 }),
+    k('about', 2.0, { x: 0.50, y: 0.55, z: 1.6, d: 0.4, dim: 0.16, ox: 0.5, f: 0.62, b: 1.0 }),
+    k('about', 2.65, { x: 0.49, y: 0.62, z: 2.1, d: 0.5, ox: 0.6, f: 0.62 })
   ] },
   // 2b. The blossom tree: focus on the tree, then a pan to the mountains with the focus pulled out to them.
   { id: 'blossom', painting: 'blossom', detail: 'sun', keys: [

@@ -137,6 +137,19 @@ def lock_colour(sr, ref, sigma):
     return np.clip(out + 0.5, 0, 255).astype(np.uint8)
 
 
+def sixteen_nine(im):
+    """Trim a painting to exactly 16:9 (the film's frame), taking the same amount from each side.
+    The supplied paintings are within 1% of it, so this removes a few pixels at most."""
+    W, H = im.size
+    if abs(W / H - 16 / 9) < 1e-3:
+        return im
+    if W / H > 16 / 9:
+        w = int(round(H * 16 / 9)); x = (W - w) // 2
+        return im.crop((x, 0, x + w, H))
+    h = int(round(W * 9 / 16)); y = (H - h) // 2
+    return im.crop((0, y, W, y + h))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--weights', required=True, help='path to RealESRGAN_x4plus.pth')
@@ -154,7 +167,7 @@ def main():
         pid = cfg['id']
         if only and pid not in only:
             continue
-        src = Image.open(os.path.join(SRC, cfg['file'])).convert('RGB')
+        src = sixteen_nine(Image.open(os.path.join(SRC, cfg['file'])).convert('RGB'))
         W, H = src.size
         t0 = time.time()
         cached = os.path.join(a.cache, f'{pid}-x4.png') if a.cache else None

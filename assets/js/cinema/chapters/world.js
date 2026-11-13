@@ -62,6 +62,20 @@ export function build({ ui, SITE, RJY, h, beat, at, stage, engine }) {
         }
       }).catch((e) => { console.warn(e); }).then(() => { loading = null; });
   }
+  // Building the globe (country borders, a 2048 px map) takes a tenth of a second of the page's time.
+  // Done as chapter 4 approaches, that lands on moving frames; so it is done at the visitor's first
+  // pause after the opening chapter instead, when nothing on screen is moving. If there is no pause,
+  // it still happens on the way in (update, below).
+  if (engine && engine.onFrame) {
+    let seen = -1, still = 0;
+    engine.onFrame((t, sec, dt) => {
+      const st = stage();
+      if (!st || !st.globe || st.globe.built || loading) return;
+      if (Math.abs(t - seen) > 1e-4) { seen = t; still = 0; return; }
+      still += dt;
+      if (still > 0.6 && t > 2) ensureGlobe();
+    });
+  }
 
   let facing = -1, down = null, moved = false, hover = null;
   const medals = Array.from(list.querySelectorAll('.medal'));
