@@ -281,6 +281,7 @@ export function createBrush({ engine, getStage, work, reduced, writes }) {
       for (let i = 0; i < bk.dashes.length; i++) {
         const d = bk.dashes[i];
         if (d.b >= t) break;                               // in the order they are painted
+        if (d.b < shot.keys[0].t - 0.5) continue;          // painted in an earlier shot of the same painting: not shown again
         const gr = Math.min(1, (t - d.b) / d.d);
         g.beginPath();
         for (let j = 0; j <= 4; j++) {

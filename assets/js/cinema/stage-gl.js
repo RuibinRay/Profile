@@ -269,7 +269,7 @@ export function createGLStage(canvas, opts = {}) {
     g.setAttribute('aA', new THREE.InstancedBufferAttribute(A, 4)); g.setAttribute('aB', new THREE.InstancedBufferAttribute(B, 4)); g.setAttribute('aC', new THREE.InstancedBufferAttribute(C, 4));
     g.instanceCount = n;
     const mat = new THREE.RawShaderMaterial({
-      uniforms: { uWin: { value: new THREE.Vector4(0, 0, 1, 1) }, uIa: { value: bk.ia }, uT: { value: 0 }, tNoise: { value: noise } },
+      uniforms: { uWin: { value: new THREE.Vector4(0, 0, 1, 1) }, uIa: { value: bk.ia }, uT: { value: 0 }, uFrom: { value: -1 }, tNoise: { value: noise } },
       vertexShader: STROKE_VERT, fragmentShader: STROKE_FRAG, transparent: true, depthTest: false, depthWrite: false,
       blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor, blendEquation: THREE.AddEquation
     });
@@ -299,6 +299,8 @@ export function createGLStage(canvas, opts = {}) {
     hx = hx / ia * 1.12 + 0.012; hy = hy * 1.12 + 0.012;
     s.mat.uniforms.uWin.value.set(c.x - hx, 1 - c.y - hy, 2 * hx, 2 * hy);
     s.mat.uniforms.uT.value = t;
+    // only what is painted in this shot: the last chapter returns to the first painting with a clean sky
+    s.mat.uniforms.uFrom.value = shot.keys[0].t - 0.5;
     Object.keys(strokes).forEach((id) => { strokes[id].mesh.visible = id === shot.painting; });
     const x0 = w === 'A' ? 0 : layerW + GUT;
     renderer.setRenderTarget(paintRT);

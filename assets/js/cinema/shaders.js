@@ -326,12 +326,12 @@ attribute vec4 aA;           // start x, start y (painting heights, y down), dir
 attribute vec4 aB;           // width, the moment it is painted, how long that takes, seed
 attribute vec4 aC;           // colour, curvature
 uniform vec4 uWin;           // the part of the painting the layer covers: left, bottom (uv, y up), width, height
-uniform float uIa, uT;
+uniform float uIa, uT, uFrom;   // uFrom: strokes painted before this moment are not shown (a painting seen a second time starts clean)
 varying vec2 vS;
 varying float vG, vSeed, vRatio;
 varying vec3 vCol;
 void main() {
-  float g = clamp((uT - aB.y) / aB.z, 0.0, 1.0);
+  float g = aB.y < uFrom ? 0.0 : clamp((uT - aB.y) / aB.z, 0.0, 1.0);
   vG = g; vSeed = aB.w; vCol = aC.rgb; vRatio = aA.w / aB.x;
   if (g <= 0.0) { vS = vec2(0.0); gl_Position = vec4(2.0, 2.0, 2.0, 1.0); return; }
   float s = position.x * g, l = s * aA.w, k = aC.w;
