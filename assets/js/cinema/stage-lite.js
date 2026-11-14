@@ -5,12 +5,14 @@
  * up, and (in its calm form) when the visitor asks for reduced motion. Each painting is two images,
  * a far layer and a cut-out foreground (tools/prepare_paintings.py), moved with CSS transforms from
  * the same storyboard cameras; the transitions are clip-paths with a brushed edge, or plain
- * cross-fades in the calm form. Only compositor properties change while scrolling.
+ * cross-fades in the calm form. Only compositor properties change while scrolling. The globe of chapter
+ * four is drawn on a plain canvas (globe-flat.js).
  */
 import { PAINTINGS } from './manifest.js';
 import { SHOTS, sceneAt, cameraAt } from './storyboard.js';
 import { clampCam, toScreen, anchorOf, ease, lerp } from './view.js';
 import { best } from './formats.js';
+import { createFlatGlobe } from './globe-flat.js';
 
 // one jagged edge, reused for every brush sweep: how far each "bristle" runs ahead (fractions of the screen)
 const BRISTLES = [0.00, 0.07, 0.02, 0.11, 0.05, 0.14, 0.03, 0.09, 0.01, 0.12, 0.06, 0.10, 0.04];
@@ -22,6 +24,8 @@ export function createLiteStage(root, opts = {}) {
   const ring = document.createElement('div'); ring.className = 'lite__ring';
   const dimEl = document.createElement('div'); dimEl.className = 'lite__dim';
   root.appendChild(ring); root.appendChild(dimEl);
+  // the globe of chapter four, drawn without WebGL (globe-flat.js)
+  const globe = createFlatGlobe(root);
   let W = 1, H = 1;
   const pool = {};      // painting id → { el, bg, fg, ready }
   const camA = {}, camB = {};
@@ -140,11 +144,11 @@ export function createLiteStage(root, opts = {}) {
 
   resize();
   return {
-    kind: 'lite', calm, state, globe: null,
+    kind: 'lite', calm, state, globe,
     ready, render, resize,
     info() { return { tier: calm ? 'calm' : 'lite' }; },
-    setPointer() {}, setPaused() {}, setTier() {},
+    setPointer() {}, setPaused(p) { globe.setPaused(p || calm); }, setTier() {},
     size() { return { W, H }; },
-    dispose() { root.innerHTML = ''; root.classList.remove('lite'); }
+    dispose() { globe.dispose(); root.innerHTML = ''; root.classList.remove('lite'); }
   };
 }

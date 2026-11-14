@@ -160,6 +160,7 @@ Any transition can be played from a short generated video instead of the shader:
 | `?lite` | the lighter stage |
 | `?calm` | the calm (still) stage |
 | `?gl` | force the WebGL stage with every camera move, whatever the device asks for |
+| `?anygpu` | let the WebGL stage run even on software rendering (it normally hands over to the lighter stage) |
 | `?why` | shows which stage is running, at what quality, and why |
 | `?webp` | pretend the browser cannot show AVIF (tests the WebP files) |
 | `?step` | no scroll smoothing: the film is exactly where the scrollbar is |

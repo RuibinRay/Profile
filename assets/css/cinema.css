@@ -307,7 +307,9 @@ body.cine ::selection { background: rgba(246, 196, 67, .4); }
 .medal:hover small, .medal:focus-visible small, .medal.is-facing small { color: rgba(5, 10, 46, .72); }
 .world-list__more { display: flex; align-items: center; gap: 14px; margin-top: 8px; }
 .world-list__more .pill { flex: none; }
-.is-lite .world-globe { display: none; }
+/* the globe on the lighter stage (globe-flat.js): a canvas in the stage, under the words, with the WebGL globe's halo */
+.globe-flat { position: absolute; left: 0; top: 0; z-index: 5; border-radius: 50%; pointer-events: none; visibility: hidden; opacity: 0; will-change: transform, opacity;
+  box-shadow: 0 0 70px 14px rgba(246, 196, 67, .22), 0 0 0 1px rgba(255, 236, 170, .18); }
 .is-lite .world-list { width: min(30rem, 100vw - 2 * var(--edge)); }
 @media (max-width: 860px) {
   .world-head { width: auto; right: var(--edge); top: calc(var(--bar) + 2vh); }

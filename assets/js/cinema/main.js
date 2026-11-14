@@ -85,7 +85,7 @@ async function useGL() {
   try {
     const { createGLStage } = await import('./stage-gl.js');
     const s = createGLStage(canvas, {
-      reduced: gentle, brushwork, tier: (navigator.deviceMemory && navigator.deviceMemory <= 4) ? 'mid' : 'high',
+      reduced: gentle, brushwork, anyGPU: params.has('anygpu'), tier: (navigator.deviceMemory && navigator.deviceMemory <= 4) ? 'mid' : 'high',
       onTooSlow() { useLite(calm, 'WebGL could not keep up on this device'); },
       onLost() { useLite(calm, 'the graphics context was lost'); }
     });
@@ -213,7 +213,7 @@ function startTime() {
 }
 async function boot() {
   await formatsReady;      // AVIF or WebP: known before the first painting is asked for
-  if (want === 'gl' && !(await useGL())) { want = 'lite'; why = 'WebGL 2 is not available'; }
+  if (want === 'gl' && !(await useGL())) { want = 'lite'; why = 'WebGL 2 is not available, or only in software (no graphics card)'; }
   if (!stage) useLite(calm);
   const t0 = startTime();
   try { await Promise.race([stage.ready(t0, true), new Promise((r) => setTimeout(r, 6000))]); } catch (e) {}

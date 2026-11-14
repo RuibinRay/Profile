@@ -12,6 +12,93 @@ import { GLOBE_VERT, GLOBE_FRAG, HALO_FRAG } from './shaders.js';
 const FILL = { none: '#3b4a96', visited: '#f6c443', home: '#f6c443', current: '#3fbf86', wishlist: '#b5c0f0' };
 const LIT = { home: 1, visited: 1, current: 1 };
 
+/* ---------- the painted map, shared by the WebGL globe and the canvas globe (globe-flat.js) ---------- */
+function ring(ctx, pts, W, H, dx) {
+  let prev = null, shift = 0;
+  for (let i = 0; i < pts.length; i++) {
+    let lon = pts[i][0];
+    if (prev != null) { if (lon - prev > 180) shift -= 360; else if (lon - prev < -180) shift += 360; }
+    prev = lon;
+    const x = (lon + shift + 180) / 360 * W + dx, y = (90 - pts[i][1]) / 180 * H;
+    if (i) ctx.lineTo(x, y); else ctx.moveTo(x, y);
+  }
+  ctx.closePath();
+}
+function shape(ctx, f, W, H) {
+  const g = f.geometry; if (!g) return;
+  const polys = g.type === 'Polygon' ? [g.coordinates] : g.type === 'MultiPolygon' ? g.coordinates : [];
+  ctx.beginPath();
+  polys.forEach((poly) => poly.forEach((r) => { ring(ctx, r, W, H, 0); ring(ctx, r, W, H, -W); ring(ctx, r, W, H, W); }));
+}
+
+export function paintMap(size, features, statusOf) {
+  const W = size, H = size / 2;
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const x = c.getContext('2d');
+  let s = 1234567; const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  const k = W / 2048;
+  // the sea: a field of ultramarine dabs that follow a slow swirl
+  x.fillStyle = '#14318f'; x.fillRect(0, 0, W, H);
+  const blues = ['#0d2374', '#1a3fa6', '#2b5bd0', '#4379e0', '#0a1a5c', '#6f9df0', '#1c4bb8'];
+  x.lineCap = 'round';
+  for (let i = 0; i < 5200; i++) {
+    const px = rnd() * W, py = rnd() * H;
+    const a = Math.sin(px / W * 12.566 + py / H * 5) * 0.7 + Math.cos(py / H * 9) * 0.4;
+    const len = (14 + rnd() * 30) * k;
+    x.strokeStyle = blues[(rnd() * blues.length) | 0]; x.globalAlpha = 0.3 + rnd() * 0.4; x.lineWidth = (2 + rnd() * 5) * k;
+    x.beginPath(); x.moveTo(px, py);
+    x.quadraticCurveTo(px + Math.cos(a) * len * 0.5, py + Math.sin(a) * len * 0.5 + (rnd() - 0.5) * 6 * k, px + Math.cos(a) * len, py + Math.sin(a) * len);
+    x.stroke();
+  }
+  x.globalAlpha = 1;
+  // the land, on its own layer so its brushwork stays inside the coasts
+  const lc = document.createElement('canvas'); lc.width = W; lc.height = H;
+  const l = lc.getContext('2d');
+  features.forEach((f) => { shape(l, f, W, H); l.fillStyle = FILL.none; l.fill(); });
+  l.globalCompositeOperation = 'source-atop';
+  const violets = ['#2f3d86', '#4a5bb0', '#5a6cc4', '#33408c', '#6b7bd0'];
+  l.lineCap = 'round';
+  for (let i = 0; i < 3600; i++) {
+    const px = rnd() * W, py = rnd() * H, a = rnd() * 6.283, len = (8 + rnd() * 18) * k;
+    l.strokeStyle = violets[(rnd() * violets.length) | 0]; l.globalAlpha = 0.35 + rnd() * 0.35; l.lineWidth = (2 + rnd() * 4) * k;
+    l.beginPath(); l.moveTo(px, py); l.lineTo(px + Math.cos(a) * len, py + Math.sin(a) * len); l.stroke();
+  }
+  l.globalAlpha = 1; l.globalCompositeOperation = 'source-over';
+  features.forEach((f) => { shape(l, f, W, H); l.strokeStyle = 'rgba(8, 16, 70, .55)'; l.lineWidth = 1.1 * k; l.stroke(); });
+  x.drawImage(lc, 0, 0);
+  // the countries I know: lit, with a soft halo so even a small one can be found
+  features.forEach((f) => {
+    const st = statusOf(f.id);
+    if (!LIT[st] && st !== 'wishlist') return;
+    shape(x, f, W, H);
+    x.save();
+    x.shadowColor = st === 'current' ? 'rgba(90, 230, 160, .9)' : 'rgba(255, 205, 80, .9)'; x.shadowBlur = 22 * k;
+    x.fillStyle = FILL[st]; x.fill(); x.fill();
+    x.restore();
+    x.strokeStyle = st === 'current' ? '#0f6b46' : '#a86a10'; x.lineWidth = 1.4 * k; x.stroke();
+  });
+  return c;
+}
+
+/** The countries, ready for the map: shapes, bounding boxes (for picking) and which are lit. */
+export function readCountries(G, world) {
+  const features = G.feature(world, world.objects.countries).features.filter((f) => f.id !== 'ATA');
+  const bounds = {};
+  features.forEach((f) => { bounds[f.id] = G.geoBounds(f); });
+  return { features, bounds };
+}
+/** Is the point inside country f? The bounding box first, then the shape. */
+export function pickCountry(G, features, bounds, ll) {
+  for (const f of features) {
+    const b = bounds[f.id];
+    const inLon = b[0][0] <= b[1][0] ? (ll[0] >= b[0][0] && ll[0] <= b[1][0]) : (ll[0] >= b[0][0] || ll[0] <= b[1][0]);
+    if (!inLon || ll[1] < b[0][1] || ll[1] > b[1][1]) continue;
+    if (G.geoContains(f, ll)) return f;
+  }
+  return null;
+}
+export { FILL, LIT };
+
 export function createGlobe(THREE, scene, noise) {
   const group = new THREE.Group();
   group.visible = false;
@@ -33,73 +120,6 @@ export function createGlobe(THREE, scene, noise) {
   const q = new THREE.Quaternion(), v = new THREE.Vector3();
   const rect = { cx: 0, cy: 0, r: 100 };
 
-  function ring(ctx, pts, W, H, dx) {
-    let prev = null, shift = 0;
-    for (let i = 0; i < pts.length; i++) {
-      let lon = pts[i][0];
-      if (prev != null) { if (lon - prev > 180) shift -= 360; else if (lon - prev < -180) shift += 360; }
-      prev = lon;
-      const x = (lon + shift + 180) / 360 * W + dx, y = (90 - pts[i][1]) / 180 * H;
-      if (i) ctx.lineTo(x, y); else ctx.moveTo(x, y);
-    }
-    ctx.closePath();
-  }
-  function shape(ctx, f, W, H) {
-    const g = f.geometry; if (!g) return;
-    const polys = g.type === 'Polygon' ? [g.coordinates] : g.type === 'MultiPolygon' ? g.coordinates : [];
-    ctx.beginPath();
-    polys.forEach((poly) => poly.forEach((r) => { ring(ctx, r, W, H, 0); ring(ctx, r, W, H, -W); ring(ctx, r, W, H, W); }));
-  }
-
-  function paintMap(size) {
-    const W = size, H = size / 2;
-    const c = document.createElement('canvas'); c.width = W; c.height = H;
-    const x = c.getContext('2d');
-    let s = 1234567; const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
-    const k = W / 2048;
-    // the sea: a field of ultramarine dabs that follow a slow swirl
-    x.fillStyle = '#14318f'; x.fillRect(0, 0, W, H);
-    const blues = ['#0d2374', '#1a3fa6', '#2b5bd0', '#4379e0', '#0a1a5c', '#6f9df0', '#1c4bb8'];
-    x.lineCap = 'round';
-    for (let i = 0; i < 5200; i++) {
-      const px = rnd() * W, py = rnd() * H;
-      const a = Math.sin(px / W * 12.566 + py / H * 5) * 0.7 + Math.cos(py / H * 9) * 0.4;
-      const len = (14 + rnd() * 30) * k;
-      x.strokeStyle = blues[(rnd() * blues.length) | 0]; x.globalAlpha = 0.3 + rnd() * 0.4; x.lineWidth = (2 + rnd() * 5) * k;
-      x.beginPath(); x.moveTo(px, py);
-      x.quadraticCurveTo(px + Math.cos(a) * len * 0.5, py + Math.sin(a) * len * 0.5 + (rnd() - 0.5) * 6 * k, px + Math.cos(a) * len, py + Math.sin(a) * len);
-      x.stroke();
-    }
-    x.globalAlpha = 1;
-    // the land, on its own layer so its brushwork stays inside the coasts
-    const lc = document.createElement('canvas'); lc.width = W; lc.height = H;
-    const l = lc.getContext('2d');
-    features.forEach((f) => { shape(l, f, W, H); l.fillStyle = FILL.none; l.fill(); });
-    l.globalCompositeOperation = 'source-atop';
-    const violets = ['#2f3d86', '#4a5bb0', '#5a6cc4', '#33408c', '#6b7bd0'];
-    l.lineCap = 'round';
-    for (let i = 0; i < 3600; i++) {
-      const px = rnd() * W, py = rnd() * H, a = rnd() * 6.283, len = (8 + rnd() * 18) * k;
-      l.strokeStyle = violets[(rnd() * violets.length) | 0]; l.globalAlpha = 0.35 + rnd() * 0.35; l.lineWidth = (2 + rnd() * 4) * k;
-      l.beginPath(); l.moveTo(px, py); l.lineTo(px + Math.cos(a) * len, py + Math.sin(a) * len); l.stroke();
-    }
-    l.globalAlpha = 1; l.globalCompositeOperation = 'source-over';
-    features.forEach((f) => { shape(l, f, W, H); l.strokeStyle = 'rgba(8, 16, 70, .55)'; l.lineWidth = 1.1 * k; l.stroke(); });
-    x.drawImage(lc, 0, 0);
-    // the countries I know: lit, with a soft halo so even a small one can be found
-    features.forEach((f) => {
-      const st = statusOf(f.id);
-      if (!LIT[st] && st !== 'wishlist') return;
-      shape(x, f, W, H);
-      x.save();
-      x.shadowColor = st === 'current' ? 'rgba(90, 230, 160, .9)' : 'rgba(255, 205, 80, .9)'; x.shadowBlur = 22 * k;
-      x.fillStyle = FILL[st]; x.fill(); x.fill();
-      x.restore();
-      x.strokeStyle = st === 'current' ? '#0f6b46' : '#a86a10'; x.lineWidth = 1.4 * k; x.stroke();
-    });
-    return c;
-  }
-
   function pinTexture() {
     const c = document.createElement('canvas'); c.width = c.height = 64;
     const x = c.getContext('2d');
@@ -117,9 +137,8 @@ export function createGlobe(THREE, scene, noise) {
   /** Build the map once the country borders are loaded. `status(code)` → home | visited | current | wishlist | none. */
   function build(geo, world, status, size) {
     G = geo; statusOf = status;
-    features = G.feature(world, world.objects.countries).features.filter((f) => f.id !== 'ATA');
-    features.forEach((f) => { bounds[f.id] = G.geoBounds(f); });
-    const tex = new THREE.CanvasTexture(paintMap(size || 2048));
+    ({ features, bounds } = readCountries(G, world));
+    const tex = new THREE.CanvasTexture(paintMap(size || 2048, features, statusOf));
     tex.wrapS = THREE.RepeatWrapping; tex.anisotropy = 4;
     if (uniforms.tMap.value) uniforms.tMap.value.dispose();
     uniforms.tMap.value = tex;
@@ -165,13 +184,7 @@ export function createGlobe(THREE, scene, noise) {
   function pick(sx, sy) {
     if (!built) return null;
     const ll = lonLatAt(sx, sy); if (!ll) return null;
-    let hit = null;
-    for (const f of features) {
-      const b = bounds[f.id];
-      const inLon = b[0][0] <= b[1][0] ? (ll[0] >= b[0][0] && ll[0] <= b[1][0]) : (ll[0] >= b[0][0] || ll[0] <= b[1][0]);
-      if (!inLon || ll[1] < b[0][1] || ll[1] > b[1][1]) continue;
-      if (G.geoContains(f, ll)) { hit = f; break; }
-    }
+    const hit = pickCountry(G, features, bounds, ll);
     return hit ? { code: hit.id, name: (hit.properties && hit.properties.name) || hit.id, status: statusOf(hit.id) } : { code: null, lonLat: ll };
   }
   function face(code, lat) {

@@ -53,10 +53,17 @@ const TYPE = { portal: 0, brush: 1, pour: 1, swirl: 2, star: 3, petals: 4, lante
 export function createGLStage(canvas, opts = {}) {
   let renderer;
   try {
-    renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: false, powerPreference: 'high-performance', stencil: false });
+    // failIfMajorPerformanceCaveat: no context at all rather than one drawn in software
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: false, powerPreference: 'high-performance', stencil: false, failIfMajorPerformanceCaveat: true });
   } catch (e) { return null; }
   const gl = renderer.getContext();
   if (!gl || !renderer.capabilities.isWebGL2) { try { renderer.dispose(); } catch (e) {} return null; }
+  // WebGL drawn by the processor instead of a graphics card (Chrome's SwiftShader, Windows' Basic Render
+  // Driver, Linux's llvmpipe: what a browser falls back to when the graphics card is blocked or hardware
+  // acceleration is off) is far too slow for these paintings: the lighter stage is used instead.
+  const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+  const gpuName = dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) : '';
+  if (/swiftshader|basic render|llvmpipe|softpipe|software/i.test(gpuName) && !opts.anyGPU) { try { renderer.dispose(); } catch (e) {} return null; }
   renderer.autoClear = false;
   renderer.setClearColor(0x050a2e, 1);
 
