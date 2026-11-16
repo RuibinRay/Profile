@@ -375,7 +375,13 @@ body.cine ::selection { background: rgba(246, 196, 67, .4); }
 .frame--planet { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); }
 .px-planet { display: block; justify-self: center; width: min(46vh, 34vw, 430px); aspect-ratio: 1; cursor: grab; touch-action: pan-y; pointer-events: auto; -webkit-user-drag: none; user-select: none;
   filter: drop-shadow(0 0 26px rgba(120, 150, 255, .45)); transition: transform .35s var(--ease-out); }
-.px-planet:active { cursor: grabbing; }
+/* over the pixel world the mouse pointer is pixel art too (tools/make_cursors.py) */
+.frame--planet .px-planet, .frame--planet .px-planet:active { cursor: url(../img/cursors/grab.png) 16 16, grab; cursor: -webkit-image-set(url(../img/cursors/grab.png) 1x, url(../img/cursors/grab@2x.png) 2x) 16 16, grab; cursor: image-set(url(../img/cursors/grab.png) 1x, url(../img/cursors/grab@2x.png) 2x) 16 16, grab; }
+.frame--planet .pill { cursor: url(../img/cursors/hand.png) 10 0, pointer; cursor: -webkit-image-set(url(../img/cursors/hand.png) 1x, url(../img/cursors/hand@2x.png) 2x) 10 0, pointer; cursor: image-set(url(../img/cursors/hand.png) 1x, url(../img/cursors/hand@2x.png) 2x) 10 0, pointer; }
+/* landing: the planet comes toward the visitor while the big pixels close in (pixel-wipe.js) */
+.is-landing .frame--planet .px-planet { transform: scale(2.7); transition: transform .8s cubic-bezier(.55, 0, .85, .35); }
+.is-landing .frame--planet .frame__text { opacity: 0; transition: opacity .3s; }
+@media (prefers-reduced-motion: reduce) { html:not(.is-full).is-landing .frame--planet .px-planet { transform: none; } }
 .px-planet:hover, .px-planet:focus-visible { transform: scale(1.04); }
 .px-planet__disc { display: block; width: 100%; height: 100%; image-rendering: pixelated; image-rendering: crisp-edges; }
 .px-title { margin: 0 0 .4em; font-size: clamp(2rem, 4.4vw, 4rem); line-height: 1; color: var(--cream); }

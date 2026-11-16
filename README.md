@@ -48,6 +48,8 @@ At the end of the featured websites in the gallery hangs a small **pixel planet*
 - `assets/js/pixel/scenes.js`: the landscapes, drawn in code in true pixels. `pixel-kit.js`: the 5 × 7 pixel font and the planet (its lands and colours are `BIOMES`). `games.js`: the scrolling. `assets/css/games.css`: the look.
 - Screenshots: `assets/media/games/` (made with `tools/prepare_media.py`).
 - Trailers: `assets/media/games/video/`, an MP4 and a poster frame each, shown in a `<div class="reel">` inside a world's section. They load only when played. Keep each file under 50 MB (GitHub's limit for a comfortable push); the Shattered Worlds cinematic trailer was made in 4K at 60 frames a second and is shown at 1080p for that reason.
+- **The way in and out** (`assets/js/pixel/pixel-wipe.js`): pressing the planet or *Enter the pixel world* makes the planet grow while big square pixels close in on it like an iris, each flashing a world's colour; the games page then opens the same way from its centre. The links back to the portfolio close the same way. The browser's Back button shows the page uncovered.
+- **The mouse pointer is pixel art** on the games page and over the planet: an arrow, a pointing hand over anything that can be pressed, an open hand over the planet (`assets/img/cursors/`, drawn by `tools/make_cursors.py`).
 - Nothing on the page is downloaded from elsewhere, and none of it needs WebGL.
 
 ## Editing your content

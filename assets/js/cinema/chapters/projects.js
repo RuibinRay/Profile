@@ -13,6 +13,7 @@
  */
 import { ease } from '../view.js';
 import { pixelText, createPlanet, BIOMES } from '../../pixel/pixel-kit.js';
+import { leaveTo } from '../../pixel/pixel-wipe.js';
 
 const STATUS = { live: 'Live', 'in-progress': 'In progress', 'coming-soon': 'Coming soon' };
 const HUE = { gold: '#f6c443', ember: '#f3a35c', foam: '#dfe8fa', periwinkle: '#b6c1ee', teal: '#7fd6cf' };
@@ -66,6 +67,17 @@ export function build({ ui, SITE, RJY, h, beat, at, panels, calm, engine }) {
         h('ul', { class: 'px-lands', role: 'list' }, BIOMES.map((b) => h('li', { style: '--land:' + b.land[0], text: b.name }))),
         h('div', { class: 'btn-set' }, h('a', { class: 'pill pill--gold', href: 'games.html', text: 'Enter the pixel world' }))));
     stations.push({ el, weight: 1, side: -1, planet: true });
+    // Landing: the planet grows toward the visitor while big pixels close in on it, then the games page opens
+    // the same way (pixel-wipe.js). A drag is not a click; a click with a modifier key opens a tab as usual.
+    const land = (e) => {
+      if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;
+      e.preventDefault();
+      const r = globe.getBoundingClientRect();
+      document.documentElement.classList.add('is-landing');
+      leaveTo('games.html', { x: r.left + r.width / 2, y: r.top + r.height / 2 }, true);
+    };
+    globe.addEventListener('click', land);
+    el.querySelector('.btn-set a').addEventListener('click', land);
   }
   WALLS.forEach((field, i) => {
     const c = conOf(field), list = members(field);

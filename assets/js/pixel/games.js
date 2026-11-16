@@ -10,6 +10,7 @@
  */
 import { pixelText, createPlanet } from './pixel-kit.js';
 import { SCENES, traveller } from './scenes.js';
+import { pixelReveal, leaveTo, arriving } from './pixel-wipe.js';
 
 const root = document.documentElement;
 root.classList.remove('no-js'); root.classList.add('js');
@@ -109,6 +110,16 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(resize);
 window.addEventListener('load', resize);
 resize();
 raf = requestAnimationFrame(loop);
+
+/* ---------- arriving and leaving through big pixels (pixel-wipe.js) ---------- */
+// Arrived from the planet in the gallery: the page starts covered (a class set in the page's head) and opens.
+if (arriving() || root.classList.contains('is-arriving')) { pixelReveal(); root.classList.remove('is-arriving'); }
+// Going back to the portfolio: the pixels close on the link that was pressed.
+document.querySelectorAll('a[href^="index.html"], a[href="portfolio.html"]').forEach((a) => a.addEventListener('click', (e) => {
+  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;
+  e.preventDefault();
+  leaveTo(a.getAttribute('href'), { x: e.clientX || window.innerWidth / 2, y: e.clientY || window.innerHeight / 2 }, false);
+}));
 
 /* ---------- trailers: one at a time ---------- */
 const tapes = Array.from(document.querySelectorAll('.tape video'));

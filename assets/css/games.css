@@ -22,6 +22,14 @@ html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body { margin: 0; background: #0b0c2e; color: var(--paper); font: 400 1.0625rem/1.55 var(--sans); overflow-x: hidden; }
 img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; }
+/* The mouse pointer is pixel art here (tools/make_cursors.py): an arrow, a pointing hand over anything
+   that can be pressed, an open hand over the planet. Sharp screens get the 64 px drawings. */
+html { cursor: url(../img/cursors/arrow.png) 0 0, auto; cursor: -webkit-image-set(url(../img/cursors/arrow.png) 1x, url(../img/cursors/arrow@2x.png) 2x) 0 0, auto; cursor: image-set(url(../img/cursors/arrow.png) 1x, url(../img/cursors/arrow@2x.png) 2x) 0 0, auto; }
+a, button, summary, label, .btn, .hud__dot, .shot { cursor: url(../img/cursors/hand.png) 10 0, pointer; cursor: -webkit-image-set(url(../img/cursors/hand.png) 1x, url(../img/cursors/hand@2x.png) 2x) 10 0, pointer; cursor: image-set(url(../img/cursors/hand.png) 1x, url(../img/cursors/hand@2x.png) 2x) 10 0, pointer; }
+.px-planet, .px-planet:active { cursor: url(../img/cursors/grab.png) 16 16, grab; cursor: -webkit-image-set(url(../img/cursors/grab.png) 1x, url(../img/cursors/grab@2x.png) 2x) 16 16, grab; cursor: image-set(url(../img/cursors/grab.png) 1x, url(../img/cursors/grab@2x.png) 2x) 16 16, grab; }
+/* arriving through the pixel transition: covered until the squares open (if the script never runs, it clears by itself) */
+.is-arriving body::after { content: ''; position: fixed; inset: 0; z-index: 9998; background: #0b0c2e; animation: arrive-anyway 0s 3s forwards; }
+@keyframes arrive-anyway { to { visibility: hidden; } }
 .visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .skip { position: fixed; left: 12px; top: -80px; z-index: 50; padding: 10px 14px; background: var(--accent); color: var(--accent-ink); font-weight: 600; text-decoration: none; }
 .skip:focus { top: 12px; }
@@ -62,8 +70,7 @@ main { position: relative; z-index: 1; }
 .start, .end { min-height: 100vh; min-height: 100svh; justify-items: center; text-align: center; padding-top: 76px; padding-bottom: 10vh; }
 .start .title, .end .title { justify-items: center; font-size: clamp(2.5rem, min(9vw, 13vh), 7rem); margin-bottom: .35em; }
 .end .title { font-size: clamp(2rem, 6.6vw, 5.25rem); }
-.px-planet { width: min(38vh, 62vw, 380px); aspect-ratio: 1; margin: 0 auto 4vh; cursor: grab; touch-action: pan-y; filter: drop-shadow(0 0 0 #000); }
-.px-planet:active { cursor: grabbing; }
+.px-planet { width: min(38vh, 62vw, 380px); aspect-ratio: 1; margin: 0 auto 4vh; touch-action: pan-y; }
 .px-planet__disc { display: block; width: 100%; height: 100%; image-rendering: pixelated; image-rendering: crisp-edges; }
 .start__go { display: inline-block; margin-top: 30px; padding: 14px 20px 13px; font-size: clamp(1.25rem, 2.6vw, 2rem); line-height: 1; color: var(--accent-ink); background: var(--accent); border: 3px solid var(--accent-ink); box-shadow: 0 0 0 3px var(--accent), 6px 6px 0 3px rgba(4, 4, 20, .8); text-decoration: none; animation: blink 1.4s steps(2, jump-none) infinite; }
 .start__go .pxt { --px-shadow: transparent; }
