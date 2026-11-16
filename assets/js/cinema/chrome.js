@@ -22,6 +22,7 @@ export function createChrome({ engine, RJY, SITE, h, getStage, panels }) {
   const quick = [
     ['portfolio.html', 'View portfolio', 'Everything on one plain page'],
     ['#view/projects', 'All projects', 'Search and filter every project'],
+    ['games.html', 'Pixel World', 'The games I have made'],
     ['#view/timeline', 'Full timeline', 'Work, school and milestones'],
     ['#view/atlas', 'World atlas', 'The map, countries and photographs'],
     ['#view/credentials', 'Certificates', 'With links to verify them'],

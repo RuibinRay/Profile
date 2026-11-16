@@ -21,7 +21,7 @@ Plain HTML, CSS and JavaScript modules. No build step, no framework, no backend,
 | 2. Where My Story Begins | `#about` | Three cultures, three languages, school, what drives me; the full biography opens from here. | `data/site.js` → `about`, `education`, `profile.languages` |
 | 3. My Journey | `#experience` | Every job, school and milestone as a lantern on one golden stroke. Something still ahead is an unlit lantern. | `data/journey.js` |
 | 4. The World I've Explored | `#world` | A painted globe and the countries I know; each opens its places and photographs. | `data/travel.js`, `data/gallery.js` |
-| 5. Gallery of Creations | `#projects` | Every project as a framed canvas: the featured websites, then a wall per field. | `data/work.js` |
+| 5. Gallery of Creations | `#projects` | Every project as a framed canvas: the featured websites, then the pixel planet that leads to the games page, then a wall per field. | `data/work.js` |
 | 6. Energy and International Business | `#energy` | The HJAT internship as an energy landscape with six stops. | `data/journey.js` (`hjat`), `data/work.js` (`storage`) |
 | 7. My Palette of Skills | `#skills` | Skills as brushstrokes: tools and the work where each shows. Languages and certificates. | `data/palette.js`, `data/site.js` → `certifications`, `coursework`, `awards` |
 | 8. Beyond the Horizon | `#contact` | Every painted star is a button for one way to get in touch, then the invitation. | `data/site.js` → `links` |
@@ -39,6 +39,16 @@ Plain HTML, CSS and JavaScript modules. No build step, no framework, no backend,
 **Detail links** are the ones the first site used, so old links keep working on both pages: `#projects/<id>` (a case study), `#world/<CODE>` (a country), `#experience/<id>` (a journey entry), `#skills/<id>` (a colour of the palette), `#memories/<album>`.
 
 ---
+
+## The games page (`games.html`)
+
+At the end of the featured websites in the gallery hangs a small **pixel planet** with a land for each game. It turns by itself, can be spun by dragging, and a click (or the button) opens `games.html`: a pixel world to scroll through, one land per game (Shattered Worlds, MoonKeeper, Blood of the North, Neo Earth 2226), each with its title screen, what it is, and Play and Code links. As the page is scrolled the landscape and its colours change by a dither that climbs the screen, the interface takes the new world's accent colour, and a small traveller walks along the bottom. Also reached from the menu and from the plain portfolio.
+
+- `games.html` holds the words and links (it reads as a plain list without JavaScript). To add a game, copy a `<section class="screen world">`, give it a `data-world`, and add a scene of that name.
+- `assets/js/pixel/scenes.js`: the landscapes, drawn in code in true pixels. `pixel-kit.js`: the 5 × 7 pixel font and the planet (its lands and colours are `BIOMES`). `games.js`: the scrolling. `assets/css/games.css`: the look.
+- Screenshots: `assets/media/games/` (made with `tools/prepare_media.py`).
+- Trailers: `assets/media/games/video/`, an MP4 and a poster frame each, shown in a `<div class="reel">` inside a world's section. They load only when played. Keep each file under 50 MB (GitHub's limit for a comfortable push); the Shattered Worlds cinematic trailer was made in 4K at 60 frames a second and is shown at 1080p for that reason.
+- Nothing on the page is downloaded from elsewhere, and none of it needs WebGL.
 
 ## Editing your content
 

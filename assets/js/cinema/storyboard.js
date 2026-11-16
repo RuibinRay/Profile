@@ -38,7 +38,7 @@ export const CHAPTERS = [
   { id: 'about',      nav: 'About',      title: 'Where My Story Begins',              len: 4.6, land: 0.8,  painting: 'house',    blurb: 'Costa Rica, China, Boston and three languages' },
   { id: 'experience', nav: 'Experience', title: 'My Journey',                         len: 4.6, land: 0.65, painting: 'lanterns', blurb: 'Every job, school and milestone since 2020' },
   { id: 'world',      nav: 'World',      title: 'The World I’ve Explored',            len: 3.6, land: 0.7,  painting: 'yak',      blurb: 'A painted globe, five countries and their photographs' },
-  { id: 'projects',   nav: 'Projects',   title: 'Gallery of Creations',               len: 5.6, land: 0.65, painting: 'bookshop', blurb: 'Every project, from live websites to finance models' },
+  { id: 'projects',   nav: 'Projects',   title: 'Gallery of Creations',               len: 6.8, land: 0.65, painting: 'bookshop', blurb: 'Every project, from live websites to finance models' },
   { id: 'energy',     nav: 'Energy',     title: 'Energy and International Business',  len: 4.2, land: 0.7,  painting: 'field',    blurb: 'A summer of flow batteries and overseas markets' },
   { id: 'skills',     nav: 'Skills',     title: 'My Palette of Skills',               len: 3.8, land: 0.7,  painting: 'terraces', blurb: 'Skills, tools, languages and certificates' },
   { id: 'contact',    nav: 'Contact',    title: 'Beyond the Horizon',                 len: 2.8, land: 1.95, painting: 'ocean',    blurb: 'Email, LinkedIn, GitHub and my résumé' }
@@ -107,13 +107,13 @@ export const SHOTS = [
     k('world', 3.2, { x: 0.527, y: 0.468, z: 2.6, d: 0.0 }),
     k('projects', 0.3, { x: 0.50, y: 0.50, z: 1.05, d: 0.0, dim: 0.24, ox: -0.3 }),
     k('projects', 1.0, { x: 0.515, y: 0.48, z: 1.2, d: 0.25, dim: 0.42, f: 0.2, b: 0.8 }),
-    k('projects', 5.0, { x: 0.527, y: 0.468, z: 2.4, d: 0.95, dim: 0.5, ox: 0.3, f: 0.1, b: 1.6 }),
-    k('projects', 5.2, { x: 0.527, y: 0.468, z: 2.7, d: 1.0, dim: 0.3, f: 0.0, b: 1.2 }),
+    k('projects', 6.2, { x: 0.527, y: 0.468, z: 2.4, d: 0.95, dim: 0.5, ox: 0.3, f: 0.1, b: 1.6 }),
+    k('projects', 6.4, { x: 0.527, y: 0.468, z: 2.7, d: 1.0, dim: 0.3, f: 0.0, b: 1.2 }),
     k('energy', 0.35, { x: 0.527, y: 0.468, z: 7.5, d: 1.2, glow: 1.6, ex: 1.4 })
   ] },
   // 6. Energy. Out of the tunnel over the field; a low glide across the wheat in warm light.
   { id: 'field', painting: 'field', keys: [
-    k('projects', 5.2, { x: 0.60, y: 0.40, z: 2.2, d: 0.0, ex: 1.5 }),
+    k('projects', 6.4, { x: 0.60, y: 0.40, z: 2.2, d: 0.0, ex: 1.5 }),
     k('energy', 0.35, { x: 0.50, y: 0.48, z: 1.05, d: 0.1, dim: 0.16, ox: -0.5, warm: 0.3 }),
     k('energy', 1.0, { x: 0.55, y: 0.50, z: 1.15, d: 0.25, dim: 0.30, ox: -0.2, f: 0.3, b: 1.0, warm: 0.3 }),
     k('energy', 2.0, { x: 0.60, y: 0.50, z: 1.22, d: 0.35, dim: 0.44, ox: 0.2, f: 0.5, b: 1.2, warm: 0.35 }),
@@ -151,7 +151,7 @@ export const TRANSITIONS = [
   { from: 'blossom',  to: 'lanterns', type: 'petals',  dir: [1, 0.35],           span: [T('about', 4.2),      T('experience', 0.3)],  edge: ['#ff9dc0', '#ffcf7a'] },
   { from: 'lanterns', to: 'yak',      type: 'lantern', a: 'gaze',   b: 'rider',  span: [T('experience', 4.2), T('world', 0.35)],      edge: ['#ffcf7a', '#fff6e0'] },
   { from: 'yak',      to: 'bookshop', type: 'swirl',   a: 'sky',    b: 'tunnel', span: [T('world', 3.2),      T('projects', 0.3)],    edge: ['#ffffff', '#f9c84a'] },
-  { from: 'bookshop', to: 'field',    type: 'portal',  a: 'tunnel', b: 'sun',    span: [T('projects', 5.2),   T('energy', 0.35)],     edge: ['#ffe9a8', '#f9c84a'] },
+  { from: 'bookshop', to: 'field',    type: 'portal',  a: 'tunnel', b: 'sun',    span: [T('projects', 6.4),   T('energy', 0.35)],     edge: ['#ffe9a8', '#f9c84a'] },
   { from: 'field',    to: 'terraces', type: 'pour',    dir: [0.12, 1],           span: [T('energy', 3.75),    T('skills', 0.3)],      edge: ['#f6c443', '#7fdbe6'] },
   { from: 'terraces', to: 'return',   type: 'star',    a: 'star',   b: 'spiral', span: [T('skills', 3.3),     T('contact', 0.35)],    edge: ['#fff6d6', '#f6c443'] }
 ];

@@ -284,7 +284,69 @@ SITE.work = [
     related: ['s:analytics', 's:data-science', 's:ai', 'w:courtvision-ai', 'w:ml-cases']
   },
   {
-    id: 'ai-kingdom', short: 'AI Kingdom', constellation: 'digital', star: [0.90, 0.70], magnitude: 0.85,
+    id: 'hola-ola', short: 'Hola Ola', constellation: 'digital', star: [0.82, 0.30], magnitude: 0.9,
+    featured: true, status: 'live', glyph: 'ripple',
+    title: 'Hola Ola — The Beach, Canned',
+    tagline: 'A concept brand and homepage for a sparkling beach soda: six flavors, one for every hour of a beach day, told in scroll-driven films',
+    when: 'Nov 2026', org: 'Personal project · web design',
+    cover: { src: 'assets/media/work/hola-ola/hero.webp', w: 2048, h: 1280 },
+    context: 'A concept brand and homepage. “Hola Ola” means “hello, wave”, and the idea is a whole beach day, one can at a time: each of the six flavors belongs to an hour, from Dawn Patrol at 6 AM (cold brew and cacao) to Midnight Mora at 9 PM (blackberry and ginger).',
+    objective: 'Design a brand from nothing — name, idea, palette, type, product line — and build a homepage that sells the feeling of a day by the sea.',
+    role: 'Designed the brand and built the site. The cans, fruit, postcards and films were generated with AI image and video models through Higgsfield, from prompts I wrote and kept in the repository; I cut the films into frames and edited the commercial.',
+    approach: [
+      'Scroll films: each feature section is pinned while its own short film plays frame by frame with the scroll, drawn on a canvas; the hero is one dolly-in on the can while a whole day passes, from dawn to a glowing night',
+      'Phones get their own 9:16 film, retimed so its dawn, sunset and night land under the same captions',
+      'A flavor picker for the six hours, each with a looping clip of its fruit behind the can, and the page knows which flavor fits the visitor’s local time',
+      'A commercial cut from the films, in a wide version and a vertical one for Reels, TikTok and Shorts',
+      'Plain HTML, CSS and JavaScript with no build step; frames preload coarse first, then the rest'
+    ],
+    tools: ['HTML & CSS', 'JavaScript', 'Canvas', 'Higgsfield (GPT Image, Kling)', 'PowerShell', 'GitHub Pages'],
+    insights: [], results: ['Live: the homepage with three scroll films, the flavor picker, the postcards and the commercial'],
+    images: [
+      { src: 'assets/media/work/hola-ola/flavors.webp', w: 2048, h: 1280, alt: 'The flavor picker, “Pick your hour”, showing Sunset Sandía: a pink can with watermelon and hibiscus, its calories, sugar and caffeine', caption: 'Pick your hour: six flavors, each tied to a time of day' },
+      { src: 'assets/media/work/hola-ola/ad.webp', w: 2048, h: 1280, alt: 'The section “The ad”, with a video of the six cans lined up on a surfboard at sunset', caption: 'The commercial, edited from the scroll films' }
+    ],
+    links: [
+      { label: 'Open the site', url: 'https://ruibinray.github.io/WebDesign1/' },
+      { label: 'View the code', url: 'https://github.com/RuibinRay/WebDesign1' }
+    ],
+    related: ['s:web', 's:ai', 'w:rica-beef']
+  },
+  {
+    id: 'rica-beef', short: 'Rica Beef', constellation: 'digital', star: [0.38, 0.56], magnitude: 0.9,
+    featured: true, status: 'live', glyph: 'orbit',
+    title: 'Rica Beef — Every Cut Has a Sound',
+    tagline: 'A brand experience for paper-thin beef crisps from Japan, sold cut by cut, each named after the sound it makes',
+    when: 'Nov 2026', org: 'Personal project · web design',
+    cover: { src: 'assets/media/work/rica-beef/hero.webp', w: 2048, h: 1280 },
+    context: 'A brand experience built from a brief: a Japanese brand of paper-thin dried beef crisps, seasoned with a house salt and sold cut by cut. The idea: every cut has a sound (部位ごとに、音がある). Ribeye is “Pari”, the glass snap; brisket is “Zaku”, the deep crunch. The identity, the product details and the tasting language are creative proposals, marked as such in the brand book.',
+    objective: 'Make a visitor want to try it right now, by letting them hear it: sound does that faster than description.',
+    role: 'Designed the identity and built the website, and directed the campaign film and photography, which were generated with AI image, video and audio models through Higgsfield from a production kit kept as data in the repository.',
+    approach: [
+      'A brand book: story, voice, logo, colour, type, packaging and art direction, in English and Japanese',
+      'The hero is one ten-second 4K shot that the visitor plays by scrolling, with a still loop for visitors who ask for reduced motion',
+      'Each cut has its own waveform and a synthesised crunch the visitor can play, 3D packs, and meters for loud, rich and light',
+      'A 45-second film, “OTO”, storyboarded in fifteen frames and cut from generated takes, two music cues and seventeen sound effects',
+      'One data file is the single source for the website, the pack artwork and the image prompts; missing images show a “frame pending” panel, never a broken picture'
+    ],
+    tools: ['React', 'Vite', 'GSAP', 'Lenis', 'Web Audio', 'Higgsfield', 'Node.js', 'GitHub Pages'],
+    insights: [], results: ['Live: the website, the film, the brand book and the storyboards'],
+    images: [
+      { src: 'assets/media/work/rica-beef/cuts.webp', w: 2048, h: 1280, alt: 'The product page for Ribeye, “the glass snap”, on vermilion: its waveform, meters for loud, rich and light, a button to hear the snap, and the pack', caption: 'Every cut has its own page, colour, waveform and sound' },
+      { src: 'assets/media/work/rica-beef/film.webp', w: 2048, h: 1280, alt: 'A frame of the film: a man on a quiet night train about to bite a crisp, beside the line “Wherever it is quiet, bring the noise.”', caption: 'A loud snack for quiet places: the film “OTO”' }
+    ],
+    links: [
+      { label: 'Open the site', url: 'https://ruibinray.github.io/WebDesign2/' },
+      { label: 'View the code', url: 'https://github.com/RuibinRay/WebDesign2' }
+    ],
+    documents: [
+      { title: 'Brand book', kind: 'Docs', url: 'https://github.com/RuibinRay/WebDesign2/blob/main/docs/01-brand-book.md', note: 'Story, voice, logo, colour, type, packaging' },
+      { title: 'Film storyboard “OTO”', kind: 'Docs', url: 'https://github.com/RuibinRay/WebDesign2/blob/main/docs/02-film-storyboard.md', note: 'Fifteen frames with prompts, sound and budget' }
+    ],
+    related: ['s:web', 's:ai', 'w:hola-ola']
+  },
+  {
+    id: 'ai-kingdom', short: 'AI Kingdom', constellation: 'digital', star: [0.88, 0.88], magnitude: 0.85,
     featured: true, status: 'coming-soon', glyph: 'agents',
     title: 'AI Kingdom',
     tagline: 'A multi-agent workspace',

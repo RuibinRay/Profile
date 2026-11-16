@@ -12,6 +12,7 @@
  * reverses exactly.
  */
 import { ease } from '../view.js';
+import { pixelText, createPlanet, BIOMES } from '../../pixel/pixel-kit.js';
 
 const STATUS = { live: 'Live', 'in-progress': 'In progress', 'coming-soon': 'Coming soon' };
 const HUE = { gold: '#f6c443', ember: '#f3a35c', foam: '#dfe8fa', periwinkle: '#b6c1ee', teal: '#7fd6cf' };
@@ -48,6 +49,24 @@ export function build({ ui, SITE, RJY, h, beat, at, panels, calm, engine }) {
     // a canvas with nothing to look at yet holds the floor for less of the walk
     stations.push({ el, weight: w.cover ? 1 : 0.7, side: i % 2 ? -1 : 1, feature: true });
   });
+  // At the end of Digital Creations: the pixel world. A small planet with a land for each game I have made;
+  // it turns by itself, can be spun by dragging, and a click on it (or the button) opens the games page.
+  let planet = null;
+  {
+    const globe = h('a', { class: 'px-planet', href: 'games.html', 'aria-label': 'Pixel World: open the page of my games' });
+    planet = createPlanet(globe, { size: 104 });
+    const title = h('h3', { class: 'px-title' }, h('span', { class: 'visually-hidden', text: 'Pixel World' }));
+    title.appendChild(pixelText('Pixel World', { shadow: true }));
+    const el = h('article', { class: 'frame frame--feature frame--planet' },
+      globe,
+      h('div', { class: 'frame__text' },
+        h('p', { class: 'frame__kind', text: 'Digital Creations · Games' }),
+        title,
+        h('p', { class: 'frame__tag', text: 'The games I have made, as four lands of one small planet. Drag it to spin it; click or tap it to land.' }),
+        h('ul', { class: 'px-lands', role: 'list' }, BIOMES.map((b) => h('li', { style: '--land:' + b.land[0], text: b.name }))),
+        h('div', { class: 'btn-set' }, h('a', { class: 'pill pill--gold', href: 'games.html', text: 'Enter the pixel world' }))));
+    stations.push({ el, weight: 1, side: -1, planet: true });
+  }
   WALLS.forEach((field, i) => {
     const c = conOf(field), list = members(field);
     const el = h('section', { class: 'frame frame--wall', style: '--hue:' + (HUE[c.hue] || HUE.gold) },
@@ -64,7 +83,7 @@ export function build({ ui, SITE, RJY, h, beat, at, panels, calm, engine }) {
   ui.append(head, rail, tools);
 
   // the stations share the stretch between A and B (screens into the chapter) in proportion to their weight
-  const A = 1.12, B = 5.06, total = stations.reduce((n, s) => n + s.weight, 0);
+  const A = 1.12, B = 6.26, total = stations.reduce((n, s) => n + s.weight, 0);
   let acc = 0;
   stations.forEach((s) => { s.w = (B - A) * s.weight / total; s.c = at(A + acc + s.w / 2); acc += s.w; s.shown = false; });
   // the brush writes each featured canvas's title and line once the canvas has come to rest in the centre
@@ -99,7 +118,7 @@ export function build({ ui, SITE, RJY, h, beat, at, panels, calm, engine }) {
       const s = stations[i];
       const u = (t - s.c) / s.w;                 // −0.5 … 0.5 while this station holds the floor
       const far = u < -0.86 || u > 0.68;
-      if (far) { if (s.shown) { s.el.style.visibility = 'hidden'; s.shown = false; } continue; }
+      if (far) { if (s.shown) { s.el.style.visibility = 'hidden'; s.shown = false; if (s.planet && planet) { planet.setActive(false); s.front = false; s.el.classList.remove('is-front'); } } continue; }
       if (!s.shown) { s.el.style.visibility = 'visible'; s.shown = true; }
       const hold = 0.3;
       const k = u < -hold ? (u + hold) : u > hold ? (u - hold) : 0;
@@ -132,12 +151,12 @@ export function build({ ui, SITE, RJY, h, beat, at, panels, calm, engine }) {
       st.setProperty('--glint', Math.min(1, Math.abs(ry) / 26).toFixed(3));
       st.setProperty('--sheen', (50 + ry * 1.9).toFixed(1) + '%');
       const front = Math.abs(u) < 0.5 && o > 0.6;
-      if (front !== s.front) { s.front = front; s.el.classList.toggle('is-front', front); }
+      if (front !== s.front) { s.front = front; s.el.classList.toggle('is-front', front); if (s.planet && planet) planet.setActive(front); }
     }
   }
 
   beat(head, 0.6, 1.3);
-  beat(rail, 1.0, 5.22, { y: 0 });
-  beat(tools, 1.35, 5.2, { y: 10 });
+  beat(rail, 1.0, 6.42, { y: 0 });
+  beat(tools, 1.35, 6.4, { y: 10 });
   return { update };
 }

@@ -129,7 +129,16 @@ Measured the same way as section 4 (whole film, 1440 × 900 at 2×): 36 of 1,093
 
 Checked: the opening; every chapter's writing at 1440 × 900; the lighter stage at 390 × 844; the gentle film. Not checked: Safari and Firefox (the per-line mask uses `clamp()` inside `calc()` with a custom property, which needs Safari 15.4 or later; older browsers show the words without the writing), a real phone, a visible window.
 
-## 6. Known limits
+## 6. The pixel world, two web designs and a longer gallery (15 November)
+
+- **Two more featured websites** in Digital Creations: Hola Ola (a concept soda brand told in scroll films) and Rica Beef (a brand experience for beef crisps), with screenshots and case studies written from their own READMEs. 545 Days was removed earlier.
+- **The pixel planet** hangs at the end of the featured websites (`chapters/projects.js`, `assets/js/pixel/pixel-kit.js`): a 104-pixel planet with two lands for each of the four games, lit in five dithered steps, turning by itself, spun by dragging; a click opens the games page.
+- **`games.html`**, the games page: see "The games page" in the README.
+- **The gallery chapter is 1.2 screens longer** (5.6 → 6.8), so nine canvases, the planet and four walls each get about as long as before. Everything after it starts 1.2 later: chapters 6, 7 and 8 now begin at 22.0, 26.2 and 30.0, and the film is 32.8 screens long. The times in `STORYBOARD.md` for those chapters are 1.2 earlier than the film now runs.
+- Measured as before (whole film, 1440 × 900 at 2×): 95% of frames within 16.8 ms, worst 83 ms, one long script of 50 ms. The games page scrolls at a steady 16.7 ms a frame (worst 17 ms).
+- Checked: the planet turns, a drag spins it without opening the page, a click opens it; the four Play links; the accent colour and the bar following the world; desktop at 1440 × 900 and a phone at 390 × 844. Not checked: Safari, Firefox, a real phone.
+
+## 7. Known limits
 
 - **Why a Mac showed no animation.** macOS *Reduce motion* was on, and the site answered it with the calm stage: still pictures. It now answers with the gentle film and a one-click switch to everything. The full film is never forced on a device that asks for less motion.
 - **No Higgsfield clip is installed.** The Higgsfield connector in this session can read the account (10 credits, free plan) but cannot start a generation, and the browser pane is not signed in. The frames and prompts are ready (`tools/transitions/`), and the film plays a clip as soon as one is prepared.

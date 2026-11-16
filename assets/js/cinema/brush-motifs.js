@@ -60,14 +60,14 @@ export const MOTIFS = [
   { shot: 'bookshop', t: [15.5, 15.82], kind: 'swirl', c: [0.527, 0.468], r0: 0.05, r1: 0.2, turns: 1.25, lanes: 3, dir: 1, pal: PAL.gold, w: 0.012, len: 0.06, seed: 61 },
   // 7. The golden field: wheat flicked up across the field, then a cloud wound up in the open sky (the
   //    sun is behind the first card of chapter 6 at that moment)
-  { shot: 'field', t: [21.84, 22.6], kind: 'flicks', rect: [0.5, 0.56, 0.96, 0.8], n: 96, ang: -Math.PI / 2, pal: PAL.wheat, w: 0.0095, len: 0.042, seed: 71 },
-  { shot: 'field', t: [22.66, 23.1], kind: 'swirl', c: [0.447, 0.255], r0: 0.02, r1: 0.072, turns: 1.4, lanes: 4, dir: -1, pal: PAL.cloud, w: 0.0115, len: 0.042, seed: 72 },
+  { shot: 'field', t: [23.04, 23.8], kind: 'flicks', rect: [0.5, 0.56, 0.96, 0.8], n: 96, ang: -Math.PI / 2, pal: PAL.wheat, w: 0.0095, len: 0.042, seed: 71 },
+  { shot: 'field', t: [23.86, 24.3], kind: 'swirl', c: [0.447, 0.255], r0: 0.02, r1: 0.072, turns: 1.4, lanes: 4, dir: -1, pal: PAL.cloud, w: 0.0115, len: 0.042, seed: 72 },
   // 8. The white terraces: once the brush has laid the palette's colours (chapters/skills.js), an eddy
   //    turned in the turquoise water of a pool
-  { shot: 'terraces', t: [27.05, 27.7], kind: 'swirl', c: [0.7, 0.84], r0: 0.018, r1: 0.07, turns: 1.5, lanes: 4, dir: 1, pal: PAL.water, w: 0.012, len: 0.042, seed: 81 },
+  { shot: 'terraces', t: [28.25, 28.9], kind: 'swirl', c: [0.7, 0.84], r0: 0.018, r1: 0.07, turns: 1.5, lanes: 4, dir: 1, pal: PAL.water, w: 0.012, len: 0.042, seed: 81 },
   // 9. Back under the first sky: each star that is a way to get in touch gets its ring of light, in the
   //    order the stars wake (chapters/contact.js)
-  { shot: 'return', t: [29.7, 30.44], kind: 'halos', stars: [
+  { shot: 'return', t: [30.9, 31.64], kind: 'halos', stars: [
     ['star', 0.064, 0.08], ['moon', 0.122, 0.138], ['star2', 0.045, 0.058], ['star4', 0.04, 0.053],
     ['star7', 0.034, 0.046], ['star6', 0.04, 0.053], ['star3', 0.04, 0.053], ['star8', 0.034, 0.046]
   ], pal: PAL.star, w: 0.0085, len: 0.03, seed: 91 }

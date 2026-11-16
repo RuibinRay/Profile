@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Pixel World — the games of Ruibin Jin Yao</title>
+  <meta name="description" content="Four games by Ruibin (Ray) Jin Yao, each a land of one pixel world: Shattered Worlds, MoonKeeper, Blood of the North and Neo Earth 2226. All play in the browser.">
+  <meta name="author" content="Ruibin Jin Yao">
+  <meta name="theme-color" content="#0b0c2e">
+  <meta name="color-scheme" content="dark">
+  <link rel="canonical" href="https://ruibinray.github.io/Profile/games.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Pixel World — the games of Ruibin Jin Yao">
+  <meta property="og:description" content="Four games, four lands of one pixel world. Scroll to travel; every one plays in the browser.">
+  <meta property="og:url" content="https://ruibinray.github.io/Profile/games.html">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="preload" href="assets/fonts/instrument-sans-500.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/games.css?v=20261115b">
+</head>
+<body>
+  <a class="skip" href="#shattered-worlds">Skip to the games</a>
+
+  <!-- The world behind the page: drawn in true pixels by assets/js/pixel/games.js, scaled up without smoothing -->
+  <canvas id="sky" class="sky" aria-hidden="true"></canvas>
+
+  <header class="hud">
+    <a class="hud__back" href="index.html#projects"><span aria-hidden="true">&lt;</span> Portfolio</a>
+    <p class="hud__name" aria-live="polite">Pixel World</p>
+    <nav class="hud__dots" aria-label="Worlds">
+      <a class="hud__dot" href="#shattered-worlds"><span class="visually-hidden">Shattered Worlds</span></a>
+      <a class="hud__dot" href="#moonkeeper"><span class="visually-hidden">MoonKeeper</span></a>
+      <a class="hud__dot" href="#blood-of-the-north"><span class="visually-hidden">Blood of the North</span></a>
+      <a class="hud__dot" href="#neo-earth"><span class="visually-hidden">Neo Earth 2226</span></a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="screen start" id="start" data-world="space" data-name="Pixel World" data-accent="#f6c443" data-ink="#0b0c2e">
+      <div class="px-planet" aria-hidden="true"></div>
+      <h1 class="title" data-px="Pixel World">Pixel World</h1>
+      <p class="lead">Four games I made. Four lands of one small planet.</p>
+      <p class="hint">Drag the planet to spin it. Scroll to travel.</p>
+      <a class="start__go" href="#shattered-worlds" data-px="&gt; Start">Start</a>
+    </section>
+
+    <section class="screen world" id="shattered-worlds" data-world="shattered-worlds" data-name="World 1 · Shattered Worlds" data-accent="#c86bff" data-ink="#12072a">
+      <div class="world__text">
+        <p class="world__no">World 1 of 4</p>
+        <h2 class="title" data-px="Shattered/Worlds">Shattered Worlds</h2>
+        <p class="world__kind">A side-view 2D pixel open-world action RPG</p>
+        <p class="world__say">Two heroes wake with no memories on a post-nuclear, cyberpunk Earth stacked in three layers: Aurelia in the sky, the Surface, and Deepline underground. They fight to get their powers, and their way home, back.</p>
+        <ul class="chips">
+          <li>First playable build: Act 1, both heroes</li>
+          <li>Combos, skills, guard, awakening</li>
+          <li>Keyboard · gamepad · touch</li>
+        </ul>
+        <p class="btns">
+          <a class="btn btn--play" href="https://ruibinray.github.io/ShatteredWorld/" target="_blank" rel="noopener">Play<span class="visually-hidden"> Shattered Worlds (opens in a new tab)</span></a>
+          <a class="btn" href="https://github.com/RuibinRay/ShatteredWorld" target="_blank" rel="noopener">Code<span class="visually-hidden"> of Shattered Worlds (opens in a new tab)</span></a>
+        </p>
+      </div>
+      <a class="shot" href="https://ruibinray.github.io/ShatteredWorld/" target="_blank" rel="noopener" aria-label="Play Shattered Worlds (opens in a new tab)">
+        <img src="assets/media/games/shattered-worlds-1080.webp" srcset="assets/media/games/shattered-worlds-480.webp 480w, assets/media/games/shattered-worlds-1080.webp 1080w, assets/media/games/shattered-worlds.webp 1844w" sizes="(max-width: 860px) 92vw, 46vw" width="1844" height="1036" loading="lazy" decoding="async" alt="The title screen of Shattered Worlds: pixel-art mesas at dusk above a glowing violet chasm, a city hanging in the sky, and the menu New Game, Versus, Settings, Controls">
+      </a>
+      <div class="reel">
+        <h3 class="reel__head">Trailers</h3>
+        <figure class="tape">
+          <video controls playsinline preload="none" poster="assets/media/games/video/shattered-worlds-trailer.webp" width="1920" height="1080" aria-label="Shattered Worlds trailer, 1 minute 7 seconds, with sound">
+            <source src="assets/media/games/video/shattered-worlds-trailer.mp4" type="video/mp4">
+          </video>
+          <figcaption><b>Trailer</b> <span>1:07 · one hero wakes up with no memory; 40+ heroes, all of them with issues</span></figcaption>
+        </figure>
+        <figure class="tape">
+          <video controls playsinline preload="none" poster="assets/media/games/video/shattered-worlds-cinematic.webp" width="1920" height="1080" aria-label="Shattered Worlds cinematic trailer, 1 minute 50 seconds, with sound">
+            <source src="assets/media/games/video/shattered-worlds-cinematic.mp4" type="video/mp4">
+          </video>
+          <figcaption><b>Cinematic trailer</b> <span>1:50 · the three layers, the bosses and the ultimates (made in 4K at 60 frames a second; shown here at 1080p)</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="screen world world--flip" id="moonkeeper" data-world="moonkeeper" data-name="World 2 · MoonKeeper" data-accent="#ff9d2e" data-ink="#160c02">
+      <div class="world__text">
+        <p class="world__no">World 2 of 4</p>
+        <h2 class="title" data-px="Moon/Keeper">MoonKeeper</h2>
+        <p class="world__kind">A 3D Moon-base survival and building game, for ages 7 to 18</p>
+        <p class="world__say">A meteor shower has hit every station on the Moon. You are the only one left at Tranquility Deep, a base inside a lunar lava tube. With REGO the robot, keep the power on and the air in until rescue arrives, or build a Moon town in Unlimited mode. No choice is free: every machine eats power.</p>
+        <ul class="chips">
+          <li>Four modes, Cadet to Unlimited</li>
+          <li>Farm, make water, rebuild, explore</li>
+          <li>16 languages · a Mars preview</li>
+        </ul>
+        <p class="btns">
+          <a class="btn btn--play" href="https://ruibinray.github.io/NASA-MoonKeeper/" target="_blank" rel="noopener">Play<span class="visually-hidden"> MoonKeeper (opens in a new tab)</span></a>
+          <a class="btn" href="https://github.com/RuibinRay/NASA-MoonKeeper" target="_blank" rel="noopener">Code<span class="visually-hidden"> of MoonKeeper (opens in a new tab)</span></a>
+        </p>
+      </div>
+      <a class="shot" href="https://ruibinray.github.io/NASA-MoonKeeper/" target="_blank" rel="noopener" aria-label="Play MoonKeeper (opens in a new tab)">
+        <img src="assets/media/games/moonkeeper-1080.webp" srcset="assets/media/games/moonkeeper-480.webp 480w, assets/media/games/moonkeeper-1080.webp 1080w, assets/media/games/moonkeeper.webp 2048w" sizes="(max-width: 860px) 92vw, 46vw" width="2048" height="1280" loading="lazy" decoding="async" alt="The opening screen of MoonKeeper: an astronaut and a rover on the Moon with the Earth in the sky, and the button New Mission">
+      </a>
+    </section>
+
+    <section class="screen world" id="blood-of-the-north" data-world="blood-of-the-north" data-name="World 3 · Blood of the North" data-accent="#7fe8c0" data-ink="#04140f">
+      <div class="world__text">
+        <p class="world__no">World 3 of 4</p>
+        <h2 class="title" data-px="Blood of/the North">Blood of the North</h2>
+        <p class="world__kind">A third-person Viking action RPG · Rise of the Raven King</p>
+        <p class="world__say">Eirik's life from childhood to the law-rock at Gulen, following my story <i>The Rise of the Raven King</i> in seven acts and an epilogue. An open world runs from the home valley across the home waters to five great islands: raids, shield walls, a horse, and ships under oar and sail.</p>
+        <ul class="chips">
+          <li>Seven acts and an epilogue</li>
+          <li>Open world, by land and sea</li>
+          <li>English · 中文 · 日本語 · Español</li>
+        </ul>
+        <p class="btns">
+          <a class="btn btn--play" href="https://ruibinray.github.io/BloodOfNorth/" target="_blank" rel="noopener">Play<span class="visually-hidden"> Blood of the North (opens in a new tab)</span></a>
+          <a class="btn" href="https://github.com/RuibinRay/BloodOfNorth" target="_blank" rel="noopener">Code<span class="visually-hidden"> of Blood of the North (opens in a new tab)</span></a>
+        </p>
+      </div>
+      <a class="shot" href="https://ruibinray.github.io/BloodOfNorth/" target="_blank" rel="noopener" aria-label="Play Blood of the North (opens in a new tab)">
+        <img src="assets/media/games/blood-of-the-north-1080.webp" srcset="assets/media/games/blood-of-the-north-480.webp 480w, assets/media/games/blood-of-the-north-1080.webp 1080w, assets/media/games/blood-of-the-north.webp 2048w" sizes="(max-width: 860px) 92vw, 46vw" width="2048" height="1280" loading="lazy" decoding="async" alt="The title screen of Blood of the North, Rise of the Raven King: a green valley with turf-roofed longhouses and a river under misty mountains">
+      </a>
+    </section>
+
+    <section class="screen world world--flip" id="neo-earth" data-world="neo-earth" data-name="World 4 · Neo Earth 2226" data-accent="#58e6ff" data-ink="#021820">
+      <div class="world__text">
+        <p class="world__no">World 4 of 4</p>
+        <h2 class="title" data-px="Neo Earth/2226">Neo Earth 2226</h2>
+        <p class="world__kind">A futuristic open-world city game in 3D</p>
+        <p class="world__say">Neo Central: one continuous city of about 3.2 km by 3.2 km, from the houses of Arbor Heights to the sea. No story you have to follow. Walk, talk, eat, work, ride, race and fly; the city keeps its own schedule.</p>
+        <ul class="chips">
+          <li>1,423 buildings, a park, a canal, a port</li>
+          <li>Jobs, races, an aerocar, an orbital lift</li>
+          <li>Desktop: keyboard and mouse, or gamepad</li>
+        </ul>
+        <p class="btns">
+          <a class="btn btn--play" href="https://ruibinray.github.io/NeoWorld/" target="_blank" rel="noopener">Play<span class="visually-hidden"> Neo Earth 2226 (opens in a new tab)</span></a>
+          <a class="btn" href="https://github.com/RuibinRay/NeoWorld" target="_blank" rel="noopener">Code<span class="visually-hidden"> of Neo Earth 2226 (opens in a new tab)</span></a>
+        </p>
+      </div>
+      <a class="shot" href="https://ruibinray.github.io/NeoWorld/" target="_blank" rel="noopener" aria-label="Play Neo Earth 2226 (opens in a new tab)">
+        <img src="assets/media/games/neo-earth-1080.webp" srcset="assets/media/games/neo-earth-480.webp 480w, assets/media/games/neo-earth-1080.webp 1080w, assets/media/games/neo-earth.webp 2048w" sizes="(max-width: 860px) 92vw, 46vw" width="2048" height="1280" loading="lazy" decoding="async" alt="The title screen of Neo Earth 2226: glass towers and an orbital lift over a bay at sunset">
+      </a>
+    </section>
+
+    <section class="screen end" id="end" data-world="space" data-name="The end" data-accent="#f6c443" data-ink="#0b0c2e">
+      <h2 class="title" data-px="Thanks for/playing">Thanks for playing</h2>
+      <p class="lead">Every game runs in the browser: nothing to install.</p>
+      <p class="btns">
+        <a class="btn btn--play" href="index.html#projects">Back to the gallery</a>
+        <a class="btn" href="portfolio.html">Plain portfolio</a>
+        <a class="btn" href="#start">To the top</a>
+      </p>
+      <p class="small">Screenshots are the games' own title screens. The pixel landscapes and the planet on this page are drawn in code.</p>
+    </section>
+  </main>
+
+  <script type="module" src="assets/js/pixel/games.js?v=20261115b"></script>
+</body>
+</html>

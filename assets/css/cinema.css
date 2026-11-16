@@ -371,6 +371,25 @@ body.cine ::selection { background: rgba(246, 196, 67, .4); }
   .canvas small { padding-top: 6px; }
 }
 
+/* the pixel world at the end of Digital Creations (assets/js/pixel/pixel-kit.js): a planet to spin, in true pixels */
+.frame--planet { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); }
+.px-planet { display: block; justify-self: center; width: min(46vh, 34vw, 430px); aspect-ratio: 1; cursor: grab; touch-action: pan-y; pointer-events: auto; -webkit-user-drag: none; user-select: none;
+  filter: drop-shadow(0 0 26px rgba(120, 150, 255, .45)); transition: transform .35s var(--ease-out); }
+.px-planet:active { cursor: grabbing; }
+.px-planet:hover, .px-planet:focus-visible { transform: scale(1.04); }
+.px-planet__disc { display: block; width: 100%; height: 100%; image-rendering: pixelated; image-rendering: crisp-edges; }
+.px-title { margin: 0 0 .4em; font-size: clamp(2rem, 4.4vw, 4rem); line-height: 1; color: var(--cream); }
+.pxt { display: block; height: 1em; width: auto; max-width: 100%; overflow: visible; }
+.pxt__ink { fill: currentColor; }
+.pxt__shadow { fill: rgba(5, 10, 46, .9); }
+.px-lands { list-style: none; margin: 0 0 4px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.px-lands li { display: flex; align-items: center; gap: 8px; padding: 5px 10px 5px 8px; border: 2px solid rgba(246, 236, 212, .5); font: 500 .875rem/1.2 ui-monospace, 'SF Mono', Menlo, Consolas, monospace; color: var(--cream); background: rgba(5, 10, 46, .6); }
+.px-lands li::before { content: ''; width: 10px; height: 10px; background: var(--land); }
+@media (max-width: 860px) {
+  .frame--planet { grid-template-columns: 1fr; }
+  .px-planet { width: min(34vh, 56vw); }
+}
+
 /* 11. Energy: the field becomes an energy landscape ------------------------- */
 .en-head { left: var(--edge); top: calc(var(--bar) + 4vh); width: min(46rem, 58vw); }
 .en-head .statement { margin: 0 0 .5em; font-size: clamp(1.125rem, 1.5vw, 1.4375rem); color: var(--sun); }

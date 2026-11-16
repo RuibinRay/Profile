@@ -1,0 +1,127 @@
+/*
+ * games.css — the games page (games.html): a pixel world.
+ * The landscape is a canvas behind the page (assets/js/pixel/games.js). Everything in front of it is
+ * built from hard edges: square corners, two-pixel borders, stepped shadows, no blur. The accent colour
+ * (--accent) changes with the world on screen.
+ */
+@font-face { font-family: 'Instrument Sans'; src: url('../fonts/instrument-sans-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Instrument Sans'; src: url('../fonts/instrument-sans-400-italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Instrument Sans'; src: url('../fonts/instrument-sans-500.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Instrument Sans'; src: url('../fonts/instrument-sans-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+
+:root {
+  --ink: #0b0c2e; --paper: #fff8e6; --paper-2: #d9dcf2; --panel: rgba(8, 9, 34, .9);
+  --accent: #f6c443; --accent-ink: #0b0c2e;
+  --u: 4px;                       /* one "pixel" of the interface */
+  --edge: clamp(16px, 4.5vw, 72px);
+  --sans: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: #0b0c2e; color: var(--paper); font: 400 1.0625rem/1.55 var(--sans); overflow-x: hidden; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.skip { position: fixed; left: 12px; top: -80px; z-index: 50; padding: 10px 14px; background: var(--accent); color: var(--accent-ink); font-weight: 600; text-decoration: none; }
+.skip:focus { top: 12px; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* the world: true pixels, scaled up without smoothing */
+.sky { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; image-rendering: pixelated; image-rendering: crisp-edges; }
+.no-js .sky { display: none; }
+.no-js body { background: linear-gradient(#0b0c2e, #241b5c 40%, #3b1c72); }
+
+/* pixel text (pixel-kit.js): squares of the current colour, with a one-pixel shadow */
+.pxt { display: block; height: 1em; width: auto; max-width: 100%; overflow: visible; }
+.pxt__ink { fill: currentColor; }
+.pxt__shadow { fill: var(--px-shadow, rgba(4, 4, 20, .9)); }
+
+/* the bar at the top: back, where you are, the four worlds */
+.hud { position: fixed; z-index: 10; left: 0; right: 0; top: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px var(--edge); padding-top: calc(12px + env(safe-area-inset-top)); pointer-events: none; }
+.hud > * { pointer-events: auto; }
+.hud__back, .hud__name { margin: 0; padding: 7px 12px; background: var(--panel); border: 2px solid var(--paper); box-shadow: var(--u) var(--u) 0 rgba(4, 4, 20, .7); font: 600 .8125rem/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; text-decoration: none; white-space: nowrap; }
+.hud__back:hover { background: var(--accent); color: var(--accent-ink); border-color: var(--accent-ink); }
+.hud__name { border-color: var(--accent); color: var(--accent); transition: color .3s steps(3), border-color .3s steps(3); overflow: hidden; text-overflow: ellipsis; }
+.hud__dots { display: flex; gap: 8px; padding: 9px 10px; background: var(--panel); border: 2px solid var(--paper); box-shadow: var(--u) var(--u) 0 rgba(4, 4, 20, .7); }
+.hud__dot { display: block; width: 14px; height: 14px; border: 2px solid var(--paper); background: transparent; }
+.hud__dot.is-on { background: var(--accent); border-color: var(--accent); }
+.hud__dot:hover { background: var(--paper); }
+@media (max-width: 620px) { .hud__name { display: none; } }
+
+/* screens */
+main { position: relative; z-index: 1; }
+.screen { min-height: 130vh; min-height: 130svh; display: grid; align-content: center; padding: 96px var(--edge) 18vh; }
+.title { margin: 0 0 .5em; font-size: clamp(2.25rem, 6.4vw, 5.5rem); line-height: 1; color: var(--paper); display: grid; gap: .22em; justify-items: start; }
+.no-js .title { font: 600 clamp(2rem, 6vw, 4.5rem)/1 var(--mono); text-transform: uppercase; }
+.lead { margin: 0 0 .6em; font-size: clamp(1.125rem, 1.7vw, 1.5rem); line-height: 1.4; max-width: 34ch; text-shadow: 2px 2px 0 rgba(4, 4, 20, .85); }
+.hint, .small { margin: 0; font: 500 .875rem/1.5 var(--mono); color: var(--paper-2); text-shadow: 2px 2px 0 rgba(4, 4, 20, .85); }
+.small { max-width: 60ch; margin-top: 26px; }
+
+/* the start: the planet, the name, press start */
+.start, .end { min-height: 100vh; min-height: 100svh; justify-items: center; text-align: center; padding-top: 76px; padding-bottom: 10vh; }
+.start .title, .end .title { justify-items: center; font-size: clamp(2.5rem, min(9vw, 13vh), 7rem); margin-bottom: .35em; }
+.end .title { font-size: clamp(2rem, 6.6vw, 5.25rem); }
+.px-planet { width: min(38vh, 62vw, 380px); aspect-ratio: 1; margin: 0 auto 4vh; cursor: grab; touch-action: pan-y; filter: drop-shadow(0 0 0 #000); }
+.px-planet:active { cursor: grabbing; }
+.px-planet__disc { display: block; width: 100%; height: 100%; image-rendering: pixelated; image-rendering: crisp-edges; }
+.start__go { display: inline-block; margin-top: 30px; padding: 14px 20px 13px; font-size: clamp(1.25rem, 2.6vw, 2rem); line-height: 1; color: var(--accent-ink); background: var(--accent); border: 3px solid var(--accent-ink); box-shadow: 0 0 0 3px var(--accent), 6px 6px 0 3px rgba(4, 4, 20, .8); text-decoration: none; animation: blink 1.4s steps(2, jump-none) infinite; }
+.start__go .pxt { --px-shadow: transparent; }
+.start__go:hover, .start__go:focus-visible { animation: none; transform: translate(2px, 2px); box-shadow: 0 0 0 3px var(--accent), 4px 4px 0 3px rgba(4, 4, 20, .8); }
+@keyframes blink { 0% { opacity: 1; } 100% { opacity: .45; } }
+.no-js .start__go { font: 600 1.25rem/1 var(--mono); text-transform: uppercase; }
+
+/* a world: the words in a panel, the game's own screen beside it */
+.world { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(22px, 4vw, 64px); align-items: center; }
+.world--flip .world__text { order: 2; }
+.world__text { padding: clamp(18px, 2.4vw, 30px); background: var(--panel); border: 3px solid var(--accent); box-shadow: 0 0 0 3px var(--ink), 9px 9px 0 3px rgba(4, 4, 20, .75); transition: border-color .3s steps(3); }
+.world .title { color: var(--accent); font-size: clamp(2rem, 4.6vw, 4.25rem); transition: color .3s steps(3); }
+.world__no { margin: 0 0 14px; font: 600 .8125rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--paper-2); }
+.world__kind { margin: 0 0 .7em; font: 600 1.0625rem/1.35 var(--sans); color: var(--paper); }
+.world__say { margin: 0 0 1em; color: var(--paper); max-width: 58ch; }
+.chips { list-style: none; margin: 0 0 20px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.chips li { padding: 5px 9px; border: 2px solid var(--paper-2); font: 500 .8125rem/1.3 var(--mono); color: var(--paper); }
+.btns { margin: 0; display: flex; flex-wrap: wrap; gap: 14px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; min-height: 46px; padding: 0 18px; font: 600 .9375rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; text-decoration: none; color: var(--paper); background: var(--ink); border: 2px solid var(--paper); box-shadow: var(--u) var(--u) 0 rgba(4, 4, 20, .8); transition: transform .08s steps(2), box-shadow .08s steps(2); }
+.btn--play { color: var(--accent-ink); background: var(--accent); border-color: var(--accent-ink); box-shadow: 0 0 0 2px var(--accent), calc(var(--u) + 2px) calc(var(--u) + 2px) 0 2px rgba(4, 4, 20, .8); }
+.btn--play::before { content: ''; width: 0; height: 0; border: 6px solid transparent; border-left: 9px solid currentColor; border-right: 0; }
+.btn:hover, .btn:focus-visible { transform: translate(2px, 2px); box-shadow: 2px 2px 0 rgba(4, 4, 20, .8); }
+.btn--play:hover, .btn--play:focus-visible { box-shadow: 0 0 0 2px var(--accent), 4px 4px 0 2px rgba(4, 4, 20, .8); }
+.end .btns { justify-content: center; margin-top: 14px; }
+
+/* the game's own screen, in a cabinet frame */
+.shot { display: block; position: relative; border: 3px solid var(--paper); background: #05061c; box-shadow: 0 0 0 3px var(--ink), 0 0 0 6px var(--accent), 12px 12px 0 6px rgba(4, 4, 20, .75); transition: transform .12s steps(3); }
+.shot img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+.shot::after { content: 'PLAY'; position: absolute; right: 10px; bottom: 10px; padding: 6px 10px; font: 600 .8125rem/1 var(--mono); letter-spacing: .14em; color: var(--accent-ink); background: var(--accent); border: 2px solid var(--accent-ink); opacity: 0; transition: opacity .12s steps(2); }
+.shot:hover, .shot:focus-visible { transform: translate(-3px, -3px); }
+.shot:hover::after, .shot:focus-visible::after { opacity: 1; }
+
+/* trailers: two screens side by side under a world, in the same cabinet frame */
+.reel { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(22px, 3.4vw, 48px); margin-top: clamp(26px, 5vh, 56px); }
+.reel__head { grid-column: 1 / -1; margin: 0; width: fit-content; padding: 7px 12px; font: 600 .8125rem/1.2 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent-ink); background: var(--accent); border: 2px solid var(--accent-ink); box-shadow: var(--u) var(--u) 0 rgba(4, 4, 20, .8); }
+.tape { margin: 0; }
+.tape video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #05061c; border: 3px solid var(--paper); box-shadow: 0 0 0 3px var(--ink), 0 0 0 6px var(--accent), 12px 12px 0 6px rgba(4, 4, 20, .75); }
+.tape figcaption { margin-top: 20px; padding: 9px 12px; background: var(--panel); border: 2px solid var(--paper-2); font: 500 .875rem/1.45 var(--mono); color: var(--paper); }
+.tape figcaption b { color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-right: 6px; }
+.js .world .reel { opacity: 0; transform: translateY(24px); transition: opacity .4s steps(4) .2s, transform .4s steps(4) .2s; }
+.js .world.is-seen .reel { opacity: 1; transform: none; }
+
+/* a screen arrives in three steps, like a sprite */
+.js .world .world__text, .js .world .shot { opacity: 0; transform: translateY(24px); transition: opacity .4s steps(4), transform .4s steps(4), border-color .3s steps(3); }
+.js .world.is-seen .world__text, .js .world.is-seen .shot { opacity: 1; transform: none; }
+.js .world.is-seen .shot { transition-delay: .12s; }
+.js .world.is-seen .shot:hover { transform: translate(-3px, -3px); transition-delay: 0s; }
+
+@media (max-width: 860px) {
+  .screen { min-height: 0; padding: 88px var(--edge) 22vh; }
+  .start, .end { min-height: 100svh; }
+  .world { grid-template-columns: 1fr; }
+  .world--flip .world__text { order: 0; }
+  .world .shot { margin-right: 12px; }
+  .reel { grid-template-columns: 1fr; margin-right: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .start__go { animation: none; }
+  .js .world .world__text, .js .world .shot, .js .world .reel { opacity: 1; transform: none; transition: none; }
+}
