@@ -49,3 +49,23 @@ body.plain { background: var(--ink); }
 .plain .sec { --veil: .86; --veil-edge: .7; }
 .plain .index { margin-bottom: clamp(48px, 9vh, 104px); }
 .plain .footer { position: relative; z-index: 1; }
+
+/* The pixel world: the games (see games.html). A planet to spin beside its name, in hard-edged pixel style. */
+.pxw { margin-top: clamp(48px, 8vw, 96px); display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(24px, 5vw, 72px); align-items: center; padding: clamp(22px, 4vw, 48px); background: #0b0c2e; border: 3px solid var(--gold); box-shadow: 0 0 0 3px #050a2e, 10px 10px 0 3px rgba(2, 4, 20, .7); }
+.pxw .px-planet { display: block; justify-self: center; width: min(100%, 340px); aspect-ratio: 1; touch-action: pan-y; user-select: none; -webkit-user-drag: none; cursor: url(../img/cursors/grab.png) 16 16, grab; cursor: -webkit-image-set(url(../img/cursors/grab.png) 1x, url(../img/cursors/grab@2x.png) 2x) 16 16, grab; cursor: image-set(url(../img/cursors/grab.png) 1x, url(../img/cursors/grab@2x.png) 2x) 16 16, grab; }
+.pxw .px-planet__disc { display: block; width: 100%; height: 100%; image-rendering: pixelated; image-rendering: crisp-edges; }
+.pxw__kind { margin: 0 0 12px; font: 600 .8125rem/1 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+.pxw__title { margin: 0 0 .45em; font-size: clamp(2rem, 5.4vw, 4rem); line-height: 1; color: #fff8e6; }
+.pxw .pxt { display: block; height: 1em; width: auto; max-width: 100%; overflow: visible; }
+.pxw .pxt__ink { fill: currentColor; } .pxw .pxt__shadow { fill: rgba(246, 196, 67, .55); }
+.pxw__say { margin: 0 0 1em; max-width: 52ch; }
+.pxw .px-lands { list-style: none; margin: 0 0 22px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.pxw .px-lands a { display: flex; align-items: center; gap: 8px; padding: 6px 10px 6px 8px; border: 2px solid rgba(246, 236, 212, .5); font: 500 .875rem/1.2 ui-monospace, Menlo, Consolas, monospace; color: #fff8e6; text-decoration: none; cursor: url(../img/cursors/hand.png) 10 0, pointer; cursor: -webkit-image-set(url(../img/cursors/hand.png) 1x, url(../img/cursors/hand@2x.png) 2x) 10 0, pointer; cursor: image-set(url(../img/cursors/hand.png) 1x, url(../img/cursors/hand@2x.png) 2x) 10 0, pointer; }
+.pxw .px-lands a::before { content: ''; width: 10px; height: 10px; background: var(--land); }
+.pxw .px-lands a:hover, .pxw .px-lands a:focus-visible { border-color: var(--gold); background: rgba(246, 196, 67, .14); }
+.pxw__go { display: inline-flex; align-items: center; gap: 8px; min-height: 46px; padding: 0 18px; font: 600 .9375rem/1 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .1em; text-transform: uppercase; text-decoration: none; color: #0b0c2e; background: var(--gold); border: 2px solid #0b0c2e; box-shadow: 0 0 0 2px var(--gold), 6px 6px 0 2px rgba(2, 4, 20, .8); cursor: url(../img/cursors/hand.png) 10 0, pointer; cursor: -webkit-image-set(url(../img/cursors/hand.png) 1x, url(../img/cursors/hand@2x.png) 2x) 10 0, pointer; cursor: image-set(url(../img/cursors/hand.png) 1x, url(../img/cursors/hand@2x.png) 2x) 10 0, pointer; }
+.pxw__go::before { content: ''; border: 6px solid transparent; border-left: 9px solid currentColor; border-right: 0; }
+.pxw__go:hover, .pxw__go:focus-visible { transform: translate(2px, 2px); box-shadow: 0 0 0 2px var(--gold), 4px 4px 0 2px rgba(2, 4, 20, .8); }
+@media (max-width: 760px) { .pxw { grid-template-columns: 1fr; } .pxw .px-planet { width: min(64vw, 280px); } }
+.pxw .px-lands li { padding: 0; border: 0; background: none; }      /* the chip is the link here, not the list item (cinema.css) */
+.pxw .px-lands li::before { content: none; }

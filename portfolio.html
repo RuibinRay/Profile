@@ -23,9 +23,9 @@
 
   <link rel="preload" href="assets/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/instrument-sans-500.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/content.css?v=20261115e">
-  <link rel="stylesheet" href="assets/css/cinema.css?v=20261115e">
-  <link rel="stylesheet" href="assets/css/portfolio.css?v=20261115e">
+  <link rel="stylesheet" href="assets/css/content.css?v=20261116b">
+  <link rel="stylesheet" href="assets/css/cinema.css?v=20261116b">
+  <link rel="stylesheet" href="assets/css/portfolio.css?v=20261116b">
   <script>document.documentElement.className = 'js is-still';</script>
 </head>
 <body class="plain">
@@ -94,10 +94,25 @@
         <header class="sec__head reveal">
           <h2 class="sec__title" id="work-title">Projects</h2>
           <p class="sec__lede">Search every project, or filter by field. Each row opens the full case study; the constellations below show how the work groups together.</p>
-          <p class="sec__lede">I also make games: <a class="link" href="games.html">Pixel World</a> has the four you can play in the browser.</p>
         </header>
         <div class="index reveal" data-render="index"></div>
         <div data-render="work"></div>
+        <!-- The pixel world: the games. A planet to spin (assets/js/pixel/pixel-kit.js); it and the button open games.html -->
+        <div class="pxw reveal" id="pixel-world">
+          <a class="px-planet" href="games.html" aria-label="Pixel World: open the page of my games"></a>
+          <div class="pxw__text">
+            <p class="pxw__kind">Games</p>
+            <h3 class="pxw__title" data-px="Pixel World">Pixel World</h3>
+            <p class="pxw__say">I also make games. Four of them play in the browser, and each is a land of this small planet. Drag it to spin it; click or tap it to land.</p>
+            <ul class="px-lands" role="list">
+              <li style="--land:#6a2fb8"><a href="games.html#shattered-worlds">Shattered Worlds</a></li>
+              <li style="--land:#b9bcc8"><a href="games.html#moonkeeper">MoonKeeper</a></li>
+              <li style="--land:#eef4ff"><a href="games.html#blood-of-the-north">Blood of the North</a></li>
+              <li style="--land:#1fb8a8"><a href="games.html#neo-earth">Neo Earth 2226</a></li>
+            </ul>
+            <p><a class="pxw__go" href="games.html">Enter the pixel world</a></p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -167,20 +182,40 @@
     </div>
   </noscript>
 
-  <script defer src="data/site.js?v=20261115e"></script>
-  <script defer src="data/journey.js?v=20261115e"></script>
-  <script defer src="data/work.js?v=20261115e"></script>
-  <script defer src="data/palette.js?v=20261115e"></script>
-  <script defer src="data/travel.js?v=20261115e"></script>
-  <script defer src="data/gallery.js?v=20261115e"></script>
-  <script defer src="assets/js/content/ui.js?v=20261115e"></script>
-  <script defer src="assets/js/content/brush.js?v=20261115e"></script>
-  <script defer src="assets/js/content/places.js?v=20261115e"></script>
-  <script defer src="assets/js/content/sections.js?v=20261115e"></script>
-  <script defer src="assets/js/content/journey.js?v=20261115e"></script>
-  <script defer src="assets/js/content/work.js?v=20261115e"></script>
-  <script defer src="assets/js/content/atlas.js?v=20261115e"></script>
-  <script defer src="assets/js/content/constellation.js?v=20261115e"></script>
-  <script type="module" src="assets/js/portfolio.js?v=20261115e"></script>
+  <script defer src="data/site.js?v=20261116b"></script>
+  <script defer src="data/journey.js?v=20261116b"></script>
+  <script defer src="data/work.js?v=20261116b"></script>
+  <script defer src="data/palette.js?v=20261116b"></script>
+  <script defer src="data/travel.js?v=20261116b"></script>
+  <script defer src="data/gallery.js?v=20261116b"></script>
+  <script defer src="assets/js/content/ui.js?v=20261116b"></script>
+  <script defer src="assets/js/content/brush.js?v=20261116b"></script>
+  <script defer src="assets/js/content/places.js?v=20261116b"></script>
+  <script defer src="assets/js/content/sections.js?v=20261116b"></script>
+  <script defer src="assets/js/content/journey.js?v=20261116b"></script>
+  <script defer src="assets/js/content/work.js?v=20261116b"></script>
+  <script defer src="assets/js/content/atlas.js?v=20261116b"></script>
+  <script defer src="assets/js/content/constellation.js?v=20261116b"></script>
+  <script type="module" src="assets/js/portfolio.js?v=20261116b"></script>
+  <script type="module">
+    // the pixel world block: the planet, its title in pixels, and the same way in as from the film
+    import { pixelText, createPlanet } from './assets/js/pixel/pixel-kit.js?v=20261116b';
+    import { leaveTo } from './assets/js/pixel/pixel-wipe.js?v=20261116b';
+    const box = document.getElementById('pixel-world'), globe = box && box.querySelector('.px-planet');
+    if (globe) {
+      const planet = createPlanet(globe, { size: 104 });
+      const t = box.querySelector('[data-px]'), label = document.createElement('span');
+      label.className = 'visually-hidden'; label.textContent = t.textContent; t.textContent = ''; t.append(label, pixelText('Pixel World', { shadow: true }));
+      if ('IntersectionObserver' in window) new IntersectionObserver((es) => planet.setActive(es[0].isIntersecting)).observe(globe); else planet.setActive(true);
+      const land = (e) => {
+        if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;
+        e.preventDefault();
+        const r = globe.getBoundingClientRect();
+        planet.whirl();
+        leaveTo(e.currentTarget.getAttribute('href'), { x: r.left + r.width / 2, y: r.top + r.height / 2 }, true);
+      };
+      box.querySelectorAll('a[href^="games.html"]').forEach((a) => a.addEventListener('click', land));
+    }
+  </script>
 </body>
 </html>
