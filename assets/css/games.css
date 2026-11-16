@@ -107,10 +107,11 @@ main { position: relative; z-index: 1; }
 .shot:hover::after, .shot:focus-visible::after { opacity: 1; }
 
 /* trailers: two screens side by side under a world, in the same cabinet frame */
-.reel { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(22px, 3.4vw, 48px); margin-top: clamp(26px, 5vh, 56px); }
+.reel { grid-column: 1 / -1; order: 3; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(22px, 3.4vw, 48px); margin-top: clamp(26px, 5vh, 56px); }
 .reel__head { grid-column: 1 / -1; margin: 0; width: fit-content; padding: 7px 12px; font: 600 .8125rem/1.2 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent-ink); background: var(--accent); border: 2px solid var(--accent-ink); box-shadow: var(--u) var(--u) 0 rgba(4, 4, 20, .8); }
 .tape { margin: 0; }
 .tape video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #05061c; border: 3px solid var(--paper); box-shadow: 0 0 0 3px var(--ink), 0 0 0 6px var(--accent), 12px 12px 0 6px rgba(4, 4, 20, .75); }
+.tape .shot::after { content: 'OPEN'; }
 .tape figcaption { margin-top: 20px; padding: 9px 12px; background: var(--panel); border: 2px solid var(--paper-2); font: 500 .875rem/1.45 var(--mono); color: var(--paper); }
 .tape figcaption b { color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-right: 6px; }
 .js .world .reel { opacity: 0; transform: translateY(24px); transition: opacity .4s steps(4) .2s, transform .4s steps(4) .2s; }

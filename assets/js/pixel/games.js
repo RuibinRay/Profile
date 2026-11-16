@@ -8,10 +8,10 @@
  * scenes.js; the planet and the pixel font in pixel-kit.js. Without JavaScript the page is a plain
  * list of the four games.
  */
-import { pixelText, createPlanet } from './pixel-kit.js?v=20261115e';
-import { SCENES, traveller } from './scenes.js?v=20261115e';
-import { pixelReveal, leaveTo, arriving } from './pixel-wipe.js?v=20261115e';
-import { createTrail } from './pixel-trail.js?v=20261115e';
+import { pixelText, createPlanet } from './pixel-kit.js?v=20261116a';
+import { SCENES, traveller } from './scenes.js?v=20261116a';
+import { pixelReveal, leaveTo, arriving } from './pixel-wipe.js?v=20261116a';
+import { createTrail } from './pixel-trail.js?v=20261116a';
 
 const root = document.documentElement;
 root.classList.remove('no-js'); root.classList.add('js');
