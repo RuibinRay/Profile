@@ -191,6 +191,8 @@ export function createPlanet(host, o = {}) {
   return {
     el: cv,
     setActive(on) { if (on === active) return; active = on; if (on) wake(); },
+    /** Spin up (landing on it). */
+    whirl() { view.vlon = 260; active = true; wake(); },
     dispose() { active = false; if (raf) cancelAnimationFrame(raf); cv.remove(); }
   };
 }

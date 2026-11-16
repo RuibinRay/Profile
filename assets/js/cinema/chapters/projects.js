@@ -13,7 +13,7 @@
  */
 import { ease } from '../view.js';
 import { pixelText, createPlanet, BIOMES } from '../../pixel/pixel-kit.js';
-import { leaveTo } from '../../pixel/pixel-wipe.js';
+import { leaveTo } from '../../pixel/pixel-wipe.js?v=20261115e';
 
 const STATUS = { live: 'Live', 'in-progress': 'In progress', 'coming-soon': 'Coming soon' };
 const HUE = { gold: '#f6c443', ember: '#f3a35c', foam: '#dfe8fa', periwinkle: '#b6c1ee', teal: '#7fd6cf' };
@@ -74,6 +74,7 @@ export function build({ ui, SITE, RJY, h, beat, at, panels, calm, engine }) {
       e.preventDefault();
       const r = globe.getBoundingClientRect();
       document.documentElement.classList.add('is-landing');
+      planet.whirl();
       leaveTo('games.html', { x: r.left + r.width / 2, y: r.top + r.height / 2 }, true);
     };
     globe.addEventListener('click', land);

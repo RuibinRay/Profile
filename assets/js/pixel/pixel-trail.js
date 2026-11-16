@@ -15,6 +15,7 @@ export function createTrail(o = {}) {
   const g = cv.getContext('2d');
   let cell = 4, cols = 1, rows = 1;
   const bits = [];            // { x, y (in cells), vx, vy (cells a second), age, life, c }
+  const line = [];            // the path itself: grid squares the pointer has just crossed { x, y, age, c }
   let raf = 0, last = 0, px = null, py = null, owed = 0;
 
   function resize() {
@@ -33,6 +34,17 @@ export function createTrail(o = {}) {
   function tick(now) {
     const dt = last ? Math.min(0.05, (now - last) / 1000) : 0.016; last = now;
     g.clearRect(0, 0, cols, rows);
+    // the line: every square the pointer crossed stays lit for a moment, bright at the pointer and thinning behind it
+    for (let i = line.length - 1; i >= 0; i--) {
+      const q = line[i];
+      q.age += dt;
+      if (q.age >= 0.55) { line.splice(i, 1); continue; }
+      const k = q.age / 0.55;
+      g.globalAlpha = k < 0.3 ? 1 : k < 0.6 ? 0.7 : 0.38;
+      g.fillStyle = k < 0.12 ? '#ffffff' : q.c;
+      const s = k < 0.3 ? 3 : k < 0.6 ? 2 : 1;
+      g.fillRect(q.x - (s >> 1), q.y - (s >> 1), s, s);
+    }
     for (let i = bits.length - 1; i >= 0; i--) {
       const b = bits[i];
       b.age += dt;
@@ -44,20 +56,24 @@ export function createTrail(o = {}) {
       g.fillRect(Math.round(b.x), Math.round(b.y), b.s, b.s);
     }
     g.globalAlpha = 1;
-    raf = bits.length ? requestAnimationFrame(tick) : 0;
+    raf = bits.length || line.length ? requestAnimationFrame(tick) : 0;
   }
 
   window.addEventListener('pointermove', (e) => {
     if (e.pointerType === 'touch') return;                                // a finger is scrolling, not pointing
     if (px == null) { px = e.clientX; py = e.clientY; return; }
     const dx = e.clientX - px, dy = e.clientY - py, d = Math.hypot(dx, dy);
+    // the line: one lit square for every grid square along the way
+    const steps = Math.max(1, Math.ceil(d / cell)), lc = o.accent ? o.accent() : '#f6c443';
+    for (let i = 1; i <= steps && line.length < 400; i++) line.push({ x: Math.round((px + dx * i / steps) / cell), y: Math.round((py + dy * i / steps) / cell), age: 0, c: lc });
+    if (!raf) { last = 0; raf = requestAnimationFrame(tick); }
     // one pixel for about every 6 px travelled, laid along the path so a fast sweep leaves a line, not gaps
     owed += d / 6;
     const n = Math.min(8, Math.floor(owed)); owed -= n;
     for (let i = 0; i < n; i++) {
       const t = (i + 1) / n;
       add(px + dx * t + (Math.random() - 0.5) * cell * 3, py + dy * t + (Math.random() - 0.5) * cell * 3 + cell * 2,
-        (Math.random() - 0.5) * 5 - dx * 0.02, 2 + Math.random() * 5, 0.45 + Math.random() * 0.4);
+        (Math.random() - 0.5) * 5 - dx * 0.02, 2 + Math.random() * 5, 0.6 + Math.random() * 0.6);
     }
     px = e.clientX; py = e.clientY;
   }, { passive: true });
