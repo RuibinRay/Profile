@@ -40,6 +40,9 @@ a, button, summary, label, .btn, .hud__dot, .shot { cursor: url(../img/cursors/h
 .no-js .sky { display: none; }
 .no-js body { background: linear-gradient(#0b0c2e, #241b5c 40%, #3b1c72); }
 
+/* the pixels the mouse leaves behind (pixel-trail.js): over everything, and never in the way of a click */
+.px-trail { position: fixed; left: 0; top: 0; z-index: 40; pointer-events: none; image-rendering: pixelated; image-rendering: crisp-edges; }
+
 /* pixel text (pixel-kit.js): squares of the current colour, with a one-pixel shadow */
 .pxt { display: block; height: 1em; width: auto; max-width: 100%; overflow: visible; }
 .pxt__ink { fill: currentColor; }

@@ -11,6 +11,7 @@
 import { pixelText, createPlanet } from './pixel-kit.js';
 import { SCENES, traveller } from './scenes.js';
 import { pixelReveal, leaveTo, arriving } from './pixel-wipe.js';
+import { createTrail } from './pixel-trail.js';
 
 const root = document.documentElement;
 root.classList.remove('no-js'); root.classList.add('js');
@@ -120,6 +121,9 @@ document.querySelectorAll('a[href^="index.html"], a[href="portfolio.html"]').for
   e.preventDefault();
   leaveTo(a.getAttribute('href'), { x: e.clientX || window.innerWidth / 2, y: e.clientY || window.innerHeight / 2 }, false);
 }));
+
+/* ---------- the mouse sheds pixels in the colour of the world on screen (pixel-trail.js) ---------- */
+createTrail({ accent: () => getComputedStyle(root).getPropertyValue('--accent').trim() || '#f6c443' });
 
 /* ---------- trailers: one at a time ---------- */
 const tapes = Array.from(document.querySelectorAll('.tape video'));
