@@ -12,6 +12,7 @@
  *     draw(g, G, st, i)       paint the level below the top strip (y ≥ 14)
  *     par(level, i)           optional: the move count that earns three stars
  *     label(level, i)         optional: a name for the level, shown in the strip
+ *     solvedY                 optional: the top of the "solved" panel (70 unless given), to keep it off the picture
  *     check()                 optional: the solver run by tools/city-check.mjs })
  *
  * Controls it owns: Z or Backspace undo, R reset (itself undoable), L the level list, and the three small
@@ -136,10 +137,11 @@ export function puzzle(spec) {
       }
       if (P.mode === 'solved') {
         const s = stars(P.moves, parOf(P.i)), all = count(G) === N;
-        box(g, 50, 70, 220, 44, '#0b0c2e', spec.accent);
-        text(g, all ? 'ALL ' + N + ' SOLVED!' : 'SOLVED', 160, 76, spec.accent, { align: 'center', scale: 2 });
-        text(g, 'IN ' + P.moves + ' MOVES' + (s ? '  ' + '*'.repeat(s) : ''), 160, 94, '#fff8e6', { align: 'center' });
-        text(g, all ? 'SPACE OR TAP: THE LEVEL LIST' : 'SPACE OR TAP: NEXT LEVEL', 160, 104, '#d9dcf2', { align: 'center' });
+        const by = spec.solvedY == null ? 70 : spec.solvedY;
+        box(g, 50, by, 220, 44, '#0b0c2e', spec.accent);
+        text(g, all ? 'ALL ' + N + ' SOLVED!' : 'SOLVED', 160, by + 6, spec.accent, { align: 'center', scale: 2 });
+        text(g, 'IN ' + P.moves + ' MOVES' + (s ? '  ' + '*'.repeat(s) : ''), 160, by + 24, '#fff8e6', { align: 'center' });
+        text(g, all ? 'SPACE OR TAP: THE LEVEL LIST' : 'SPACE OR TAP: NEXT LEVEL', 160, by + 34, '#d9dcf2', { align: 'center' });
       }
     },
     /** for tests: the helper's own state */

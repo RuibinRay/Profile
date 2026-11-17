@@ -14,7 +14,7 @@ import { pixelReveal, leaveTo, arriving } from './pixel-wipe.js?v=20261116a';
 import { createTrail } from './pixel-trail.js?v=20261116a';
 import { drawCity, citySky, hitTest } from './city-draw.js?v=20261117a';
 import { enterCity, cityArriving, cityReveal } from './city-wipe.js?v=20261117a';
-import { GAMES, DISTRICTS, districtOf } from '../../../city/data/games.js?v=20261117c';
+import { GAMES, DISTRICTS, districtOf } from '../../../city/data/games.js?v=20261117d';
 
 const root = document.documentElement;
 root.classList.remove('no-js'); root.classList.add('js');
