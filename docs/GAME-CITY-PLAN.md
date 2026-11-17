@@ -5,8 +5,9 @@ A city of 50 small 2D browser games, reached from the Pixel World page of the po
 Pixel World only gets a gate that leads to it, and every game is **its own page** linked from the city.
 
 Status: **Phase 1 is built** — the shared kit (`city/kit/`), the test tool (`tools/city-check.mjs`), the City Pass, and
-the first five games: 1 Star Catcher, 11 Circuit Rewire, 29 Last Shift, 31 Rune Square, 41 Signal Junction. Phase 2 has
-begun with 2 Planet Spin. The other 44 buildings still stand in scaffolding. Nothing is published until you say so.
+the first five games: 1 Star Catcher, 11 Circuit Rewire, 29 Last Shift, 31 Rune Square, 41 Signal Junction. **Phase 2 is built
+too**: 2 Planet Spin, 14 Memory Shards, 21 Soft Landing, 37 King's Table, 42 Metro Builder. The other 40 buildings still
+stand in scaffolding. Phase 1 and Planet Spin are live; the other Phase 2 games are published when you say so.
 Open questions are at the end.
 
 ---
@@ -87,7 +88,8 @@ Location (decided): inside the portfolio repo, so the city shares the Pixel Worl
 transitions and cursors, and deploys with the site. Built so far: `city/index.html`, `city.css`, `city.js`,
 `city/data/games.js`, `assets/js/pixel/city-draw.js`, `assets/js/pixel/city-wipe.js`.
 Phase 1 added `city/kit/` (shell, draw, sfx, puzzle, story, ui.css), `tools/city-check.mjs`, `tools/city-new-game.mjs`
-(writes a game's page from the registry) and the level makers `tools/city-make-circuit.mjs` and `tools/city-make-runes.mjs`.
+(writes a game's page from the registry) and the level makers `tools/city-make-circuit.mjs`, `tools/city-make-runes.mjs`
+and `tools/city-make-metro.mjs`.
 A puzzle keeps its rules in a `logic.js` beside `game.js`, so the solver and the level maker share them with the game.
 
 ```
@@ -219,7 +221,7 @@ Each step ends with something you can open and play.
 |---|---|---|
 | 0 | **Foundation**: `kit/` (shell, ui, sfx, draw, puzzle, story), the registry of 50 games, the hub with all 50 buildings as scaffolding, the Pixel World gate | You can walk the city from Pixel World and every building says "Coming soon" |
 | 1 | **Vertical slice — 5 games, one per district and one per kit**: 1 Star Catcher (arcade), 11 Circuit Rewire (puzzle), 29 Last Shift (story), 31 Rune Square (logic), 41 Signal Junction (arcade-puzzle) | Five lit buildings, City Pass stamps work, harness checks pass |
-| 2 | 2 Planet Spin · 14 Memory Shards · 21 Soft Landing · 37 King's Table · 42 Metro Builder | |
+| 2 | 2 Planet Spin · 14 Memory Shards · 21 Soft Landing · 37 King's Table · 42 Metro Builder | Built: ten lit buildings, all ten pass `city-check.mjs` |
 | 3 | 3 Pixel Painter · 13 Neon Runner · 24 Cargo Crawler · 34 Saga Hall · 45 Case 2226 | |
 | 4 | 5 Lantern Link · 18 Signal Bounce · 26 Robot Steps · 39 Frozen Fjord · 47 Sky Lanes | |
 | 5 | 4 Courier Cat · 16 Drone Swarm · 22 Power Budget · 32 Oar Beat · 48 Block Switch | |

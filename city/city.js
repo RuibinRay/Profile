@@ -13,7 +13,7 @@ import { SCENES, traveller } from '../assets/js/pixel/scenes.js?v=20261117a';
 import { drawCity, drawBuilding, shapeOf, hitTest, citySky } from '../assets/js/pixel/city-draw.js?v=20261117a';
 import { enterCity, cityArriving, cityReveal } from '../assets/js/pixel/city-wipe.js?v=20261117a';
 import { createTrail } from '../assets/js/pixel/pixel-trail.js?v=20261116a';
-import { GAMES, DISTRICTS, TYPES, districtOf } from './data/games.js?v=20261117b';
+import { GAMES, DISTRICTS, TYPES, districtOf } from './data/games.js?v=20261117c';
 
 /* the City Pass: the games finished in this browser, stamped by each game (city/kit/shell.js keeps it under city:pass) */
 let pass = {};

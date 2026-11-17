@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Metro Builder — Game City No. 42</title>
+  <meta name="description" content="Metro Builder: Lay metro lines that link every station without going over the track budget. A small game in Ruibin (Ray) Jin Yao's Game City.">
+  <meta name="author" content="Ruibin Jin Yao">
+  <meta name="theme-color" content="#0b0c2e">
+  <meta name="color-scheme" content="dark">
+  <link rel="canonical" href="https://ruibinray.github.io/Profile/city/games/metro-builder/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Metro Builder — Game City">
+  <meta property="og:description" content="Lay metro lines that link every station without going over the track budget.">
+  <link rel="icon" href="../../../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../../assets/img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="stylesheet" href="../../../assets/css/games.css?v=20261117b">
+  <link rel="stylesheet" href="../../kit/ui.css?v=20261117a">
+  <style>:root { --accent: #58e6ff; --accent-ink: #021820; }</style>
+  <!-- Arrived through the towers from the city: start covered, so nothing flashes before they sink -->
+  <script>try { if (sessionStorage.getItem('px-city')) document.documentElement.classList.add('is-arriving'); } catch (e) {}</script>
+</head>
+<body class="game">
+  <header class="hud">
+    <a class="hud__back" href="../../#game-42" data-back><span aria-hidden="true">&lt;</span> Game City</a>
+    <h1 class="hud__name">Metro Builder</h1>
+    <div class="hud__tools">
+      <p class="hud__stat" id="stat" aria-live="off" hidden></p>
+      <button class="hud__btn" id="mute" type="button" aria-pressed="true">Sound on</button>
+      <button class="hud__btn" id="pause" type="button">Pause</button>
+    </div>
+  </header>
+  <main class="stage">
+    <canvas id="game" width="320" height="180" role="img" aria-label="Metro Builder, puzzle. Lay metro lines that link every station without going over the track budget."></canvas>
+    <p class="keys"><b>Click</b> or <b>drag</b> to lay track; click it again to lift it. Or <b>arrows</b> and <b>Space</b>. <b>Z</b> undo, <b>R</b> reset, <b>L</b> the maps, <b>Esc</b> pauses.</p>
+    <noscript><p class="lead game-nojs">Metro Builder is drawn and played with JavaScript. Turn it on to play.</p></noscript>
+  </main>
+  <script type="module">
+    import { boot } from '../../kit/shell.js?v=20261117a';
+    import def from './game.js?v=20261117a';
+    boot(def);
+  </script>
+</body>
+</html>
