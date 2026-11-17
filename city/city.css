@@ -45,6 +45,9 @@
 .lot-card__state { grid-column: 1 / -1; align-self: end; justify-self: start; margin-top: 10px; padding: 5px 9px; font: 600 .75rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: #160c02;
   background: repeating-linear-gradient(-45deg, #f2b134 0 8px, #ffd27a 8px 16px); border: 2px solid #160c02; }
 .lot-card__state.is-open { color: var(--d-ink); background: var(--d); }
+/* stamped in the City Pass: the game was finished in this browser */
+.lot-card__state.is-stamped { color: var(--d); background: var(--ink); border-color: var(--d); border-style: dashed; }
+#pass-count { color: var(--accent); }
 .lot-card.is-found { animation: found .3s steps(2) 4; border-color: var(--d); }
 @keyframes found { 0% { box-shadow: 0 0 0 4px var(--d), 6px 6px 0 4px rgba(4, 4, 20, .8); } 100% { box-shadow: 6px 6px 0 rgba(4, 4, 20, .8); } }
 

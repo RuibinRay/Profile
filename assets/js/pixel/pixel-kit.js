@@ -32,6 +32,8 @@ const G = {
 };
 const ALIAS = { '—': '-', '–': '-', '’': "'", '‘': "'", '·': '.' };
 const SVGNS = 'http://www.w3.org/2000/svg';
+/** The font table and its aliases, for drawing the same letters on a canvas (city/kit/draw.js). */
+export const FONT = G, FONT_ALIAS = ALIAS;
 
 /**
  * A line of pixel text as an SVG. Runs of lit pixels in a row become one rectangle. The SVG has no size

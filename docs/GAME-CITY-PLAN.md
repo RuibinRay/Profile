@@ -4,8 +4,10 @@ A city of 50 small 2D browser games, reached from the Pixel World page of the po
 (`PersonalWeb/Profile/games.html`). Game City is **its own page**, not a section of Pixel World:
 Pixel World only gets a gate that leads to it, and every game is **its own page** linked from the city.
 
-Status: **Phase 0 is built** — the clickable city in Pixel World, the tower transition, the Game City page (`city/`) with all
-50 buildings in scaffolding, and the registry. **No game is built yet.** Open questions are at the end.
+Status: **Phase 1 is built** — the shared kit (`city/kit/`), the test tool (`tools/city-check.mjs`), the City Pass, and
+the first five games: 1 Star Catcher, 11 Circuit Rewire, 29 Last Shift, 31 Rune Square, 41 Signal Junction. Phase 2 has
+begun with 2 Planet Spin. The other 44 buildings still stand in scaffolding. Nothing is published until you say so.
+Open questions are at the end.
 
 ---
 
@@ -84,6 +86,9 @@ from every district.
 Location (decided): inside the portfolio repo, so the city shares the Pixel World's font, pixel kit,
 transitions and cursors, and deploys with the site. Built so far: `city/index.html`, `city.css`, `city.js`,
 `city/data/games.js`, `assets/js/pixel/city-draw.js`, `assets/js/pixel/city-wipe.js`.
+Phase 1 added `city/kit/` (shell, draw, sfx, puzzle, story, ui.css), `tools/city-check.mjs`, `tools/city-new-game.mjs`
+(writes a game's page from the registry) and the level makers `tools/city-make-circuit.mjs` and `tools/city-make-runes.mjs`.
+A puzzle keeps its rules in a `logic.js` beside `game.js`, so the solver and the level maker share them with the game.
 
 ```
 PersonalWeb/Profile/
@@ -248,7 +253,8 @@ Tests never clear your browser storage: saving is stubbed while a test runs.
 ## 9. Questions for you
 
 1. ~~Where the city lives~~ — decided: inside the portfolio, `city/`.
-2. **Your characters.** May story games use your own characters — REGO from MoonKeeper, the Shattered Worlds heroes,
+2. **Your characters.** (Until you answer, story games use new characters: Last Shift has its own keeper, crew and base.)
+    May story games use your own characters — REGO from MoonKeeper, the Shattered Worlds heroes,
    Eirik from *The Rise of the Raven King* (Valley Days, #40) — or should every story game have new characters?
 3. **The list.** Swap or drop any of the 50 before Phase 1 starts.
 4. **Languages.** English only first (translations last, as the notebook says), or any of your other languages from the start?

@@ -58,6 +58,12 @@ At the end of the featured websites in the gallery hangs a small **pixel planet*
 
 After the four worlds, Pixel World has a fifth screen: **Game City**, a city of fifty small 2D games (puzzles, stories, arcade, rhythm and strategy) in five districts, one for each world plus a plaza in the middle. Its own page is `city/index.html`; the plan for all fifty games, and the order they will be built in, is `docs/GAME-CITY-PLAN.md`.
 
+- **Open so far:** Star Catcher, Planet Spin, Circuit Rewire, Last Shift, Rune Square and Signal Junction. The rest stand in scaffolding. A game opens when its line in `city/data/games.js` gets `status: 'open'`.
+- **A game** is a folder `city/games/<id>/`: `index.html` (written by `node tools/city-new-game.mjs <id> "<controls>"`), `game.js` (the game, as a plain object) and `data.js` (levels, story and tuning numbers). Every game is drawn in code on a 320 × 180 canvas.
+- **The kit** (`city/kit/`): `shell.js` runs a game (clock, keys / mouse / touch, title, pause and result screens, save, best score), `puzzle.js` gives puzzles a level list, undo and reset, `story.js` runs stories from data, `draw.js` has the pixel font and sprites, `sfx.js` the synthesised sounds and the city-wide mute. Each file's opening comment says how to use it.
+- **City Pass:** finishing a game (all levels, an ending, or a target score) stamps it; stamps are kept in the browser (`city:pass`) and shown on the city page.
+- **Checks:** `node tools/city-check.mjs` plays every game without a browser: a random-input run, then each game's own solver, branch walker or bot. Run it after changing a game or its data.
+
 - **The registry**, `city/data/games.js`: the districts (name, colours) and the fifty games (number, name, district, kind, phase, one-line description, `status`). Both pages are drawn from it. When a game is finished, put its page in `city/games/<id>/` and set its `status` to `'open'`: its building loses its scaffolding and lights up, and its card becomes a link.
 - **The buildings**, `assets/js/pixel/city-draw.js`: one per game, drawn in code. The kind of game picks the building (puzzle: tower, story: house, arcade: arcade, rhythm: bell tower, strategy: hall), its number seeds the size, the district gives the colours. Unbuilt games stand in scaffolding, some with a crane.
 - **The clickable city** on the games page (`games.js`): a window onto the whole street that pans along it by itself, faster toward the edge you point at. Pointing at a building names it; clicking it opens the city at that building's card.
