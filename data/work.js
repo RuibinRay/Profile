@@ -346,6 +346,66 @@ SITE.work = [
     related: ['s:web', 's:ai', 'w:hola-ola']
   },
   {
+    id: 'yorai', short: 'YORAI', constellation: 'digital', star: [0.66, 0.88], magnitude: 0.9,
+    featured: true, status: 'live', glyph: 'ripple',
+    title: 'YORAI — Café de Altura, Costa Rica',
+    tagline: 'A luxury coffee site told as a scroll-driven 3D journey, from a misty plantation to the cup, with a menu, a shop and a cart',
+    when: 'Nov 2026', org: 'Personal project · web design',
+    cover: { src: 'assets/media/work/yorai/hero.webp', w: 2048, h: 1280 },
+    context: 'A concept site for a high-altitude Costa Rican coffee brand, drawn in a cel-shaded anime style: painted skies, ink lines, bloom and light shafts. The homepage is a 3D journey through six places (the misty plantation, the harvest, the micro-mill, the roast, the pour and the cup), followed by the menu, the collection, the farm story, an interactive map of Costa Rica’s coffee regions and a contact section. The brand is a demo, and the facts invented for it are marked as placeholders in the site’s data.',
+    objective: 'Sell a coffee the way it is made: take the visitor from the farm to the cup before they shop, and make the shop itself easy and pleasant to use.',
+    role: 'Designed and built the whole site: the 3D journey and its look, the menu, the shop and cart, and the tests behind them.',
+    approach: [
+      'The journey: one camera path through six procedural Three.js places, each crossing made through mist so only one place is ever drawn; every surface uses one shared cel-shading ramp, and a post pass adds the ink lines, bloom, light shafts and grade',
+      'A Look panel lets the visitor redraw the journey live as Anime, Pastel, Manga or Film, at four levels of detail',
+      'Quality tiers from full WebGL down to still frames and plain text, with a watchdog that lowers the quality if the frame rate drops; a Motion button and reduced-motion support hold the scene still',
+      'The shop: a menu of eight coffees with filters by method and process and a side-by-side comparison of tasting notes; four bags and a gift box with detail panels; a cart kept on the device and an email checkout (no payment is taken)',
+      'Plain HTML, CSS and JavaScript with no build step, no trackers and no requests to other sites; all copy and data in one file'
+    ],
+    tools: ['HTML & CSS', 'JavaScript (ES modules)', 'Three.js', 'WebGL (GLSL)', 'GSAP ScrollTrigger', 'Playwright', 'axe-core', 'Lighthouse', 'GitHub Actions', 'GitHub Pages'],
+    insights: [],
+    results: [
+      'Live: the six-chapter journey, the menu with comparison, the collection, the cart and checkout, the story, the map of coffee regions and the contact form',
+      'Checked by automated tests: colour contrast for every text and background pair, an accessibility scan (axe-core) of every chapter and dialog at desktop and phone widths, and a headless sweep for console errors and layout overflow'
+    ],
+    images: [],
+    links: [
+      { label: 'Open the site', url: 'https://ruibinray.github.io/Yorai/' },
+      { label: 'View the code', url: 'https://github.com/RuibinRay/Yorai' }
+    ],
+    related: ['s:web', 'c:CRI', 'w:pura-vida']
+  },
+  {
+    id: 'r-b', short: 'R&B — Ray and Beat', constellation: 'digital', star: [0.12, 0.16], magnitude: 0.9,
+    featured: true, status: 'live', glyph: 'orbit',
+    title: 'R&B — Ray and Beat',
+    tagline: 'A music studio in the browser: play 186 instruments, hum a tune into notes, split a song into stems, then record, mix and export',
+    when: 'Nov 2026', org: 'Personal project',
+    cover: { src: 'assets/media/work/r-b/home.webp', w: 2048, h: 1280 },
+    context: 'A music production studio that runs in the browser. Projects and recordings stay on the visitor’s device; nothing is uploaded unless they point the stem separator at a server.',
+    objective: 'Put the whole path from an idea to a finished track in one free tool: compose, turn a hummed melody into notes, pull a song apart, record, arrange, mix, master and export.',
+    role: 'Designed and built the whole app: the instruments, the editors, the audio engine, the voice transcription and the stem separation server.',
+    approach: [
+      'Music Composer: 186 instruments in nine groups, each kept to its real range (the full General MIDI set, synthesizers, instruments modelled in the browser and eight drum kits), with a piano roll, a drum step grid, a chord creator and a scale assistant',
+      'Voice to Instrument: a hummed, sung, whistled or beatboxed recording becomes editable notes; the app picks a detector itself (a pitch tracker for one note at a time, an onset detector for hits, Spotify’s Basic Pitch model for chords) and marks the notes it is unsure of',
+      'AI Stem Separator: splits a song into 2, 4 or 6 stems with the Demucs model, run on a small FastAPI server because the model is too large for a browser tab',
+      'Production Studio: a multitrack timeline for audio and MIDI with recording, a mixer, track effects, automation, pitch correction, time-stretching, automatic crossfades and track groups',
+      'A video editor that lays clips against the song and exports an MP4; exports to WAV, MP3, stems per track, MIDI and a project file; Beginner and Advanced modes'
+    ],
+    tools: ['TypeScript', 'React', 'Tone.js', 'Web Audio', 'TensorFlow.js (Basic Pitch)', 'Python', 'FastAPI', 'Demucs', 'Vite', 'Vitest', 'GitHub Pages'],
+    insights: [],
+    results: [
+      'Live: the composer, Voice to Instrument, the production studio, the video editor, projects and the instrument library run in the browser; the stem separator works with its server running',
+      'Automated tests cover the note detection, articulation and arrangement code'
+    ],
+    images: [],
+    links: [
+      { label: 'Open the studio', url: 'https://ruibinray.github.io/R-B/' },
+      { label: 'View the code', url: 'https://github.com/RuibinRay/R-B' }
+    ],
+    related: ['s:web', 's:ai']
+  },
+  {
     id: 'ai-kingdom', short: 'AI Kingdom', constellation: 'digital', star: [0.88, 0.88], magnitude: 0.85,
     featured: true, status: 'coming-soon', glyph: 'agents',
     title: 'AI Kingdom',

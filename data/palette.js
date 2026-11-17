@@ -54,7 +54,7 @@ SITE.palette = [
     id: 'ai', name: 'AI & automation', pigment: 'moon',
     text: 'Automating document production, and teaching teams to work with AI tools.',
     tools: ['Node.js document automation', 'ChatGPT', 'Claude', 'Gemini', 'Perplexity', 'DeepSeek', 'Qwen', 'Doubao', 'Cursor', 'Lovable'],
-    seenIn: ['w:study-guides', 'w:outreach', 'w:ledger-lift', 'j:google-ai']
+    seenIn: ['w:study-guides', 'w:outreach', 'w:ledger-lift', 'w:r-b', 'j:google-ai']
   },
   {
     id: 'communication', name: 'Communication & collaboration', pigment: 'umber',
@@ -67,7 +67,7 @@ SITE.palette = [
     id: 'web', name: 'Web & creative development', pigment: 'emerald',
     text: 'Designing and building interactive websites end to end: living WebGL paintings, scroll-driven 3D journeys, data dashboards and the pipelines behind them.',
     tools: ['JavaScript (ES modules)', 'HTML & CSS', 'Three.js', 'WebGL (GLSL)', 'GSAP ScrollTrigger', 'TypeScript', 'React', 'D3', 'GitHub Pages'],
-    seenIn: ['w:sunflower-intelligence', 'w:pura-vida', 'w:vrfb-info', 'w:courtvision-ai', 'w:goalvision-ai', 'w:hola-ola', 'w:rica-beef']
+    seenIn: ['w:sunflower-intelligence', 'w:pura-vida', 'w:vrfb-info', 'w:courtvision-ai', 'w:goalvision-ai', 'w:hola-ola', 'w:rica-beef', 'w:yorai', 'w:r-b']
   }
 ];
 
