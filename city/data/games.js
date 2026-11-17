@@ -33,7 +33,7 @@ const g = (n, id, name, district, type, genre, phase, blurb) => ({ n, id, name, 
 export const GAMES = [
   // Pixel Plaza
   g(1, 'star-catcher', 'Star Catcher', 'plaza', 'arcade', 'Arcade', 1, 'Catch falling stars in a basket, dodge the meteors, and build a combo from stars of one colour.'),
-  g(2, 'planet-spin', 'Planet Spin', 'plaza', 'puzzle', 'Puzzle', 2, 'Turn the rings of a pixel planet until its strips of land join into whole continents.'),
+  { ...g(2, 'planet-spin', 'Planet Spin', 'plaza', 'puzzle', 'Puzzle', 2, 'Turn the rings of a pixel planet until its strips of land join into whole continents.'), status: 'open' },
   g(3, 'pixel-painter', 'Pixel Painter', 'plaza', 'puzzle', 'Logic', 3, 'Fill a grid from the number clues on its rows and columns to reveal a pixel picture.'),
   g(4, 'courier-cat', 'Courier Cat', 'plaza', 'story', 'Story', 5, 'A cat delivers letters round the plaza, and every reply changes who the next one is for.'),
   g(5, 'lantern-link', 'Lantern Link', 'plaza', 'puzzle', 'Puzzle', 4, 'Join lanterns of the same colour with paths that never cross and fill the whole board.'),
