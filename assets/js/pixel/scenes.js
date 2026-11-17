@@ -207,7 +207,37 @@ function neo(g, w, h, time, travel) {
   hills(g, w, 'neo-shore', by - 3, 4, h, '#0b2230', travel * 70, 150, false, '#e8c890');
 }
 
-export const SCENES = { space, 'shattered-worlds': shattered, moonkeeper: moon, 'blood-of-the-north': north, 'neo-earth': neo };
+/** Game City: a city at night in the colours of all four worlds, searchlights, and a street that never sleeps. */
+function city(g, w, h, time, travel) {
+  const hz = Math.round(h * 0.74);
+  sky(g, w, h, ['#090a26', '#110f36', '#1d1548', '#2e1a5c', '#47206e', '#6a2a7a', '#93357e', '#c4487e'], hz);
+  stars(g, w, hz * 0.5, Math.round(w * 0.3), time, 'city');
+  // two searchlights sweeping, in dithered pixels
+  [[0.25, 0.8, 0], [0.7, 1.1, 2]].forEach(([fx, sp, ph]) => {
+    const ox = w * fx - travel * 20, a = -Math.PI / 2 + Math.sin(time * 0.3 * sp + ph) * 0.5;
+    for (let r = 4; r < hz; r++) for (let s = -2; s <= 2; s++) {
+      const spread = r * 0.035 * s, px = Math.round(ox + Math.cos(a) * r - Math.sin(a) * spread), py = Math.round(hz + Math.sin(a) * r + Math.cos(a) * spread);
+      if ((px + py) % 3) continue;
+      g.fillStyle = r > hz * 0.6 ? '#5a4a96' : '#9a82d0'; g.fillRect(px, py, 1, 1);
+    }
+  });
+  skyline(g, w, 'city-far', hz, h * 0.14, h * 0.46, '#33205e', ['#6a4ea0', '#8a6ec0'], travel * 12, time, 12);
+  skyline(g, w, 'city-mid', hz, h * 0.1, h * 0.34, '#22163f', ['#ff6fae', '#ffe08a'], travel * 30, time, 10);
+  skyline(g, w, 'city-near', hz + 1, h * 0.04, h * 0.2, '#120c2c', ['#58e6ff', '#c86bff'], travel * 56, time, 8);
+  // the street, with a line of neon in the five districts' colours, and traffic both ways
+  g.fillStyle = '#0d0b24'; g.fillRect(0, hz, w, h - hz);
+  const neon = ['#f6c443', '#c86bff', '#ff9d2e', '#7fe8c0', '#58e6ff'];
+  for (let x = 0; x < w; x++) { g.fillStyle = neon[Math.floor(((x + travel * 70) % (w * 5) + w * 5) % (w * 5) / 40) % 5]; g.fillRect(x, hz, 1, 1); }
+  const ry = hz + Math.round((h - hz) * 0.5);
+  for (let x = (Math.floor(time * 10 - travel * 70) % 8 + 8) % 8; x < w; x += 8) { g.fillStyle = '#3a3670'; g.fillRect(x, ry, 4, 1); }
+  const c = rolls('city-cars', 40);
+  for (let i = 0; i < 8; i++) {
+    const dir = i % 2 ? 1 : -1, y = ry + (dir > 0 ? 3 : -3), x = Math.round((((c[i] * w + dir * time * (18 + c[i + 8] * 20)) % (w + 12)) + w + 12) % (w + 12)) - 6;
+    g.fillStyle = '#2a2650'; g.fillRect(x, y - 1, 6, 2); g.fillStyle = dir > 0 ? '#ffe08a' : '#ff5a6a'; g.fillRect(dir > 0 ? x + 6 : x - 1, y, 1, 1);
+  }
+}
+
+export const SCENES = { space, 'shattered-worlds': shattered, moonkeeper: moon, 'blood-of-the-north': north, 'neo-earth': neo, 'game-city': city };
 
 /** The traveller: a small figure who walks the bottom of the screen as the page is scrolled. */
 export function traveller(g, x, y, step, facing, tint) {

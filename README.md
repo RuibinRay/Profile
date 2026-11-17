@@ -54,6 +54,16 @@ At the end of the featured websites in the gallery hangs a small **pixel planet*
 - **The mouse pointer is pixel art** on the games page and over the planet: an arrow, a pointing hand over anything that can be pressed, an open hand over the planet (`assets/img/cursors/`, drawn by `tools/make_cursors.py`).
 - Nothing on the page is downloaded from elsewhere, and none of it needs WebGL.
 
+### Game City (`city/`)
+
+After the four worlds, Pixel World has a fifth screen: **Game City**, a city of fifty small 2D games (puzzles, stories, arcade, rhythm and strategy) in five districts, one for each world plus a plaza in the middle. Its own page is `city/index.html`; the plan for all fifty games, and the order they will be built in, is `docs/GAME-CITY-PLAN.md`.
+
+- **The registry**, `city/data/games.js`: the districts (name, colours) and the fifty games (number, name, district, kind, phase, one-line description, `status`). Both pages are drawn from it. When a game is finished, put its page in `city/games/<id>/` and set its `status` to `'open'`: its building loses its scaffolding and lights up, and its card becomes a link.
+- **The buildings**, `assets/js/pixel/city-draw.js`: one per game, drawn in code. The kind of game picks the building (puzzle: tower, story: house, arcade: arcade, rhythm: bell tower, strategy: hall), its number seeds the size, the district gives the colours. Unbuilt games stand in scaffolding, some with a crane.
+- **The clickable city** on the games page (`games.js`): a window onto the whole street that pans along it by itself, faster toward the edge you point at. Pointing at a building names it; clicking it opens the city at that building's card.
+- **The way in and out**, `assets/js/pixel/city-wipe.js`: the city zooms toward the point clicked while a skyline of big pixel towers in the districts' colours rises and lights its windows, then the next page opens as the towers sink. The links back to Pixel World use it too.
+- **The city page** (`city/city.js`, `city/city.css`, on top of `games.css`): the night city behind it (the `game-city` scene in `scenes.js`), a map of the whole street (click a building to find its card), filters by kind, a section per district with a card per game, and a small window for a building still being built.
+
 ## Editing your content
 
 Open a file in `data/`, change the text, save, refresh. Both pages read the same files.

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Game City — fifty small games in the pixel world of Ruibin Jin Yao</title>
+  <meta name="description" content="Game City: fifty small 2D browser games — puzzles, stories, arcade, rhythm and strategy — in five districts of Ruibin (Ray) Jin Yao's pixel world.">
+  <meta name="author" content="Ruibin Jin Yao">
+  <meta name="theme-color" content="#0b0c2e">
+  <meta name="color-scheme" content="dark">
+  <link rel="canonical" href="https://ruibinray.github.io/Profile/city/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Game City — fifty small games">
+  <meta property="og:description" content="Fifty small 2D games in one pixel city. Every building is a game.">
+  <meta property="og:url" content="https://ruibinray.github.io/Profile/city/">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../assets/img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="preload" href="../assets/fonts/instrument-sans-500.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/games.css?v=20261117b">
+  <link rel="stylesheet" href="city.css?v=20261117c">
+  <!-- Arrived through the towers from the pixel world: start covered, so nothing flashes before they sink -->
+  <script>try { if (sessionStorage.getItem('px-city')) document.documentElement.classList.add('is-arriving'); } catch (e) {}</script>
+</head>
+<body>
+  <a class="skip" href="#plaza">Skip to the games</a>
+
+  <!-- The city behind the page: drawn in true pixels by city.js (the "game-city" scene of scenes.js) -->
+  <canvas id="sky" class="sky" aria-hidden="true"></canvas>
+
+  <header class="hud">
+    <a class="hud__back" href="../games.html#game-city" data-back><span aria-hidden="true">&lt;</span> Pixel World</a>
+    <p class="hud__name" aria-live="polite">Game City</p>
+    <nav class="hud__dots" aria-label="Districts">
+      <a class="hud__dot" href="#plaza"><span class="visually-hidden">Pixel Plaza</span></a>
+      <a class="hud__dot" href="#neon"><span class="visually-hidden">Neon Ward</span></a>
+      <a class="hud__dot" href="#moon"><span class="visually-hidden">Moon Dock</span></a>
+      <a class="hud__dot" href="#north"><span class="visually-hidden">North Harbour</span></a>
+      <a class="hud__dot" href="#neo"><span class="visually-hidden">Skyline Center</span></a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="city-top" id="top">
+      <p class="world__no">Pixel World · beyond the four worlds</p>
+      <h1 class="title" data-px="Game City">Game City</h1>
+      <p class="lead">Fifty small games in one pixel city. Every building is a game.</p>
+      <div class="map shot">
+        <canvas class="map__canvas" width="360" height="124" aria-hidden="true"></canvas>
+        <p class="map__tip" aria-hidden="true">Click a building</p>
+      </div>
+      <p class="hint city-count"><b id="open-count">0</b> of 50 open. The rest stand in scaffolding and open a few at a time.</p>
+      <div class="filters" role="group" aria-label="Show games of one kind"></div>
+    </section>
+
+    <div id="districts">
+      <noscript><p class="lead city-nojs">Game City is drawn by JavaScript. Turn it on to walk the streets.</p></noscript>
+    </div>
+
+    <section class="screen end city-end" id="end">
+      <h2 class="title" data-px="See you/in town">See you in town</h2>
+      <p class="lead">New buildings open as their games are finished.</p>
+      <p class="btns">
+        <a class="btn btn--play" href="../games.html#game-city" data-back>Back to Pixel World</a>
+        <a class="btn" href="#top">To the top</a>
+      </p>
+      <p class="small">Every building, street and sky here is drawn in code, in true pixels. Nothing is downloaded.</p>
+    </section>
+  </main>
+
+  <dialog class="lot" id="lot" aria-labelledby="lot-name">
+    <canvas class="lot__art" width="60" height="70" aria-hidden="true"></canvas>
+    <div class="lot__words">
+      <p class="lot__where"></p>
+      <h2 class="lot__name" id="lot-name"></h2>
+      <p class="lot__kind"></p>
+      <p class="lot__say"></p>
+      <p class="lot__state"></p>
+    </div>
+    <form method="dialog" class="lot__close"><button class="btn" value="close">Close</button></form>
+  </dialog>
+
+  <script type="module" src="city.js?v=20261117c"></script>
+</body>
+</html>
