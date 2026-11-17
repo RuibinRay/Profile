@@ -1,0 +1,25 @@
+/*
+ * ui.css — the page around a Game City game (city/games/<id>/index.html). It sits on the pixel world's own
+ * styles (assets/css/games.css: the bar, the buttons) and adds the stage that holds the 320 × 180 canvas.
+ * Same rules as the rest: hard edges, two- and three-pixel borders, stepped shadows, no blur.
+ * --accent is the district's colour, set by shell.js.
+ */
+html, body { height: 100%; }
+body.game { display: flex; flex-direction: column; overflow: hidden; background: #070820; }
+.game .hud { position: static; flex: none; flex-wrap: wrap; padding: 10px var(--edge); padding-top: calc(10px + env(safe-area-inset-top)); }
+.hud__tools { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.hud__stat { margin: 0; padding: 7px 10px; font: 600 .8125rem/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--paper); background: var(--panel); border: 2px solid var(--paper-2); white-space: nowrap; }
+.hud__stat[hidden] { display: none; }
+.hud__btn { min-height: 32px; padding: 0 10px; font: 600 .75rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--paper); background: var(--panel); border: 2px solid var(--paper); box-shadow: var(--u) var(--u) 0 rgba(4, 4, 20, .7); }
+.hud__btn:hover, .hud__btn:focus-visible { background: var(--accent); color: var(--accent-ink); border-color: var(--accent-ink); }
+
+.stage { flex: 1; min-height: 0; display: grid; justify-items: center; align-content: start; gap: 10px; padding: 4px 8px 10px; }
+#game { display: block; width: 320px; height: 180px; max-width: 100%; background: #0b0c2e; image-rendering: pixelated; image-rendering: crisp-edges; border: 3px solid var(--accent); box-shadow: 0 0 0 3px var(--ink), 9px 9px 0 3px rgba(4, 4, 20, .8); touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; cursor: crosshair; }
+.keys { margin: 0; max-width: 78ch; padding: 0 8px; text-align: center; font: 500 .8125rem/1.5 var(--mono); color: var(--paper-2); }
+.keys b { color: var(--accent); font-weight: 600; }
+.game-nojs { margin: 24px auto; max-width: 40ch; text-align: center; }
+
+@media (max-width: 560px) {
+  .game .hud__name { display: none; }
+  .keys { font-size: .75rem; }
+}

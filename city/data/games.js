@@ -32,7 +32,7 @@ const g = (n, id, name, district, type, genre, phase, blurb) => ({ n, id, name, 
 
 export const GAMES = [
   // Pixel Plaza
-  g(1, 'star-catcher', 'Star Catcher', 'plaza', 'arcade', 'Arcade', 1, 'Catch falling stars in a basket, dodge the meteors, and build a combo from stars of one colour.'),
+  { ...g(1, 'star-catcher', 'Star Catcher', 'plaza', 'arcade', 'Arcade', 1, 'Catch falling stars in a basket, dodge the meteors, and build a combo from stars of one colour.'), status: 'open' },
   { ...g(2, 'planet-spin', 'Planet Spin', 'plaza', 'puzzle', 'Puzzle', 2, 'Turn the rings of a pixel planet until its strips of land join into whole continents.'), status: 'open' },
   g(3, 'pixel-painter', 'Pixel Painter', 'plaza', 'puzzle', 'Logic', 3, 'Fill a grid from the number clues on its rows and columns to reveal a pixel picture.'),
   g(4, 'courier-cat', 'Courier Cat', 'plaza', 'story', 'Story', 5, 'A cat delivers letters round the plaza, and every reply changes who the next one is for.'),
@@ -43,7 +43,7 @@ export const GAMES = [
   g(9, 'clocktower-bells', 'Clocktower Bells', 'plaza', 'rhythm', 'Rhythm', 7, 'Ring the right bell as the beat reaches it. Every hour the tune gets busier.'),
   g(10, 'the-torn-map', 'The Torn Map', 'plaza', 'story', 'Story · point and click', 10, 'Search three corners of the plaza and trade with the stall keepers for six pieces of a map.'),
   // Neon Ward
-  g(11, 'circuit-rewire', 'Circuit Rewire', 'neon', 'puzzle', 'Puzzle', 1, 'Turn circuit tiles until every node is powered from the core and no wire is left loose.'),
+  { ...g(11, 'circuit-rewire', 'Circuit Rewire', 'neon', 'puzzle', 'Puzzle', 1, 'Turn circuit tiles until every node is powered from the core and no wire is left loose.'), status: 'open' },
   g(12, 'layer-shift', 'Layer Shift', 'neon', 'puzzle', 'Puzzle platformer', 9, 'Switch between three layers of the same room, each with its own walls, to reach the exit.'),
   g(13, 'neon-runner', 'Neon Runner', 'neon', 'arcade', 'Arcade', 3, 'Run the neon streets: jump, slide, and flip gravity to run along the ceiling.'),
   g(14, 'memory-shards', 'Memory Shards', 'neon', 'story', 'Story', 2, 'A courier with no memory finds shards of the past. Each choice decides who they were.'),
@@ -62,10 +62,10 @@ export const GAMES = [
   g(26, 'robot-steps', 'Robot Steps', 'moon', 'puzzle', 'Programming puzzle', 4, 'Write the helper robot a program — forward, turn, pick up, repeat — and watch it run.'),
   g(27, 'static-signals', 'Static Signals', 'moon', 'story', 'Story · puzzle', 7, 'Decode the rescue ship’s radio messages with a code wheel. Each one moves the story on.'),
   g(28, 'crater-rover', 'Crater Rover', 'moon', 'arcade', 'Arcade', 8, 'Drive a rover over crater hills in low gravity, and land on the wheels, not the roof.'),
-  g(29, 'last-shift', 'Last Shift', 'moon', 'story', 'Story · survival', 1, 'Alone at the base for one night, the systems fail one by one. Decide what to keep running.'),
+  { ...g(29, 'last-shift', 'Last Shift', 'moon', 'story', 'Story · survival', 1, 'Alone at the base for one night, the systems fail one by one. Decide what to keep running.'), status: 'open' },
   g(30, 'star-lines', 'Star Lines', 'moon', 'puzzle', 'Puzzle', 10, 'Draw each constellation in one stroke without going over a line twice.'),
   // North Harbour
-  g(31, 'rune-square', 'Rune Square', 'north', 'puzzle', 'Logic', 1, 'Place the runes so that each one appears once in every row, column and box.'),
+  { ...g(31, 'rune-square', 'Rune Square', 'north', 'puzzle', 'Logic', 1, 'Place the runes so that each one appears once in every row, column and box.'), status: 'open' },
   g(32, 'oar-beat', 'Oar Beat', 'north', 'rhythm', 'Rhythm', 5, 'Pull the oars on the drum beat and race another longship across the fjord.'),
   g(33, 'shield-line', 'Shield Line', 'north', 'strategy', 'Tactics', 7, 'Place shields on a small field to stop each volley of arrows before it reaches the hall.'),
   g(34, 'saga-hall', 'Saga Hall', 'north', 'story', 'Story · cards', 3, 'Tell a saga with a hero, a deed and a place. The hall reacts, and new sagas open up.'),
@@ -76,7 +76,7 @@ export const GAMES = [
   g(39, 'frozen-fjord', 'Frozen Fjord', 'north', 'puzzle', 'Puzzle', 4, 'On the ice you slide until you hit a rock. Find the way to the boat.'),
   g(40, 'valley-days', 'Valley Days', 'north', 'story', 'Story', 10, 'A short side-scrolling story of a childhood in a northern valley.'),
   // Skyline Center
-  g(41, 'signal-junction', 'Signal Junction', 'neo', 'arcade', 'Arcade · puzzle', 1, 'Switch the lights so the aerocars cross the junction without a crash.'),
+  { ...g(41, 'signal-junction', 'Signal Junction', 'neo', 'arcade', 'Arcade · puzzle', 1, 'Switch the lights so the aerocars cross the junction without a crash.'), status: 'open' },
   g(42, 'metro-builder', 'Metro Builder', 'neo', 'puzzle', 'Puzzle', 2, 'Lay metro lines that link every station without going over the track budget.'),
   g(43, 'neo-cafe', 'Neo Café', 'neo', 'strategy', 'Time management', 6, 'Take the orders, make the drinks and serve them before the customers give up.'),
   g(44, 'lift-logic', 'Lift Logic', 'neo', 'puzzle', 'Puzzle', 7, 'Send the lifts to carry everyone to their floor with as few stops as you can.'),

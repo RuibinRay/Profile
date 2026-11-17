@@ -17,7 +17,7 @@
   <link rel="icon" href="../assets/img/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="preload" href="../assets/fonts/instrument-sans-500.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../assets/css/games.css?v=20261117b">
-  <link rel="stylesheet" href="city.css?v=20261117c">
+  <link rel="stylesheet" href="city.css?v=20261117d">
   <!-- Arrived through the towers from the pixel world: start covered, so nothing flashes before they sink -->
   <script>try { if (sessionStorage.getItem('px-city')) document.documentElement.classList.add('is-arriving'); } catch (e) {}</script>
 </head>
@@ -48,7 +48,7 @@
         <canvas class="map__canvas" width="360" height="124" aria-hidden="true"></canvas>
         <p class="map__tip" aria-hidden="true">Click a building</p>
       </div>
-      <p class="hint city-count"><b id="open-count">0</b> of 50 open. The rest stand in scaffolding and open a few at a time.</p>
+      <p class="hint city-count"><b id="open-count">0</b> of 50 open. The rest stand in scaffolding and open a few at a time.<span id="pass-count" hidden></span></p>
       <div class="filters" role="group" aria-label="Show games of one kind"></div>
     </section>
 
@@ -79,6 +79,6 @@
     <form method="dialog" class="lot__close"><button class="btn" value="close">Close</button></form>
   </dialog>
 
-  <script type="module" src="city.js?v=20261117c"></script>
+  <script type="module" src="city.js?v=20261117d"></script>
 </body>
 </html>

@@ -13,7 +13,11 @@ import { SCENES, traveller } from '../assets/js/pixel/scenes.js?v=20261117a';
 import { drawCity, drawBuilding, shapeOf, hitTest, citySky } from '../assets/js/pixel/city-draw.js?v=20261117a';
 import { enterCity, cityArriving, cityReveal } from '../assets/js/pixel/city-wipe.js?v=20261117a';
 import { createTrail } from '../assets/js/pixel/pixel-trail.js?v=20261116a';
-import { GAMES, DISTRICTS, TYPES, districtOf } from './data/games.js?v=20261117a';
+import { GAMES, DISTRICTS, TYPES, districtOf } from './data/games.js?v=20261117b';
+
+/* the City Pass: the games finished in this browser, stamped by each game (city/kit/shell.js keeps it under city:pass) */
+let pass = {};
+try { const p = JSON.parse(localStorage.getItem('city:pass') || 'null'); if (p && p.v === 1 && p.got) pass = p.got; } catch (e) {}
 
 const root = document.documentElement;
 root.classList.remove('no-js'); root.classList.add('js');
@@ -77,7 +81,7 @@ DISTRICTS.forEach((d, i) => {
       h('span', { class: 'lot-card__name' }, gm.name),
       h('span', { class: 'lot-card__kind' }, gm.genre),
       h('span', { class: 'lot-card__say' }, gm.blurb),
-      h('span', { class: 'lot-card__state' + (open ? ' is-open' : '') }, open ? 'Open · play' : 'Being built · phase ' + gm.phase)];
+      h('span', { class: 'lot-card__state' + (open ? ' is-open' : '') + (pass[gm.id] ? ' is-stamped' : '') }, open ? (pass[gm.id] ? 'Stamped · play again' : 'Open · play') : 'Being built · phase ' + gm.phase)];
     const el = open
       ? h('a', { class: 'lot-card', id: 'game-' + gm.n, href: 'games/' + gm.id + '/' }, ...inner)
       : h('button', { class: 'lot-card', id: 'game-' + gm.n, type: 'button', 'aria-haspopup': 'dialog' }, ...inner);
@@ -99,6 +103,8 @@ DISTRICTS.forEach((d, i) => {
   host.append(sec);
 });
 document.getElementById('open-count').textContent = GAMES.filter(isOpen).length;
+const stamps = GAMES.filter((gm) => isOpen(gm) && pass[gm.id]).length, passLine = document.getElementById('pass-count');
+if (stamps && passLine) { passLine.textContent = ' Your City Pass has ' + stamps + (stamps === 1 ? ' stamp.' : ' stamps.'); passLine.hidden = false; }
 
 /* ---------- pixel titles ---------- */
 document.querySelectorAll('[data-px]').forEach((el) => {
