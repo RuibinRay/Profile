@@ -54,7 +54,7 @@ export const GAMES = [
   g(19, 'deepline-sneak', 'Deepline Sneak', 'neon', 'puzzle', 'Stealth puzzle', 7, 'Each step you take, the guards take one. Stay out of their sight to reach the way out.'),
   g(20, 'skywire', 'Skywire', 'neon', 'story', 'Story · branching', 10, 'A message has to cross the sky city before dawn. Choose the route and talk your way through.'),
   // Moon Dock
-  g(21, 'soft-landing', 'Soft Landing', 'moon', 'arcade', 'Arcade', 2, 'Thrust and turn to set a lander down on the pad before the fuel runs out.'),
+  { ...g(21, 'soft-landing', 'Soft Landing', 'moon', 'arcade', 'Arcade', 2, 'Thrust and turn to set a lander down on the pad before the fuel runs out.'), status: 'open' },
   g(22, 'power-budget', 'Power Budget', 'moon', 'puzzle', 'Logic', 5, 'Wire panels and batteries to every module of the base with only so much cable.'),
   g(23, 'greenhouse-sols', 'Greenhouse Sols', 'moon', 'strategy', 'Simulation', 9, 'Ten Moon days: share water, light and power between the crops to make enough air and food.'),
   g(24, 'cargo-crawler', 'Cargo Crawler', 'moon', 'puzzle', 'Puzzle', 3, 'Push supply crates onto their pads; the airlock doors open only while a crate holds the switch.'),
