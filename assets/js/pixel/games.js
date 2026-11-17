@@ -9,9 +9,12 @@
  * list of the four games.
  */
 import { pixelText, createPlanet } from './pixel-kit.js?v=20261116a';
-import { SCENES, traveller } from './scenes.js?v=20261116a';
+import { SCENES, traveller } from './scenes.js?v=20261117a';
 import { pixelReveal, leaveTo, arriving } from './pixel-wipe.js?v=20261116a';
 import { createTrail } from './pixel-trail.js?v=20261116a';
+import { drawCity, citySky, hitTest } from './city-draw.js?v=20261117a';
+import { enterCity, cityArriving, cityReveal } from './city-wipe.js?v=20261117a';
+import { GAMES, DISTRICTS, districtOf } from '../../../city/data/games.js?v=20261117a';
 
 const root = document.documentElement;
 root.classList.remove('no-js'); root.classList.add('js');
@@ -45,7 +48,7 @@ let tops = [];
 
 function resize() {
   const W = window.innerWidth, H = window.innerHeight, px = Math.max(2, Math.ceil(Math.max(W / 340, H / 210)));
-  bw = Math.ceil(W / px); bh = Math.ceil(H / px);
+  bw = Math.max(1, Math.ceil(W / px)); bh = Math.max(1, Math.ceil(H / px));   // never 0, even in a window not yet laid out
   [cv, bufA, bufB].forEach((c) => { c.width = bw; c.height = bh; });
   mixed = g.createImageData(bw, bh);
   tops = stops.map((s) => s.offsetTop);
@@ -113,8 +116,11 @@ resize();
 raf = requestAnimationFrame(loop);
 
 /* ---------- arriving and leaving through big pixels (pixel-wipe.js) ---------- */
+// Back from Game City: the towers sink into the street (city-wipe.js).
 // Arrived from the planet in the gallery: the page starts covered (a class set in the page's head) and opens.
-if (arriving() || root.classList.contains('is-arriving')) { pixelReveal(); root.classList.remove('is-arriving'); }
+const fromCity = cityArriving();
+if (fromCity) { cityReveal({ card: fromCity }); root.classList.remove('is-arriving'); }
+else if (arriving() || root.classList.contains('is-arriving')) { pixelReveal(); root.classList.remove('is-arriving'); }
 // Going back to the portfolio: the pixels close on the link that was pressed.
 document.querySelectorAll('a[href^="index.html"], a[href="portfolio.html"]').forEach((a) => a.addEventListener('click', (e) => {
   if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;
@@ -124,6 +130,54 @@ document.querySelectorAll('a[href^="index.html"], a[href="portfolio.html"]').for
 
 /* ---------- the mouse sheds pixels in the colour of the world on screen (pixel-trail.js) ---------- */
 createTrail({ accent: () => getComputedStyle(root).getPropertyValue('--accent').trim() || '#f6c443' });
+
+/* ---------- Game City: a city to click, one building per game (city-draw.js), and the way in (city-wipe.js) ---------- */
+const gate = document.querySelector('.city-gate__canvas');
+const gateMap = gate && gate.closest('a');
+let gateHot = null, gateAt = () => null;
+if (gate) {
+  // The window shows part of a longer street (`off`, all five districts) and pans along it by itself, there and
+  // back; pointing near either edge pans that way faster, and pointing at a building holds it still.
+  const gg = gate.getContext('2d'), W = gate.width, H = gate.height, tip = gateMap.querySelector('.city-gate__tip');
+  const off = document.createElement('canvas'); off.width = 360; off.height = H;
+  const og = off.getContext('2d');
+  let boxes = [], seen = false, lastGate = 0, pan = 0, dir = 1, push = 0, lastT = 0;
+  const paintGate = (now) => {
+    const t = (now || performance.now()) / 1000 * (calm ? 0.35 : 1), dt = lastT ? Math.min(0.1, Math.max(0, t - lastT)) : 0;
+    lastT = t;
+    pan += (push || (gateHot ? 0 : dir * 7)) * dt;
+    const most = off.width - W;
+    if (pan >= most) { pan = most; dir = -1; } else if (pan <= 0) { pan = 0; dir = 1; }
+    citySky(gg, W, H, t);
+    og.clearRect(0, 0, off.width, H);
+    boxes = drawCity(og, off.width, H, GAMES, DISTRICTS, t, { hot: gateHot && gateHot.n, ground: H - 10 });
+    gg.drawImage(off, -Math.round(pan), 0);
+    lastGate = now || 0;
+  };
+  const under = (e) => { const r = gate.getBoundingClientRect(); return hitTest(boxes, (e.clientX - r.left) / r.width * W + Math.round(pan), (e.clientY - r.top) / r.height * H); };
+  gateAt = under;                                     // a tap has no hover before it: the click asks what is under it
+  const say = (gm) => { tip.textContent = gm ? 'No. ' + gm.n + ' · ' + gm.name + ' · ' + districtOf(gm).name : 'Click a building'; };
+  gateMap.addEventListener('pointermove', (e) => {
+    const r = gate.getBoundingClientRect(), at = (e.clientX - r.left) / r.width;
+    push = at < 0.14 ? -60 : at > 0.86 ? 60 : 0;
+    const gm = under(e);
+    if ((gm && gm.n) !== (gateHot && gateHot.n)) { gateHot = gm; say(gm); paintGate(); }
+  });
+  gateMap.addEventListener('pointerleave', () => { gateHot = null; push = 0; say(null); paintGate(); });
+  // the city lives about 12 frames a second, and only while it is on screen
+  const spin = (now) => { if (!seen) return; requestAnimationFrame(spin); if (!document.hidden && now - lastGate > 80) paintGate(now); };
+  if ('IntersectionObserver' in window) new IntersectionObserver((es) => { const was = seen; seen = es[0].isIntersecting; if (seen && !was) requestAnimationFrame(spin); }).observe(gate);
+  paintGate();
+}
+// Every way into the city closes in towers: the map zooms toward the point pressed, and a building pressed is shown on arrival.
+document.querySelectorAll('a[data-city]').forEach((a) => a.addEventListener('click', (e) => {
+  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;
+  e.preventDefault();
+  const onMap = a === gateMap, pick = onMap ? (gateAt(e) || gateHot) : null;
+  const r = (onMap ? a : gateMap || a).getBoundingClientRect();
+  const point = e.clientX || e.clientY ? { x: e.clientX, y: e.clientY } : { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+  enterCity(a.getAttribute('href') + (pick ? '#game-' + pick.n : ''), point, { zoom: onMap ? gateMap : null });
+}));
 
 /* ---------- trailers: one at a time ---------- */
 const tapes = Array.from(document.querySelectorAll('.tape video'));

@@ -16,9 +16,9 @@
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="preload" href="assets/fonts/instrument-sans-500.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/games.css?v=20261116a">
+  <link rel="stylesheet" href="assets/css/games.css?v=20261117c">
   <!-- Arrived through the pixel transition from the gallery: start covered, so nothing flashes before it opens -->
-  <script>try { if (sessionStorage.getItem('px-wipe')) document.documentElement.classList.add('is-arriving'); } catch (e) {}</script>
+  <script>try { if (sessionStorage.getItem('px-wipe') || sessionStorage.getItem('px-city')) document.documentElement.classList.add('is-arriving'); } catch (e) {}</script>
 </head>
 <body>
   <a class="skip" href="#shattered-worlds">Skip to the games</a>
@@ -34,6 +34,7 @@
       <a class="hud__dot" href="#moonkeeper"><span class="visually-hidden">MoonKeeper</span></a>
       <a class="hud__dot" href="#blood-of-the-north"><span class="visually-hidden">Blood of the North</span></a>
       <a class="hud__dot" href="#neo-earth"><span class="visually-hidden">Neo Earth 2226</span></a>
+      <a class="hud__dot hud__dot--city" href="#game-city"><span class="visually-hidden">Game City</span></a>
     </nav>
   </header>
 
@@ -161,11 +162,34 @@
       </a>
     </section>
 
+    <!-- Game City: its own page (city/), reached through the clickable city drawn here by games.js from city/data/games.js -->
+    <section class="screen world city-gate" id="game-city" data-world="game-city" data-name="Game City · 50 mini games" data-accent="#ff6fae" data-ink="#1c0616">
+      <div class="world__text">
+        <p class="world__no">Beyond the four worlds</p>
+        <h2 class="title" data-px="Game/City">Game City</h2>
+        <p class="world__kind">Fifty small 2D games in one pixel city</p>
+        <p class="world__say">Puzzles, short stories, arcade, rhythm and strategy games in five districts: one for each of the four worlds, and a plaza in the middle. Every building is a game. Click one to go in.</p>
+        <ul class="chips">
+          <li>50 games · 5 districts</li>
+          <li>Puzzle · Story · Arcade · Rhythm · Strategy</li>
+          <li>Opening a few at a time</li>
+        </ul>
+        <p class="btns">
+          <a class="btn btn--play" href="city/" data-city>Enter Game City</a>
+        </p>
+      </div>
+      <a class="shot city-gate__map" href="city/" data-city aria-label="Enter Game City">
+        <canvas class="city-gate__canvas" width="200" height="100" aria-hidden="true"></canvas>
+        <span class="city-gate__tip" aria-hidden="true">Click a building</span>
+      </a>
+    </section>
+
     <section class="screen end" id="end" data-world="space" data-name="The end" data-accent="#f6c443" data-ink="#0b0c2e">
       <h2 class="title" data-px="Thanks for/playing">Thanks for playing</h2>
       <p class="lead">Every game runs in the browser: nothing to install.</p>
       <p class="btns">
         <a class="btn btn--play" href="index.html#projects">Back to the gallery</a>
+        <a class="btn" href="city/" data-city>Game City</a>
         <a class="btn" href="portfolio.html">Plain portfolio</a>
         <a class="btn" href="#start">To the top</a>
       </p>
@@ -173,6 +197,6 @@
     </section>
   </main>
 
-  <script type="module" src="assets/js/pixel/games.js?v=20261116a"></script>
+  <script type="module" src="assets/js/pixel/games.js?v=20261117d"></script>
 </body>
 </html>

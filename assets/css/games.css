@@ -123,6 +123,14 @@ main { position: relative; z-index: 1; }
 .js .world.is-seen .shot { transition-delay: .12s; }
 .js .world.is-seen .shot:hover { transform: translate(-3px, -3px); transition-delay: 0s; }
 
+/* Game City: the city to click (drawn by games.js with city-draw.js), in the same cabinet frame as a game's screen */
+.city-gate__map { overflow: hidden; }
+.city-gate__canvas { display: block; width: 100%; height: auto; aspect-ratio: 2 / 1; image-rendering: pixelated; image-rendering: crisp-edges; }
+.no-js .city-gate__canvas { background: linear-gradient(#110f36, #47206e 60%, #93357e); }
+.city-gate .shot::after { content: 'ENTER'; }
+.city-gate__tip { position: absolute; left: 10px; bottom: 10px; max-width: calc(100% - 100px); padding: 6px 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; pointer-events: none; font: 600 .8125rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--paper); background: var(--panel); border: 2px solid var(--accent); }
+.no-js .city-gate__tip { display: none; }
+
 @media (max-width: 860px) {
   .screen { min-height: 0; padding: 88px var(--edge) 22vh; }
   .start, .end { min-height: 100svh; }

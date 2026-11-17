@@ -1,0 +1,74 @@
+/*
+ * city.css — the Game City page (city/index.html). It sits on top of the pixel world's own styles
+ * (assets/css/games.css: the bar, the buttons, the panels, the pixel titles) and adds the map, the filters,
+ * the districts and the cards. Same rules: hard edges, two- and three-pixel borders, stepped shadows, no blur.
+ * --accent follows the district on screen; --d is a district's own colour, set on its section.
+ */
+:root { --accent: #ff6fae; --accent-ink: #1c0616; }
+
+/* the top: the name, the skyline map, the filters */
+.city-top { position: relative; z-index: 1; display: grid; justify-items: center; text-align: center; padding: 100px var(--edge) 30px; }
+.city-top .title { justify-items: center; font-size: clamp(2.5rem, min(9vw, 13vh), 6.5rem); margin-bottom: .3em; color: var(--paper); }
+.city-top .world__no { margin-bottom: 18px; }
+.map { width: min(1080px, 100%); margin: 22px auto 0; overflow: hidden; }
+.map.is-hot { cursor: url(../assets/img/cursors/hand.png) 10 0, pointer; }
+.map__canvas { display: block; width: 100%; height: auto; aspect-ratio: 360 / 124; image-rendering: pixelated; image-rendering: crisp-edges; }
+.map::after { content: none; }
+.map:hover { transform: none; }
+.map__tip { position: absolute; left: 10px; bottom: 10px; margin: 0; max-width: calc(100% - 20px); padding: 6px 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; pointer-events: none; font: 600 .8125rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--paper); background: var(--panel); border: 2px solid var(--accent); }
+.city-count { margin-top: 26px; }
+.city-count b { color: var(--accent); }
+
+.filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 22px; }
+.filter { min-height: 40px; padding: 0 14px; font: 600 .8125rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--paper); background: var(--panel); border: 2px solid var(--paper-2); box-shadow: var(--u) var(--u) 0 rgba(4, 4, 20, .8); transition: transform .08s steps(2), box-shadow .08s steps(2); }
+.filter__n { color: var(--paper-2); margin-left: 4px; }
+.filter:hover, .filter:focus-visible { transform: translate(2px, 2px); box-shadow: 2px 2px 0 rgba(4, 4, 20, .8); }
+.filter[aria-pressed="true"] { color: var(--accent-ink); background: var(--accent); border-color: var(--accent-ink); }
+.filter[aria-pressed="true"] .filter__n { color: var(--accent-ink); }
+
+/* a district: its sign, then its ten buildings */
+.district { position: relative; z-index: 1; padding: 64px var(--edge) 34px; scroll-margin-top: 64px; }
+.district__head { max-width: 760px; padding: clamp(18px, 2.4vw, 28px); background: var(--panel); border: 3px solid var(--d); box-shadow: 0 0 0 3px var(--ink), 9px 9px 0 3px rgba(4, 4, 20, .75); }
+.district__head .title { color: var(--d); font-size: clamp(1.75rem, 4vw, 3.5rem); margin-bottom: .4em; }
+.district__say { margin: 0; max-width: 58ch; }
+.lots { list-style: none; margin: 26px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 18px; }
+.lots li[hidden], .district[hidden] { display: none; }
+
+/* a card: the building on the left, the words beside it */
+.lot-card { width: 100%; height: 100%; display: grid; grid-template-columns: 77px minmax(0, 1fr); grid-template-rows: auto auto auto 1fr; column-gap: 14px; row-gap: 4px; align-content: start; padding: 14px; text-align: left; text-decoration: none; font: inherit; color: var(--paper); background: var(--panel); border: 3px solid var(--paper-2); box-shadow: 6px 6px 0 rgba(4, 4, 20, .8); transition: transform .1s steps(2), border-color .1s steps(2), box-shadow .1s steps(2); }
+.lot-card canvas { grid-row: 1 / span 3; width: 77px; height: auto; aspect-ratio: 44 / 64; image-rendering: pixelated; image-rendering: crisp-edges; border: 2px solid var(--ink); }
+.lot-card:hover, .lot-card:focus-visible { border-color: var(--d); transform: translate(-3px, -3px); box-shadow: 9px 9px 0 rgba(4, 4, 20, .8); }
+.lot-card__no { font: 600 .75rem/1.2 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--paper-2); align-self: end; }
+.lot-card__name { font: 600 1.125rem/1.2 var(--sans); color: var(--d); }
+.lot-card__kind { justify-self: start; align-self: start; padding: 3px 7px; font: 500 .75rem/1.3 var(--mono); border: 2px solid var(--paper-2); }
+.lot-card__say { grid-column: 1 / -1; margin-top: 8px; font-size: .9375rem; line-height: 1.45; }
+.lot-card__state { grid-column: 1 / -1; align-self: end; justify-self: start; margin-top: 10px; padding: 5px 9px; font: 600 .75rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: #160c02;
+  background: repeating-linear-gradient(-45deg, #f2b134 0 8px, #ffd27a 8px 16px); border: 2px solid #160c02; }
+.lot-card__state.is-open { color: var(--d-ink); background: var(--d); }
+.lot-card.is-found { animation: found .3s steps(2) 4; border-color: var(--d); }
+@keyframes found { 0% { box-shadow: 0 0 0 4px var(--d), 6px 6px 0 4px rgba(4, 4, 20, .8); } 100% { box-shadow: 6px 6px 0 rgba(4, 4, 20, .8); } }
+
+/* the window for a building still being built */
+.lot { --d: var(--accent); max-width: min(520px, calc(100% - 32px)); padding: 22px; color: var(--paper); background: #0b0c2e; border: 3px solid var(--d); box-shadow: 0 0 0 3px var(--ink), 10px 10px 0 3px rgba(4, 4, 20, .8); }
+.lot[open] { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 18px; }
+.lot::backdrop { background: rgba(4, 4, 20, .78); }
+.lot__art { width: 96px; height: auto; aspect-ratio: 60 / 70; image-rendering: pixelated; image-rendering: crisp-edges; border: 2px solid var(--paper-2); }
+.lot__where { margin: 0 0 6px; font: 600 .75rem/1.2 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--paper-2); }
+.lot__name { margin: 0 0 6px; font: 600 1.5rem/1.15 var(--sans); color: var(--d); }
+.lot__kind { margin: 0 0 10px; font: 500 .8125rem/1.3 var(--mono); }
+.lot__say { margin: 0 0 12px; }
+.lot__state { margin: 0; padding: 8px 10px; font: 500 .875rem/1.45 var(--mono); color: #160c02; background: repeating-linear-gradient(-45deg, #f2b134 0 10px, #ffd27a 10px 20px); border: 2px solid #160c02; }
+.lot__close { grid-column: 1 / -1; display: flex; justify-content: flex-end; margin: 0; }
+
+.city-end { position: relative; z-index: 1; }
+.city-nojs { text-align: center; padding: 0 var(--edge) 40px; margin: 0 auto; }
+
+@media (max-width: 620px) {
+  .lot[open] { grid-template-columns: 1fr; }
+  .lot__art { width: 72px; }
+  .map__tip { font-size: .6875rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lot-card, .filter { transition: none; }
+  .lot-card.is-found { animation: none; box-shadow: 0 0 0 4px var(--d), 6px 6px 0 4px rgba(4, 4, 20, .8); }
+}
