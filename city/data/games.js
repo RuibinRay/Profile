@@ -45,7 +45,7 @@ export const GAMES = [
   // Neon Ward
   { ...g(11, 'circuit-rewire', 'Circuit Rewire', 'neon', 'puzzle', 'Puzzle', 1, 'Turn circuit tiles until every node is powered from the core and no wire is left loose.'), status: 'open' },
   g(12, 'layer-shift', 'Layer Shift', 'neon', 'puzzle', 'Puzzle platformer', 9, 'Switch between three layers of the same room, each with its own walls, to reach the exit.'),
-  g(13, 'neon-runner', 'Neon Runner', 'neon', 'arcade', 'Arcade', 3, 'Run the neon streets: jump, slide, and flip gravity to run along the ceiling.'),
+  { ...g(13, 'neon-runner', 'Neon Runner', 'neon', 'arcade', 'Arcade', 3, 'Run the neon streets: jump, slide, and flip gravity to run along the ceiling.'), status: 'open' },
   { ...g(14, 'memory-shards', 'Memory Shards', 'neon', 'story', 'Story', 2, 'A courier with no memory finds shards of the past. Each choice decides who they were.'), status: 'open' },
   g(15, 'firewall-slide', 'Firewall Slide', 'neon', 'puzzle', 'Puzzle', 6, 'Slide whole rows and columns of glyphs until they make the pattern on the lock.'),
   g(16, 'drone-swarm', 'Drone Swarm', 'neon', 'arcade', 'Arcade', 5, 'Hold off waves of drones from above, and choose one upgrade between waves.'),
